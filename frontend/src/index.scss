@@ -1,0 +1,429 @@
+@import "../node_modules/bootswatch/dist/flatly/variables";
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+@import "../node_modules/bootswatch/dist/flatly/bootswatch";
+
+// #region App
+$sp-1: map-get($spacers, 1);
+$sp-2: map-get($spacers, 2);
+$sp-3: map-get($spacers, 3);
+$sp-4: map-get($spacers, 4);
+$sp-5: map-get($spacers, 5);
+
+$f-md: $font-size-base;
+$f-sm: $font-size-sm;
+$f-lg: $font-size-lg;
+$f-h1: $h1-font-size;
+$f-h2: $h2-font-size;
+$f-h3: $h3-font-size;
+$f-h4: $h4-font-size;
+$f-h5: $h5-font-size;
+$f-h6: $h6-font-size;
+
+$c-black: #000000;
+$c-red: #ff0000;
+$c-orange: #e18700;
+$c-yellow: #b0b000;
+$c-green: #3cff00;
+$c-teal: #00ff67;
+$c-cyan: #00b4b4;
+$c-blue: #0067ff;
+$c-indigo: #3c00ff;
+$c-purple: #a000c8;
+$c-pink: #e10087;
+$c-fail: #dd0000;
+$c-fail-bg: #b30000;
+$c-success: #00d000;
+$c-success-bg: #009000;
+
+$c-colors: (
+  "black": $c-black,
+  "red": $c-red,
+  "orange": $c-orange,
+  "yellow": $c-yellow,
+  "green": $c-green,
+  "teal": $c-teal,
+  "cyan": $c-cyan,
+  "blue": $c-blue,
+  "indigo": $c-indigo,
+  "purple": $c-purple,
+  "pink": $c-pink,
+  "fail": $c-fail,
+  "fail-bg": $c-fail-bg,
+  "success": $c-success,
+  "success-bg": $c-success-bg,
+);
+// Color Selectors
+@each $name, $c in $c-colors {
+  .c-#{$name} {
+    color: $c;
+  }
+}
+// Color Selectors
+@each $name, $c in $c-colors {
+  .bc-#{$name} {
+    background-color: $c;
+  }
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  height: 100vh;
+}
+// #endregion
+
+// #region Welcome View
+.WelcomeView {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  .welcome-form {
+    width: min-content;
+  }
+}
+// #endregion
+
+// #region Lobby View
+.LobbyView {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.LobbyInvite {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: $sp-3;
+
+  input {
+    width: $sp-3 * 20;
+  }
+  .title {
+    font-size: $f-lg;
+  }
+  .room-id {
+    font-size: $f-h4;
+    font-weight: bold;
+  }
+}
+
+.UserList {
+  margin-bottom: $sp-3;
+  padding: $sp-3;
+  border: 1px solid $dark;
+  border-radius: $sp-3;
+
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: $sp-3;
+  justify-items: start;
+  align-items: center;
+
+  span {
+    font-size: $f-lg;
+  }
+}
+// #endregion
+
+// #region GameView
+.GameView {
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  > .inner-wrapper {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: 1fr 7fr 2fr;
+    grid-template-areas:
+      "lobby-nav          info-top-bar  lobby-id-box      "
+      "chat-history-tabs  center-box    mission-indicators"
+      "chat-history-tabs  bottom-text   mission-indicators";
+    // place-items: stretch;
+    pointer-events: none;
+  }
+}
+
+.GameLobbyNav {
+  grid-area: lobby-nav;
+  pointer-events: all;
+  padding: $sp-3;
+
+  .buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: $sp-3;
+  }
+}
+
+.InfoTopBar {
+  grid-area: info-top-bar;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+
+  padding-top: $sp-3;
+  padding-left: $sp-3;
+  padding-right: $sp-3;
+
+  text-align: center;
+
+  pointer-events: initial;
+  .progress {
+    height: 10px;
+  }
+}
+
+.GameLobbyIDBox {
+  grid-area: lobby-id-box;
+  align-self: flex-start;
+  pointer-events: all;
+  padding: $sp-3;
+  flex-direction: row;
+
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: $sp-2;
+  align-items: center;
+}
+
+.CenterControls {
+  grid-area: center-box;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  text-align: center;
+  button {
+    pointer-events: all;
+  }
+
+  .description {
+    font-size: $f-h4;
+  }
+
+  .details {
+    font-size: $f-md;
+  }
+
+  .team-building {
+    align-self: flex-start;
+    margin-top: $sp-3;
+  }
+
+  .voting,
+  .mission {
+    pointer-events: all;
+    background-color: $white;
+    padding: $sp-2;
+    border: $sp-1 solid $primary;
+    align-self: center;
+    div {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .success {
+      font-size: $f-h3;
+      background-color: $c-success;
+      border-color: $c-success;
+    }
+    .success:hover {
+      background-color: $c-success-bg;
+    }
+    .fail {
+      font-size: $f-h3;
+      background-color: $c-fail;
+      border-color: $c-fail;
+    }
+    .fail:hover:not(:disabled) {
+      background-color: $c-fail-bg;
+    }
+    .fail:disabled {
+      opacity: 1;
+      background-color: $dark;
+      border-color: $dark;
+    }
+  }
+}
+
+.ChatHistoryTabs {
+  grid-area: chat-history-tabs;
+  align-self: flex-end;
+  pointer-events: all;
+  height: 100%;
+
+  padding: $sp-3;
+
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+
+  .tab-pane,
+  .tab-pane > div {
+    width: 100%;
+    height: 100%;
+  }
+  .nav-link {
+    padding: $sp-2 $sp-3;
+  }
+}
+
+.ChatBox {
+  border-left: 1px solid $nav-tabs-border-color;
+  border-right: 1px solid $nav-tabs-border-color;
+  border-bottom: 1px solid $nav-tabs-border-color;
+
+  display: grid;
+  grid-template-rows: 1fr auto;
+  row-gap: $sp-2;
+
+  .chat-wrapper {
+    position: relative;
+    .chat {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding-left: $sp-1;
+
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+  }
+  form .input-group {
+    width: 100%;
+  }
+}
+
+.ChatMessage {
+  margin-bottom: $sp-1;
+}
+
+.VoteHistoryBox {
+  border-left: 1px solid $nav-tabs-border-color;
+  border-right: 1px solid $nav-tabs-border-color;
+  border-bottom: 1px solid $nav-tabs-border-color;
+
+  position: relative;
+  .inner-wrapper {
+    position: abolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+}
+
+.BottomText {
+  grid-area: bottom-text;
+  align-self: end;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  padding-bottom: $sp-3;
+  padding-left: $sp-3;
+  padding-right: $sp-3;
+
+  pointer-events: initial;
+
+  .text {
+    font-size: $f-h4;
+  }
+}
+
+.MissionIndicators {
+  grid-area: mission-indicators;
+  justify-self: end;
+  align-self: flex-start;
+
+  display: grid;
+  grid-template-rows: auto repeat(6, 1fr);
+  grid-template-columns: auto auto;
+  place-items: center center;
+  row-gap: $sp-2;
+  column-gap: $sp-3;
+  padding: $sp-3;
+
+  h3 {
+    margin-bottom: 0;
+  }
+
+  .arrow {
+    width: $sp-3 * 4;
+  }
+
+  .hammer {
+    text-align: center;
+    pointer-events: all;
+    font-size: $f-h4;
+    .hammer-number {
+      font-size: $f-h3;
+    }
+  }
+}
+
+.MissionIcon {
+  pointer-events: all;
+  width: $sp-3 * 4;
+  height: $sp-3 * 4;
+
+  border: $sp-1 solid $black;
+  border-radius: $sp-5;
+  color: $black;
+  background-color: $white;
+
+  line-height: $sp-4;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .num-players {
+    font-size: $f-h3;
+  }
+  .players {
+    font-size: $f-sm * 0.75;
+  }
+}
+
+.MissionIcon.fail {
+  background-color: $c-fail-bg;
+  border-color: $c-fail;
+  color: $light;
+}
+
+.MissionIcon.success {
+  background-color: $c-success;
+  border-color: $c-success-bg;
+  color: $light;
+}
+
+.MissionIcon.square {
+  border-radius: $sp-2;
+}
+
+.GameCanvas {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+// #endregion
