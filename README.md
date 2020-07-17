@@ -1,8 +1,5 @@
 # The Resistance
 
-![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/mrsiliconguy/the-resistance)
-![License](https://img.shields.io/github/license/MrSiliconGuy/the-resistance)
-
 This is an open source version of the popular party board game [The Resistance][resistance-game]. Based on original game by Don Eskridge.
 
 **Play it now at [https://resistance.thesilican.com][my-website]**
@@ -98,7 +95,9 @@ The Resistance was build with the following technologies
 
 ## License and Attributions
 
-The concept, rules, and
+The original game concept and rules belong to Don Eskridge, the creator of the game.
+
+All code in the repository are available under the MIT License. All image files in this repository were created by me are available under [CC BY 4.0][cc-license].
 
 [my-website]: https://resistance.thesilican.com
 [rules]: http://localhost:8080/how-to-play
@@ -116,3 +115,4 @@ The concept, rules, and
 [socketio]: https://socket.io/
 [docker]: https://www.docker.com/
 [get-docker]: https://docs.docker.com/get-docker/
+[cc-license]: https://creativecommons.org/licenses/by/4.0/
