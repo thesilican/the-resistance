@@ -38,13 +38,17 @@ export const Util = {
   deepCopy: function <T>(obj: T): T {
     return JSON.parse(JSON.stringify(obj));
   },
-  shuffle: function <T>(a: T[]) {
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Util.randInt(i);
-      const temp = a[i];
-      a[i] = a[j];
-      a[j] = temp;
+  shuffle: function <T>(a: T[]): T[] {
+    a = Util.deepCopy(a);
+    for (let x = 0; x < 100; x++) {
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Util.randInt(i);
+        const temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
+      }
     }
+    return a;
   },
   joinGrammatically(arr: string[]) {
     arr = Util.deepCopy(arr);

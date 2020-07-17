@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FormControl } from "react-bootstrap";
 import { useStore } from "../../store";
 
-type GameLobbyIDBoxProps = {};
-
-export default function GameLobbyIDBox({}: GameLobbyIDBoxProps) {
+export default function GameLobbyIDBox() {
   const [state] = useStore();
   const [url, setURL] = useState("");
   useEffect(() => {

@@ -1,9 +1,7 @@
+.git
 .vscode/
-dist/
-node_modules/
-frontend/dist/
-frontend/build/
-frontend/node_modules/
-frontend/.cache/
-common/dist/
-common/node_modules/
+**/dist/
+**/node_modules/
+**/build/
+**/.cache/
+doc/

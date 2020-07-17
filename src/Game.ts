@@ -61,11 +61,11 @@ export class Game {
   }
 
   private initialize(options: GameOptions) {
-    const playerAndColors = options.players.map((v, i) => ({
+    let playerAndColors = options.players.map((v, i) => ({
       player: v,
       color: ColorOrder[i],
     }));
-    Util.shuffle(playerAndColors);
+    playerAndColors = Util.shuffle(playerAndColors);
     const players = playerAndColors.map((x) => x.player);
     const colors = playerAndColors.map((x) => x.color);
     this.state.players = players.map((p) => p.name);
@@ -77,11 +77,11 @@ export class Game {
     if (roleNums === undefined) {
       throw "Invalid number of players";
     }
-    const roles = [
+    let roles = [
       ...(Array(roleNums[0]).fill("agent") as "agent"[]),
       ...(Array(roleNums[1]).fill("spy") as "spy"[]),
     ];
-    Util.shuffle(roles);
+    roles = Util.shuffle(roles);
     this.state.roles = roles;
     this.state.playerDisconnected = this.state.players.map((_) => false);
   }

@@ -48,8 +48,6 @@ const emptyLayout: Layout = {
   spritePos: [],
 };
 
-type GameCanvasProps = {};
-
 const calculateSize = (size: number[], numSprites: number): Layout => {
   const SPRITE_W = 60;
   const SPRITE_H = 90;
@@ -98,7 +96,7 @@ const calculateSize = (size: number[], numSprites: number): Layout => {
   };
 };
 
-export default function GameCanvas({}: GameCanvasProps) {
+export default function GameCanvas() {
   const ref: React.MutableRefObject<HTMLDivElement> = useRef(
     {} as HTMLDivElement
   );

@@ -5,9 +5,7 @@ import { useSocket } from "../../socket";
 import { useStore } from "../../store";
 import NameTransformer from "./NameTransformer";
 
-type CenterControlsProps = {};
-
-export default function CenterControls({}: CenterControlsProps) {
+export default function CenterControls() {
   const [state] = useStore();
   const socket = useSocket();
   if (!state.game) return null;

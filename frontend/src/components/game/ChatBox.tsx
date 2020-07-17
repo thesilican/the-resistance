@@ -5,11 +5,9 @@ import { useSocket } from "../../socket";
 import { useStore } from "../../store";
 import NameTransformer from "./NameTransformer";
 
-type ChatBoxProps = {};
-
 const div = document.createElement("div");
 
-export default function ChatBox({}: ChatBoxProps) {
+export default function ChatBox() {
   const [state] = useStore();
   const socket = useSocket();
   const [input, setInput] = useState("");
@@ -112,7 +110,7 @@ type UserChatMessageProps = {
 
 function UserChatMessage({ id, text, names, colors }: UserChatMessageProps) {
   return (
-    <div className="ChatMeaage">
+    <div className="ChatMessage">
       <span>
         [
         <NameTransformer names={names} colors={colors}>
@@ -132,7 +130,7 @@ type SystemChatMessageProps = {
 
 function SystemChatMessage({ text, names, colors }: SystemChatMessageProps) {
   return (
-    <div className="ChatMeaage system">
+    <div className="ChatMessage system">
       <span>
         <NameTransformer names={names} colors={colors}>
           {text}

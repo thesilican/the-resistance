@@ -75,18 +75,99 @@ body,
 
 // #region Welcome View
 .WelcomeView {
+  padding: $sp-3;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  p {
+    font-size: $f-lg;
+  }
+  .links {
+    font-size: $f-h4;
+    a {
+      color: $secondary;
+      margin-bottom: $sp-2;
+    }
+  }
   .welcome-form {
-    width: min-content;
+    border: 2px solid $primary;
+    border-radius: $sp-1;
+    margin-bottom: $sp-3;
+    padding: $sp-3;
+    width: $sp-3 * 20;
     .select {
       width: 100%;
       display: grid;
       grid-template-columns: 1fr 1fr;
       margin-bottom: $sp-2;
     }
+  }
+}
+
+.AboutPage {
+  max-width: 960px;
+  padding: $sp-3;
+  display: flex;
+  flex-direction: column;
+
+  h1,
+  h2 {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  p {
+    font-size: $f-lg;
+  }
+  .back {
+    color: $secondary;
+    position: fixed;
+    top: $sp-3;
+    left: $sp-3;
+  }
+  img {
+    display: block;
+    margin: 0 auto;
+    max-width: 80vw;
+    max-height: $sp-3 * 30;
+    border: $sp-1 solid black;
+    margin-bottom: $sp-3;
+  }
+}
+
+.HowToPlay {
+  max-width: 960px;
+  padding: $sp-3;
+  display: flex;
+  flex-direction: column;
+  h1,
+  h2,
+  iframe {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  ul {
+    text-align: left;
+  }
+  p,
+  span,
+  li {
+    font-size: $f-lg;
+  }
+  .back {
+    color: $secondary;
+    position: fixed;
+    top: $sp-3;
+    left: $sp-3;
+  }
+  img {
+    display: block;
+    margin: 0 auto;
+    max-width: 80vw;
+    max-height: $sp-3 * 30;
+    border: $sp-1 solid black;
+    margin-bottom: $sp-3;
   }
 }
 // #endregion
@@ -318,7 +399,7 @@ body,
 }
 
 .ChatMessage.system {
-  background: #dddddd;
+  font-style: italic;
 }
 
 .VoteHistoryBox {

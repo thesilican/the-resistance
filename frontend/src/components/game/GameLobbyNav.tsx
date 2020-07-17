@@ -3,9 +3,7 @@ import { Button } from "react-bootstrap";
 import { useSocket } from "../../socket";
 import { useStore } from "../../store";
 
-type GameLobbyNavProps = {};
-
-export default function GameLobbyNav({}: GameLobbyNavProps) {
+export default function GameLobbyNav() {
   const [state] = useStore();
   const socket = useSocket();
   const [active, setActive] = useState(false);

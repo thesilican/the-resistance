@@ -8,9 +8,7 @@ import GameLobbyNav from "./GameLobbyNav";
 import InfoTopBar from "./InfoTopBar";
 import MissionIndicators from "./MissionIndicators";
 
-type GameViewProps = {};
-
-export default function GameView({}: GameViewProps) {
+export default function GameView() {
   return (
     <div className="GameView">
       <div className="inner-wrapper">

@@ -3,8 +3,6 @@ import React from "react";
 import { ProgressBar } from "react-bootstrap";
 import { useStore } from "../../store";
 
-type InfoTopBarProps = {};
-
 const phases = {
   "role-reveal": "Role Reveal",
   "team-building": "Team Building",
@@ -16,7 +14,7 @@ const phases = {
   finished: "Game Finished",
 };
 
-export default function InfoTopBar({}: InfoTopBarProps) {
+export default function InfoTopBar() {
   const [state] = useStore();
   if (!state.game) return null;
   const phase = phases[state.game.gamePhase];

@@ -7,9 +7,7 @@ import GameView from "../game/GameView";
 import LobbyInvite from "./LobbyInvite";
 import UserList from "./UserList";
 
-type LobbyViewProps = {};
-
-export default function LobbyView({}: LobbyViewProps) {
+export default function LobbyView() {
   const [state, dispatch] = useStore();
   const socket = useSocket();
   const [url, setURL] = useState("");

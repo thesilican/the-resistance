@@ -6,9 +6,7 @@ import ChatBox from "./ChatBox";
 import NameTransformer from "./NameTransformer";
 import VoteHistoryBox from "./VoteHistoryBox";
 
-type ChatHistoryTabsProps = {};
-
-export default function ChatHistoryTabs({}: ChatHistoryTabsProps) {
+export default function ChatHistoryTabs() {
   const [state] = useStore();
   if (!state.game) return null;
   const isSpy = state.game.role === "spy";
@@ -27,13 +25,13 @@ export default function ChatHistoryTabs({}: ChatHistoryTabsProps) {
         </h4>
         {isAgent && (
           <h4>
-            You are an <span className="c-success">AGENT</span>
+            You are an <span className="c-success font-weight-bold">AGENT</span>
           </h4>
         )}
         {isAgent && <h4>There are {numSpies} spies</h4>}
         {isSpy && (
           <h4>
-            You are a <span className="c-fail">SPY</span>
+            You are a <span className="c-fail font-weight-bold">SPY</span>
           </h4>
         )}
         {isSpy && (
@@ -42,7 +40,7 @@ export default function ChatHistoryTabs({}: ChatHistoryTabsProps) {
               names={state.game.players}
               colors={state.game.colorOrder}
             >
-              {`Other spies: ${otherSpies}`}
+              {`Spies: ${otherSpies}`}
             </NameTransformer>
           </h4>
         )}

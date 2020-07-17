@@ -1,19 +1,18 @@
-import process from "process";
-import fs from "fs";
-import path from "path";
-import http from "http";
 import express from "express";
+import http from "http";
+import path from "path";
+import process from "process";
 import socketIO from "socket.io";
-import { Util } from "./Util";
 import { Server } from "./Server";
 
 const app = express();
-app.use("/join/:id", express.static(path.join(__dirname, "../frontend/build")));
-app.use("/", express.static(path.join(__dirname, "../frontend/build")));
-const httpServer = http.createServer(app);
-const io = socketIO(httpServer, {
-  // pingTimeout: 5000 * 100,
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
 });
+
+const httpServer = http.createServer(app);
+const io = socketIO(httpServer);
 
 const server = new Server(io);
 
