@@ -6,24 +6,24 @@ const random = new MersenneTwister();
 export const Util = {
   generateUniqueID: (() => {
     // Regen id every hour
-    // const modulo = 1000 * 60 * 60;
-    // const reset = 0;
-    // let lastDate = 0;
-    // let inc = reset;
-    // return () => {
-    //   const date = Math.floor(new Date().getTime() / modulo);
-    //   if (lastDate !== date) {
-    //     lastDate = date;
-    //     inc = reset;
-    //   }
-    //   return Util.encodeAlphabet(date) + Util.encodeAlphabet(inc++);
-    // };
+    const modulo = 1000 * 60 * 60;
+    const reset = 0;
+    let lastDate = 0;
+    let inc = reset;
+    return () => {
+      const date = Math.floor(new Date().getTime() / modulo);
+      if (lastDate !== date) {
+        lastDate = date;
+        inc = reset;
+      }
+      return Util.encodeAlphabet(date) + Util.encodeAlphabet(inc++);
+    };
 
     // Simple
     let i = 0;
-    return () => {
-      return i++ + "";
-    };
+    // return () => {
+    //   return i++ + "";
+    // };
   })(),
   encodeAlphabet: (num: number): string => {
     const radix = ALPHABET.length;

@@ -8,6 +8,7 @@ import { Util } from "./Util";
 import { Server } from "./Server";
 
 const app = express();
+app.use("/join/:id", express.static(path.join(__dirname, "../frontend/build")));
 app.use("/", express.static(path.join(__dirname, "../frontend/build")));
 const httpServer = http.createServer(app);
 const io = socketIO(httpServer, {

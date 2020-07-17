@@ -1,16 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Button, ButtonGroup, Form } from "react-bootstrap";
 import { useSocket } from "../../socket";
 import { useStore } from "../../store";
 
 type CreateJoinLobbyFormProps = {};
 
+const element = document.createElement("input");
+
 export default function CreateJoinLobbyForm({}: CreateJoinLobbyFormProps) {
   const socket = useSocket();
   const [state] = useStore();
   const [isJoinRoom, setIsJoinRoom] = useState(state.urlRoomID !== "");
   const [roomID, setRoomID] = useState(state.urlRoomID ?? "");
-  const [name, setName] = useState(Math.random() + "");
+  // const [name, setName] = useState(Math.random() + "");
+  const [name, setName] = useState("");
+  const ref = useRef(element);
 
   useEffect(() => {
     // Get rid of query
@@ -19,6 +23,8 @@ export default function CreateJoinLobbyForm({}: CreateJoinLobbyFormProps) {
       setRoomID(roomID);
       setIsJoinRoom(true);
     }
+    // Select
+    ref.current.focus();
   }, []);
 
   return (
@@ -73,7 +79,7 @@ export default function CreateJoinLobbyForm({}: CreateJoinLobbyFormProps) {
         </Form.Group>
       )}
       <Form.Group controlId="username">
-        <Form.Label>Username:</Form.Label>
+        <Form.Label ref={ref}>Username:</Form.Label>
         <Form.Control
           type="input"
           value={name}
