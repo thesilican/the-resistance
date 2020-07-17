@@ -1,6 +1,6 @@
+import { MISSIONS } from "common-types";
 import React, { Fragment } from "react";
 import { useStore } from "../../store";
-import { MISSIONS } from "common-types";
 
 type MissionIndicatorsProps = {};
 

@@ -1,5 +1,5 @@
+import { Action, Request } from "common-types";
 import React, { useContext, useEffect } from "react";
-import { Request, Action } from "common-types";
 import io from "socket.io-client";
 import { useStore } from "../store";
 
@@ -10,7 +10,7 @@ if (window.location.hostname === "localhost") {
 }
 const socket = io(address);
 socket.on("connect", () => {
-  console.log("Connected with ID " + socket.id);
+  // console.log("Connected with ID " + socket.id);
 });
 
 // Create context so that it can be used everywhere
@@ -20,7 +20,7 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
   const [store, dispatch] = useStore();
   useEffect(() => {
     socket.on("message", (data: Action) => {
-      console.log("Message:", data);
+      // console.log("Message:", data);
       dispatch(data);
     });
   }, []);

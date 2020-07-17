@@ -1,34 +1,3 @@
-import spritesheet from "../assets/spritesheet.png";
-import ynr from "../assets/stickman-yellow-nohat-right.png";
-import Util from "./util";
-
-export type Color =
-  | "black"
-  | "blue"
-  | "cyan"
-  | "green"
-  | "indigo"
-  | "orange"
-  | "pink"
-  | "purple"
-  | "red"
-  | "teal"
-  | "yellow";
-
-export const ColorOrder: Color[] = [
-  "black",
-  "red",
-  "yellow",
-  "blue",
-  "orange",
-  "green",
-  "purple",
-  "pink",
-  "cyan",
-  "teal",
-  "indigo",
-];
-
 export const ColorValues = {
   black: "#000000",
   red: "#ff0000",
@@ -42,8 +11,6 @@ export const ColorValues = {
   purple: "#a000c8",
   pink: "#e10087",
 };
-
-export const newColorValues: string[] = ColorOrder.map((c) => ColorValues[c]);
 
 export const spriteCoords = {
   stickman: {

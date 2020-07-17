@@ -4,22 +4,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "parcel public/index.html",
-    "build": "parcel build --out-dir build/ --public-url ./ --no-source-maps public/index.html",
+    "start": "npx parcel public/index.html",
+    "build": "npx parcel build --out-dir build/ --public-url ./ --no-source-maps public/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/react-router-dom": "^5.1.5",
-    "@types/socket.io-client": "^1.4.33",
     "parcel": "^1.12.4",
     "sass": "^1.26.10",
-    "typescript": "^3.9.6"
+    "typescript": "^3.9.7"
   },
   "dependencies": {
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
+    "@types/react-router-dom": "^5.1.5",
+    "@types/socket.io-client": "^1.4.33",
     "bootstrap": "^4.5.0",
     "bootswatch": "^4.5.0",
     "common-types": "file:../common",
@@ -29,6 +29,7 @@
     "react-bootstrap": "^1.2.2",
     "react-dom": "^16.13.1",
     "react-konva": "^16.13.0-3",
+    "react-router-dom": "^5.2.0",
     "socket.io-client": "^2.3.0",
     "use-image": "^1.0.6"
   }

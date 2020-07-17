@@ -57,24 +57,17 @@ export class Lobby {
     if (this.game && this.game.socketIDs.includes(socket.id)) {
       this.game.onLeave(socket);
       // Remove game once everyone left
-      if (!this.game.socketIDs.find((id) => id !== null)) {
-        this.game = null;
-        socket.in(this.id).emit("message", {
-          category: "game",
-          type: "update-game-state",
-          state: null,
-        });
-      }
+      if (!this.game.socketIDs.find((id) => id !== null)) this.removeGame();
     }
 
     this.members.splice(index, 1);
-    socket.in(this.id).emit("message", {
+    this.io.to(this.id).emit("message", {
       category: "lobby",
       type: "player-leave",
       index: index,
     });
   }
-  
+
   onMessage(socket: ISocket, message: LobbyRequest | GameRequest) {
     if (message.category === "lobby") {
       if (message.type === "start-game") {
@@ -95,14 +88,7 @@ export class Lobby {
         if (!this.game) return;
         this.game.onLeave(socket);
         // Remove game once everyone left
-        if (!this.game.socketIDs.find((id) => id !== null)) {
-          this.game = null;
-          socket.in(this.id).emit("message", {
-            category: "game",
-            type: "update-game-state",
-            state: null,
-          });
-        }
+        if (!this.game.socketIDs.find((id) => id !== null)) this.removeGame();
       } else if (message.type === "rejoin-game") {
         if (!this.game) return;
         this.game.onRejoin(socket, message.index);
@@ -112,5 +98,17 @@ export class Lobby {
         this.game.onMessage(socket, message);
       }
     }
+  }
+
+  removeGame() {
+    if (this.game?.interval) {
+      clearInterval(this.game.interval);
+    }
+    this.game = null;
+    this.io.to(this.id).emit("message", {
+      category: "game",
+      type: "update-game-state",
+      state: null,
+    });
   }
 }

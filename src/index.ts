@@ -11,7 +11,7 @@ const app = express();
 app.use("/", express.static(path.join(__dirname, "../frontend/build")));
 const httpServer = http.createServer(app);
 const io = socketIO(httpServer, {
-  pingTimeout: 5000 * 100,
+  // pingTimeout: 5000 * 100,
 });
 
 const server = new Server(io);

@@ -81,6 +81,12 @@ body,
   justify-content: center;
   .welcome-form {
     width: min-content;
+    .select {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      margin-bottom: $sp-2;
+    }
   }
 }
 // #endregion
@@ -308,7 +314,11 @@ body,
 }
 
 .ChatMessage {
-  margin-bottom: $sp-1;
+  padding: $sp-1;
+}
+
+.ChatMessage.system {
+  background: #dddddd;
 }
 
 .VoteHistoryBox {

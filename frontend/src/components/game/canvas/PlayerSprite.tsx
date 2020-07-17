@@ -1,13 +1,12 @@
-import React, { useState } from "react";
-import { Image, Rect, Text, Circle, Ellipse } from "react-konva";
-import useImage from "use-image";
-import { ColorOrder, newColorValues, spriteCoords } from "../../../resources";
+import { ClientAppState, MISSIONS } from "common-types";
 import { KonvaEventObject } from "konva/types/Node";
+import React, { useState } from "react";
+import { Image, Rect, Text } from "react-konva";
+import useImage from "use-image";
 import spriteSheetResource from "../../../../assets/spritesheet.png";
-import { useStore } from "../../../store";
+import { ColorValues, spriteCoords } from "../../../resources";
 import { useSocket } from "../../../socket";
 import Util from "../../../util";
-import { MISSIONS, ClientAppState } from "common-types";
 
 type PlayerSpriteProps = {
   x: number;
@@ -40,8 +39,9 @@ export default function PlayerSprite({
   const [hover, setHover] = useState(false);
   const [name] = useState(state.game?.players[index]);
   if (!state.game) return null;
+  const colorOrder = state.game.colorOrder;
   const stickmanCoord =
-    spriteCoords.stickman[ColorOrder[index % ColorOrder.length]][
+    spriteCoords.stickman[colorOrder[index % colorOrder.length]][
       faceLeft ? "left" : "right"
     ];
   const hatCoord = spriteCoords.hat[faceLeft ? "left" : "right"];
@@ -67,6 +67,7 @@ export default function PlayerSprite({
   const voteCoord = vote === "accept" ? acceptCoord : rejectCoord;
   const showRole = state.game.gamePhase === "finished";
   const roleCoord = state.game.spies?.includes(index) ? spyCoord : agentCoord;
+  const color = ColorValues[state.game.colorOrder[index]];
 
   const handlePointerEnter = !canHover
     ? undefined
@@ -172,7 +173,7 @@ export default function PlayerSprite({
         y={y + SPRITE_H / 2 - Y_ADJUST + TEXT_TOP_MARGIN}
         text={name}
         width={TEXT_WIDTH}
-        fill={newColorValues[index % newColorValues.length]}
+        fill={color}
         align="center"
         fontSize={18}
       ></Text>

@@ -1,6 +1,6 @@
 import { createStore } from "its-not-redux";
-import { defaultAppState } from "./types";
 import { reducer } from "./reducers";
+import { defaultAppState } from "./types";
 
 const appState = defaultAppState;
 
@@ -14,3 +14,4 @@ const appState = defaultAppState;
 const { StateProvider, useStore } = createStore(reducer, appState);
 
 export { StateProvider, useStore };
+

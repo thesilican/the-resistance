@@ -1,3 +1,5 @@
+import { Color } from "./constants";
+
 export type GamePhase =
   | "role-reveal"
   | "team-building"
@@ -35,6 +37,7 @@ export type SystemChatMessage = {
 };
 
 export type ServerGameState = {
+  colorOrder: Color[];
   players: string[];
   roles: Role[];
   winners?: Role;
@@ -57,6 +60,7 @@ export type ServerGameState = {
 };
 
 export type ClientAppState = {
+  urlRoomID: string;
   roomID: string;
   roomMembers: string[];
   roomIndex: number;
@@ -65,6 +69,7 @@ export type ClientAppState = {
 };
 
 export type ClientGameState = {
+  colorOrder: Color[];
   players: string[];
   playerIndex: number;
   role: Role;

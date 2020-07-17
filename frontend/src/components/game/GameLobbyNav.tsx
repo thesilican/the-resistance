@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
-import { useStore } from "../../store";
 import { useSocket } from "../../socket";
+import { useStore } from "../../store";
 
 type GameLobbyNavProps = {};
 

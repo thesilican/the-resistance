@@ -1,7 +1,6 @@
 import React from "react";
-import NameTransformer from "./NameTransformer";
-import { ColorOrder, ColorValues, newColorValues } from "../../resources";
 import { useStore } from "../../store";
+import NameTransformer from "./NameTransformer";
 
 type BottomTextProps = {};
 
@@ -12,7 +11,10 @@ export default function BottomText({}: BottomTextProps) {
   return (
     <div className="BottomText">
       <span className="text">
-        <NameTransformer names={state.game.players} colors={ColorOrder}>
+        <NameTransformer
+          names={state.game.players}
+          colors={state.game.colorOrder}
+        >
           {state.game.statusMessage}
         </NameTransformer>
       </span>

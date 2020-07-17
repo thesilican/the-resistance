@@ -1,9 +1,9 @@
-import React, { useRef, useEffect, useState, useLayoutEffect } from "react";
-import { Stage, Rect, Layer, Image, Ellipse } from "react-konva";
-import PlayerSprite from "./PlayerSprite";
+import React, { useEffect, useRef, useState } from "react";
+import { Image, Layer, Stage } from "react-konva";
 import useImage from "use-image";
-import Util from "../../../util";
 import { useStore } from "../../../store";
+import Util from "../../../util";
+import PlayerSprite from "./PlayerSprite";
 
 type Layout = {
   canvas: {
@@ -104,8 +104,6 @@ export default function GameCanvas({}: GameCanvasProps) {
   );
   const [state] = useStore();
   const [layout, setLayout] = useState(emptyLayout);
-
-  console.log(state);
 
   const updateLayout = () => {
     const size = [ref.current.clientWidth, ref.current.clientHeight];

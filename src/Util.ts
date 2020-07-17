@@ -1,4 +1,7 @@
+import { MersenneTwister } from "./MersenneTwister";
+
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const random = new MersenneTwister();
 
 export const Util = {
   generateUniqueID: (() => {
@@ -37,8 +40,10 @@ export const Util = {
   },
   shuffle: function <T>(a: T[]) {
     for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
+      const j = Util.randInt(i);
+      const temp = a[i];
+      a[i] = a[j];
+      a[j] = temp;
     }
   },
   joinGrammatically(arr: string[]) {
@@ -57,5 +62,12 @@ export const Util = {
       return n + " " + plural;
     }
     return n + " " + obj + "s";
+  },
+  randInt(min: number, max?: number) {
+    if (!max) {
+      max = min;
+      min = 0;
+    }
+    return min + Math.floor(random.random() * (max - min));
   },
 };

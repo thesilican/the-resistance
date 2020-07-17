@@ -1,8 +1,11 @@
 import {
-  ClientAppState as AppState,
   Action,
-  LobbyAction,
-  GameAction,
+
+
+  ClientAction, ClientAppState as AppState,
+
+
+  GameAction, LobbyAction
 } from "common-types";
 
 export function reducer(state: AppState, action: Action): AppState {
@@ -13,8 +16,18 @@ export function reducer(state: AppState, action: Action): AppState {
       return state;
     case "game":
       return gameReducer(state, action);
-    default:
-      throw "up";
+    case "client":
+      return clientReducer(state, action);
+  }
+}
+
+function clientReducer(state: AppState, action: ClientAction): AppState {
+  switch (action.type) {
+    case "change-url-id":
+      return {
+        ...state,
+        urlRoomID: action.urlRoomID,
+      };
   }
 }
 
@@ -22,11 +35,21 @@ function lobbyReducer(state: AppState, action: LobbyAction): AppState {
   switch (action.type) {
     case "join-lobby":
       return {
+        ...state,
         roomID: action.roomID,
         roomIndex: action.roomIndex,
         roomMembers: action.roomMembers,
         inGame: false,
         game: action.game,
+      };
+    case "leave-lobby":
+      return {
+        ...state,
+        roomID: "",
+        roomIndex: 0,
+        roomMembers: [],
+        inGame: false,
+        game: null,
       };
     case "player-join":
       return {
@@ -42,8 +65,6 @@ function lobbyReducer(state: AppState, action: LobbyAction): AppState {
             ? state.roomIndex - 1
             : state.roomIndex,
       };
-    default:
-      throw "up";
   }
 }
 
@@ -203,7 +224,5 @@ function gameReducer(state: AppState, action: GameAction): AppState {
           spies: action.spies,
         },
       };
-    default:
-      throw "up";
   }
 }

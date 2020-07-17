@@ -1,11 +1,11 @@
-import React, { useState, useEffect, isValidElement } from "react";
-import { useStore } from "../../store";
-import UserList from "./UserList";
-import LobbyInvite from "./LobbyInvite";
+import { PLAYER_MAX, PLAYER_MIN } from "common-types";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
-import GameView from "../game/GameView";
 import { useSocket } from "../../socket";
-import { PLAYER_MIN, PLAYER_MAX } from "common-types";
+import { useStore } from "../../store";
+import GameView from "../game/GameView";
+import LobbyInvite from "./LobbyInvite";
+import UserList from "./UserList";
 
 type LobbyViewProps = {};
 
@@ -14,8 +14,8 @@ export default function LobbyView({}: LobbyViewProps) {
   const socket = useSocket();
   const [url, setURL] = useState("");
   useEffect(() => {
-    let base = window.location.href.split("?")[0];
-    let url = base.toString() + "?join=" + state.roomID;
+    let base = window.location.href;
+    let url = base.toString() + "join/" + state.roomID;
     setURL(url);
   }, []);
 
@@ -27,14 +27,14 @@ export default function LobbyView({}: LobbyViewProps) {
     state.roomMembers.length <= PLAYER_MAX &&
     state.roomMembers.length >= PLAYER_MIN;
   const isHost = state.roomIndex === 0;
+  const gameInProgress = state.game !== null;
+  const waitingToLeaveGame = state.game?.gamePhase === "finished";
 
   return (
     <div className="LobbyView">
-      <h1>Lobby View</h1>
-      <LobbyInvite roomID={state.roomID} url={url} />
-      {state.game && state.game.gamePhase !== "finished" ? (
+      {state.game && !waitingToLeaveGame ? (
         <UserList
-          title="Game"
+          title="Game in progress"
           index={-1}
           host={-1}
           names={state.game.players}
@@ -57,10 +57,14 @@ export default function LobbyView({}: LobbyViewProps) {
           showReconnect={false}
         />
       )}
-      {!validPlayerCount && (
+      <LobbyInvite roomID={state.roomID} url={url} />
+      {!gameInProgress && !validPlayerCount && (
         <span>Between 5-10 players can play The Resistance</span>
       )}
-      {!isHost && <span>Only the host can start the game</span>}
+      {!gameInProgress && validPlayerCount && !isHost && (
+        <span>Waiting for host to start game</span>
+      )}
+      {waitingToLeaveGame && <span>Waiting for all players to leave game</span>}
       {state.game === null && (
         <Button
           className="my-3"

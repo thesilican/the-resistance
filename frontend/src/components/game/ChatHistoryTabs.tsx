@@ -1,11 +1,10 @@
-import React from "react";
-import { Tabs, Tab } from "react-bootstrap";
-import ChatBox from "./ChatBox";
-import VoteHistoryBox from "./VoteHistoryBox";
-import { useStore } from "../../store";
 import { NUM_AGENTS_SPIES } from "common-types";
+import React from "react";
+import { Tab, Tabs } from "react-bootstrap";
+import { useStore } from "../../store";
+import ChatBox from "./ChatBox";
 import NameTransformer from "./NameTransformer";
-import { ColorOrder } from "../../resources";
+import VoteHistoryBox from "./VoteHistoryBox";
 
 type ChatHistoryTabsProps = {};
 
@@ -20,6 +19,12 @@ export default function ChatHistoryTabs({}: ChatHistoryTabsProps) {
   return (
     <div className="ChatHistoryTabs">
       <div>
+        <h4>
+          <NameTransformer
+            names={state.game.players}
+            colors={state.game.colorOrder}
+          >{`[[${state.game.playerIndex}]]`}</NameTransformer>
+        </h4>
         {isAgent && (
           <h4>
             You are an <span className="c-success">AGENT</span>
@@ -33,7 +38,10 @@ export default function ChatHistoryTabs({}: ChatHistoryTabsProps) {
         )}
         {isSpy && (
           <h4>
-            <NameTransformer names={state.game.players} colors={ColorOrder}>
+            <NameTransformer
+              names={state.game.players}
+              colors={state.game.colorOrder}
+            >
               {`Other spies: ${otherSpies}`}
             </NameTransformer>
           </h4>

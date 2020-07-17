@@ -1,10 +1,9 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Form, FormControl, Button, InputGroup } from "react-bootstrap";
-import NameTransformer from "./NameTransformer";
-import { ColorOrder, ColorValues, newColorValues } from "../../resources";
-import { ChatMessage } from "common-types";
-import { useStore } from "../../store";
+import { ChatMessage, Color } from "common-types";
+import React, { useEffect, useRef, useState } from "react";
+import { Button, Form, FormControl, InputGroup } from "react-bootstrap";
 import { useSocket } from "../../socket";
+import { useStore } from "../../store";
+import NameTransformer from "./NameTransformer";
 
 type ChatBoxProps = {};
 
@@ -43,7 +42,11 @@ export default function ChatBox({}: ChatBoxProps) {
     <div className="ChatBox">
       <div className="chat-wrapper">
         <div className="chat" ref={scrollBarRef}>
-          <ChatMessageList names={names} messages={messages} />
+          <ChatMessageList
+            names={names}
+            messages={messages}
+            colors={state.game.colorOrder}
+          />
         </div>
       </div>
       <Form inline onSubmit={handleFormSubmit}>
@@ -68,11 +71,13 @@ export default function ChatBox({}: ChatBoxProps) {
 type ChatMessageListProps = {
   messages: ChatMessage[];
   names: string[];
+  colors: Color[];
 };
 
 const ChatMessageList = React.memo(function ({
   messages,
   names,
+  colors,
 }: ChatMessageListProps) {
   return (
     <>
@@ -83,9 +88,15 @@ const ChatMessageList = React.memo(function ({
             names={names}
             id={m.player}
             text={m.content}
+            colors={colors}
           />
         ) : (
-          <SystemChatMessage key={i} names={names} text={m.content} />
+          <SystemChatMessage
+            colors={colors}
+            key={i}
+            names={names}
+            text={m.content}
+          />
         )
       )}
     </>
@@ -96,16 +107,18 @@ type UserChatMessageProps = {
   id: number;
   text: string;
   names: string[];
+  colors: Color[];
 };
 
-function UserChatMessage({ id, text, names }: UserChatMessageProps) {
+function UserChatMessage({ id, text, names, colors }: UserChatMessageProps) {
   return (
     <div className="ChatMeaage">
       <span>
-        <NameTransformer names={names} colors={ColorOrder}>
+        [
+        <NameTransformer names={names} colors={colors}>
           {"[[" + id + "]]"}
         </NameTransformer>
-        : {text}
+        ] {text}
       </span>
     </div>
   );
@@ -114,13 +127,14 @@ function UserChatMessage({ id, text, names }: UserChatMessageProps) {
 type SystemChatMessageProps = {
   text: string;
   names: string[];
+  colors: Color[];
 };
 
-function SystemChatMessage({ text, names }: SystemChatMessageProps) {
+function SystemChatMessage({ text, names, colors }: SystemChatMessageProps) {
   return (
-    <div className="ChatMeaage">
+    <div className="ChatMeaage system">
       <span>
-        <NameTransformer names={names} colors={ColorOrder}>
+        <NameTransformer names={names} colors={colors}>
           {text}
         </NameTransformer>
       </span>

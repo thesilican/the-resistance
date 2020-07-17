@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Form, FormControl } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { FormControl } from "react-bootstrap";
 import { useStore } from "../../store";
 
 type GameLobbyIDBoxProps = {};
@@ -9,7 +9,7 @@ export default function GameLobbyIDBox({}: GameLobbyIDBoxProps) {
   const [url, setURL] = useState("");
   useEffect(() => {
     let base = window.location.href.split("?")[0];
-    let url = base.toString() + "?join=" + state.roomID;
+    let url = base.toString() + "join/" + state.roomID;
     setURL(url);
   }, []);
   return (

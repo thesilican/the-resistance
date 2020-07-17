@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Button, Form } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Button, ButtonGroup, Form } from "react-bootstrap";
 import { useSocket } from "../../socket";
 import { useStore } from "../../store";
 
@@ -7,9 +7,9 @@ type CreateJoinLobbyFormProps = {};
 
 export default function CreateJoinLobbyForm({}: CreateJoinLobbyFormProps) {
   const socket = useSocket();
-  const [store] = useStore();
-  const [isJoinRoom, setIsJoinRoom] = useState(false);
-  const [roomID, setRoomID] = useState("");
+  const [state] = useStore();
+  const [isJoinRoom, setIsJoinRoom] = useState(state.urlRoomID !== "");
+  const [roomID, setRoomID] = useState(state.urlRoomID ?? "");
   const [name, setName] = useState(Math.random() + "");
 
   useEffect(() => {
@@ -45,22 +45,26 @@ export default function CreateJoinLobbyForm({}: CreateJoinLobbyFormProps) {
       <Form.Text className="text-center">
         <h1>The&nbsp;Resistance</h1>
       </Form.Text>
-      <Form.Group controlId="select">
-        <Form.Control
-          as="select"
-          value={isJoinRoom ? "join" : "create"}
-          onChange={(e) => setIsJoinRoom(e.target.value === "join")}
+      <ButtonGroup aria-label="Basic example" className="select">
+        <Button
+          onClick={() => setIsJoinRoom(false)}
+          variant={isJoinRoom ? "outline-secondary" : "secondary"}
         >
-          <option value="create">Create Room</option>
-          <option value="join">Join Room</option>
-        </Form.Control>
-      </Form.Group>
+          Create Game
+        </Button>
+        <Button
+          onClick={() => setIsJoinRoom(true)}
+          variant={isJoinRoom ? "secondary" : "outline-secondary"}
+        >
+          Join Game
+        </Button>
+      </ButtonGroup>
       {isJoinRoom && (
         <Form.Group controlId="roomID">
-          <Form.Label>Join Code:</Form.Label>
+          <Form.Label>Room Code:</Form.Label>
           <Form.Control
             type="input"
-            placeholder="aaaaa"
+            placeholder="AAAAAA"
             value={roomID}
             onFocus={(e: any) => e.target.select()}
             onChange={(e) => setRoomID(e.target.value)}
@@ -73,6 +77,7 @@ export default function CreateJoinLobbyForm({}: CreateJoinLobbyFormProps) {
         <Form.Control
           type="input"
           value={name}
+          onFocus={(e: any) => e.target.select()}
           onChange={(e) => {
             if (e.target.value.length <= 12) {
               setName(e.target.value);

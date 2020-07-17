@@ -9,11 +9,19 @@ import {
   MissionHistory,
 } from "./game";
 
-export type Action = LobbyAction | ErrorAction | GameAction;
+export type Action = ClientAction | LobbyAction | ErrorAction | GameAction;
+
+export type ClientAction = ChangeURLIDAction;
+export type ChangeURLIDAction = {
+  category: "client";
+  type: "change-url-id";
+  urlRoomID: string;
+};
 
 // Lobby Action
 export type LobbyAction =
   | JoinLobbyAction
+  | LeaveLobbyAction
   | PlayerJoinedLobbyAction
   | PlayerLeftLobbyAction;
 export type JoinLobbyAction = {
@@ -23,6 +31,10 @@ export type JoinLobbyAction = {
   roomID: string;
   roomMembers: string[];
   game: ClientGameState | null;
+};
+export type LeaveLobbyAction = {
+  category: "lobby";
+  type: "leave-lobby";
 };
 export type PlayerJoinedLobbyAction = {
   category: "lobby";

@@ -37,7 +37,7 @@ export class Server {
     delete this.sockets[socket.id];
   }
   onMessage(socket: ISocket, message: Request) {
-    console.log(message);
+    // console.log(message);
     if (message.category === "server") {
       if (message.type === "create-room") {
         // TODO: add username verification

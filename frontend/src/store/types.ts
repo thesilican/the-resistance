@@ -1,14 +1,7 @@
-import {
-  GamePhase,
-  Role,
-  ProposalVote,
-  TeamHistory,
-  MissionHistory,
-  ClientGameState,
-  ClientAppState,
-} from "common-types";
+import { ClientAppState } from "common-types";
 
 export const defaultAppState: ClientAppState = {
+  urlRoomID: "",
   roomIndex: -1,
   roomID: "",
   inGame: false,

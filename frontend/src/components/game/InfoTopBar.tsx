@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { PHASE_LENGTHS } from "common-types";
+import React from "react";
 import { ProgressBar } from "react-bootstrap";
 import { useStore } from "../../store";
-import { PHASE_LENGTHS } from "common-types";
 
 type InfoTopBarProps = {};
 

@@ -1,9 +1,8 @@
+import { MISSIONS } from "common-types";
 import React from "react";
 import { Button } from "react-bootstrap";
-import { useStore } from "../../store";
 import { useSocket } from "../../socket";
-import { MISSIONS } from "common-types";
-import { ColorOrder } from "../../resources";
+import { useStore } from "../../store";
 import NameTransformer from "./NameTransformer";
 
 type CenterControlsProps = {};
@@ -62,7 +61,10 @@ export default function CenterControls({}: CenterControlsProps) {
       {showVotingButton && (
         <div className="voting">
           <span className="description">
-            <NameTransformer names={state.game.players} colors={ColorOrder}>
+            <NameTransformer
+              names={state.game.players}
+              colors={state.game.colorOrder}
+            >
               {`Do you approve [[${state.game!.teamLeader}]]'s team?`}
             </NameTransformer>
           </span>

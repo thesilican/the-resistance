@@ -1,5 +1,30 @@
 import { GamePhase } from "./game";
-
+export type Color =
+  | "black"
+  | "blue"
+  | "cyan"
+  | "green"
+  | "indigo"
+  | "orange"
+  | "pink"
+  | "purple"
+  | "red"
+  | "teal"
+  | "yellow";
+  
+export const ColorOrder: Color[] = [
+  "black",
+  "red",
+  "yellow",
+  "blue",
+  "orange",
+  "green",
+  "purple",
+  "pink",
+  "cyan",
+  "teal",
+  "indigo",
+];
 export const PLAYER_MIN = 5;
 export const PLAYER_MAX = 10;
 export const NUM_AGENTS_SPIES: { [i: number]: [number, number] } = {

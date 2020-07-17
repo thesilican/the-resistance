@@ -1,12 +1,12 @@
 import React from "react";
-import GameCanvas from "./canvas/GameCanvas";
-import MissionIndicators from "./MissionIndicators";
-import InfoTopBar from "./InfoTopBar";
 import BottomText from "./BottomText";
-import GameLobbyNav from "./GameLobbyNav";
-import GameLobbyIDBox from "./GameLobbyIDBox";
-import GameChatHistoryTabs from "./ChatHistoryTabs";
+import GameCanvas from "./canvas/GameCanvas";
 import CenterControls from "./CenterControls";
+import GameChatHistoryTabs from "./ChatHistoryTabs";
+import GameLobbyIDBox from "./GameLobbyIDBox";
+import GameLobbyNav from "./GameLobbyNav";
+import InfoTopBar from "./InfoTopBar";
+import MissionIndicators from "./MissionIndicators";
 
 type GameViewProps = {};
 

@@ -1,5 +1,4 @@
 import React, { ReactNode } from "react";
-import { Color } from "../../resources";
 
 type NameTransformerProps = {
   children: string;

@@ -12,6 +12,7 @@ import {
   SystemChatMessage,
   ChatMessage,
   MissionAction,
+  ColorOrder,
 } from "common-types";
 import { ISocket, ISocketIO } from "./ISocket";
 import { Util } from "./Util";
@@ -25,7 +26,7 @@ const defaultGameState: ServerGameState = {
   gamePhase: "role-reveal",
   gamePhaseCountdown: PHASE_LENGTHS["role-reveal"],
   missionNumber: 1,
-  teamLeader: 0,
+  teamLeader: -1,
   teamMembers: [],
   teamProposalVote: [],
   missionActions: {},
@@ -33,6 +34,7 @@ const defaultGameState: ServerGameState = {
   missionHistory: [],
   chatHistory: [],
   statusMessage: "Welcome to The Resistance!",
+  colorOrder: [],
 };
 
 export type GameOptions = {
@@ -59,9 +61,16 @@ export class Game {
   }
 
   private initialize(options: GameOptions) {
-    const players = options.players;
+    const playerAndColors = options.players.map((v, i) => ({
+      player: v,
+      color: ColorOrder[i],
+    }));
+    Util.shuffle(playerAndColors);
+    const players = playerAndColors.map((x) => x.player);
+    const colors = playerAndColors.map((x) => x.color);
     this.state.players = players.map((p) => p.name);
     this.socketIDs = players.map((p) => p.id);
+    this.state.colorOrder = colors;
 
     const numPlayers = this.state.players.length;
     const roleNums = NUM_AGENTS_SPIES[numPlayers];
@@ -103,7 +112,7 @@ export class Game {
       category: "game",
       type: "leave-game",
     });
-    socket.to(this.roomID).emit("message", {
+    this.io.to(this.roomID).emit("message", {
       category: "game",
       type: "player-leave-game",
       index,
@@ -122,7 +131,7 @@ export class Game {
       type: "join-game",
       state,
     });
-    socket.to(this.roomID).emit("message", {
+    this.io.to(this.roomID).emit("message", {
       category: "game",
       type: "player-rejoin-game",
       index,
@@ -319,7 +328,7 @@ export class Game {
         )
         .filter((x) => x !== null) as number[]).map((r) => `[[${r}]]`);
       const message = Util.joinGrammatically(winnerNames) + " have won!";
-      this.updateStatus(message);
+      this.updateStatus(message, true);
       if (this.interval) {
         clearInterval(this.interval);
       }
@@ -338,7 +347,7 @@ export class Game {
     });
     const required = this.getMissionNumPlayers();
     const statusMessage = `[[${this.state.teamLeader}]] is picking ${required} players to go on a mission`;
-    this.updateStatus(statusMessage);
+    this.updateStatus(statusMessage, true);
   }
   tick_team_building_review() {
     const required = this.getMissionNumPlayers();
@@ -363,7 +372,7 @@ export class Game {
       this.state.teamMembers.map((m) => `[[${m}]]`)
     );
     const statusMessage = `[[${this.state.teamLeader}]] has picked ${teamMembers} to go on the mission`;
-    this.updateStatus(statusMessage);
+    this.updateStatus(statusMessage, true);
   }
   tick_voting_review() {
     const newTeamHistory = {
@@ -416,8 +425,8 @@ export class Game {
     const votesAgainst = this.state.teamProposalVote
       .map((v, i) => (v === "reject" ? `[[${i}]]` : null))
       .filter((v) => v !== null);
-    this.sendChatMessage(`[[success:Accept Votes:]] ${votesFor.join(" ")}`);
-    this.sendChatMessage(`[[fail:Reject Votes:]] ${votesAgainst.join(" ")}`);
+    this.sendChatMessage(`Accept Votes: ${votesFor.join(" ")}`);
+    this.sendChatMessage(`Reject Votes: ${votesAgainst.join(" ")}`);
   }
   tick_mission() {
     this.state.missionActions = {};
@@ -432,7 +441,7 @@ export class Game {
       this.state.teamMembers.map((m) => `[[${m}]]`)
     );
     const statusMessage = `${teamMembers} are going on a mission`;
-    this.updateStatus(statusMessage);
+    this.updateStatus(statusMessage, true);
   }
   tick_mission_review() {
     let numFails = 0;
@@ -508,6 +517,7 @@ export class Game {
       missionHistory: this.state.missionHistory,
       chatHistory: this.state.chatHistory,
       statusMessage: this.state.statusMessage,
+      colorOrder: this.state.colorOrder,
     };
   }
   sendChatMessage(message: string, playerIndex?: number) {
