@@ -5,7 +5,7 @@ import { useStore } from "../store";
 
 // Create socketIO client
 let address = "";
-if (window.location.hostname === "localhost") {
+if (window.location.port === "1234") {
   address = ":8080";
 }
 const socket = io(address);

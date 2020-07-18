@@ -84,6 +84,7 @@ export type ClientGameState = {
   teamLeader: number;
   teamMembers: number[];
   teamProposalVote: ProposalVote | null;
+  teamProposalDoneVote: boolean[];
   missionAction: MissionAction | null;
 
   teamHistory: TeamHistory[];

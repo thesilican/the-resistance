@@ -1,11 +1,9 @@
 import {
   Action,
-
-
-  ClientAction, ClientAppState as AppState,
-
-
-  GameAction, LobbyAction
+  ClientAction,
+  ClientAppState as AppState,
+  GameAction,
+  LobbyAction,
 } from "common-types";
 
 export function reducer(state: AppState, action: Action): AppState {
@@ -145,6 +143,7 @@ function gameReducer(state: AppState, action: GameAction): AppState {
         game: {
           ...state.game,
           teamProposalVote: null,
+          teamProposalDoneVote: state.game.players.map((p) => false),
         },
       };
     case "set-vote":
@@ -154,6 +153,17 @@ function gameReducer(state: AppState, action: GameAction): AppState {
         game: {
           ...state.game,
           teamProposalVote: action.vote,
+        },
+      };
+    case "player-vote":
+      if (!state.game) return state;
+      return {
+        ...state,
+        game: {
+          ...state.game,
+          teamProposalDoneVote: state.game.teamProposalDoneVote.map((p, i) =>
+            action.index === i ? true : p
+          ),
         },
       };
     case "new-mission-action":

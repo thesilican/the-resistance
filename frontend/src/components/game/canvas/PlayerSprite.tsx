@@ -47,6 +47,7 @@ export default function PlayerSprite({
   const hatCoord = spriteCoords.hat[faceLeft ? "left" : "right"];
   const acceptCoord = spriteCoords.vote.accept;
   const rejectCoord = spriteCoords.vote.reject;
+  const unknownCoord = spriteCoords.vote.unknown;
   const agentCoord = spriteCoords.agent;
   const spyCoord = spriteCoords.spy;
   const missionNumMembers = Math.abs(
@@ -61,10 +62,18 @@ export default function PlayerSprite({
   const selected = state.game.teamMembers.includes(index);
 
   const showHat = state.game.teamLeader === index;
-  const showVotes = state.game.gamePhase === "voting-review";
+  const doneVote = state.game.teamProposalDoneVote[index] === true;
+  const showVotes =
+    state.game.gamePhase === "voting-review" ||
+    (state.game.gamePhase === "voting" && doneVote);
   const vote =
     state.game.teamHistory[state.game.teamHistory.length - 1]?.votes[index];
-  const voteCoord = vote === "accept" ? acceptCoord : rejectCoord;
+  const voteCoord =
+    state.game.gamePhase === "voting" && doneVote
+      ? unknownCoord
+      : vote === "accept"
+      ? acceptCoord
+      : rejectCoord;
   const showRole = state.game.gamePhase === "finished";
   const roleCoord = state.game.spies?.includes(index) ? spyCoord : agentCoord;
   const color = ColorValues[state.game.colorOrder[index]];

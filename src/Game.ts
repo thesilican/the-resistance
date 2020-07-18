@@ -189,6 +189,11 @@ export class Game {
           type: "set-vote",
           vote: message.vote,
         });
+        this.io.to(this.roomID).emit("message", {
+          category: "game",
+          type: "player-vote",
+          index: index,
+        });
         break;
       case "send-mission-action":
         if (this.state.gamePhase !== "mission") break;
@@ -513,6 +518,7 @@ export class Game {
       teamMembers: this.state.teamMembers,
       teamHistory: this.state.teamHistory,
       teamProposalVote: null,
+      teamProposalDoneVote: [],
       missionAction: null,
       missionHistory: this.state.missionHistory,
       chatHistory: this.state.chatHistory,

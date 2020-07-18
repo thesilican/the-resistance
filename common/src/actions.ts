@@ -120,6 +120,7 @@ export type UpdateTeamMembersAction = {
 export type GameVotingAction =
   | NewVotingPhaseAction
   | SetVoteAction
+  | PlayerVoteAction
   | UpdateTeamHistoryAction;
 export type NewVotingPhaseAction = {
   category: "game";
@@ -129,6 +130,11 @@ export type SetVoteAction = {
   category: "game";
   type: "set-vote";
   vote: ProposalVote;
+};
+export type PlayerVoteAction = {
+  category: "game";
+  type: "player-vote";
+  index: number;
 };
 export type UpdateTeamHistoryAction = {
   category: "game";
