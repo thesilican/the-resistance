@@ -29,7 +29,7 @@ export default function UserList({
             return (
               <Fragment key={i}>
                 <span key={i + "-1"}>
-                  {name + (i === host ? " (Host)" : "")}
+                  {name + (i === host ? " (host)" : "")}
                 </span>
                 <Button onClick={() => onReconnect(i)} key={i + "-2"}>
                   Rejoin
@@ -40,7 +40,7 @@ export default function UserList({
             return (
               <Fragment key={i}>
                 <span key={i + "-1"}>
-                  {name + (i === host ? " (Host)" : "")}
+                  {name + (i === host ? " (host)" : "")}
                 </span>
                 <div key={i + "-2"} />
               </Fragment>

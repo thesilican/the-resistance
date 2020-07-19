@@ -30,7 +30,17 @@ export default function LobbyView() {
 
   return (
     <div className="LobbyView">
-      {state.game && !waitingToLeaveGame ? (
+      {waitingToLeaveGame ? (
+        <UserList
+          title="Game finished"
+          index={-1}
+          host={-1}
+          names={state.game!.players.map((p, i) =>
+            state.game!.playerDisconnected[i] ? p : p + " (in game)"
+          )}
+          showReconnect={false}
+        />
+      ) : state.game ? (
         <UserList
           title="Game in progress"
           index={-1}

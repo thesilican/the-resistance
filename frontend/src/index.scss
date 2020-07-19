@@ -409,11 +409,28 @@ body,
 
   position: relative;
   .inner-wrapper {
-    position: abolute;
+    position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
+    overflow-y: scroll;
+    text-align: left;
+    .mission-header {
+      font-size: $f-h4;
+      width: 100%;
+      border-bottom: 1px solid black;
+      margin-bottom: $sp-1;
+    }
+  }
+}
+
+.History {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  table {
+    width: 100%;
   }
 }
 

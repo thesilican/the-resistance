@@ -4,18 +4,12 @@ import { useStore } from "../../store";
 
 export default function GameLobbyIDBox() {
   const [state] = useStore();
-  const [url, setURL] = useState("");
-  useEffect(() => {
-    let base = window.location.href.split("?")[0];
-    let url = base.toString() + "join/" + state.roomID;
-    setURL(url);
-  }, []);
   return (
     <div className="GameLobbyIDBox">
       <span>Game Code:</span>
       <FormControl
         type="text"
-        value={url}
+        value={state.roomID}
         onChange={(e) => {
           e.preventDefault();
         }}

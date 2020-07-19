@@ -16,15 +16,12 @@ export class Server {
     io.on("connect", this.onConnect.bind(this));
   }
   onConnect(socket: SocketIO.Socket) {
-    console.log("New Connection: ", socket.id);
     socket.on("disconnect", () => this.onDisconnect(socket));
     socket.on("message", (m: Request) => this.onMessage(socket, m));
-
     this.sockets[socket.id] = null;
+    this.updateNumUsers();
   }
   onDisconnect(socket: ISocket) {
-    console.log("Disconnect: ", socket.id);
-
     let roomID = this.sockets[socket.id];
     if (roomID && roomID in this.lobbies) {
       let lobby = this.lobbies[roomID];
@@ -35,6 +32,7 @@ export class Server {
       }
     }
     delete this.sockets[socket.id];
+    this.updateNumUsers();
   }
   onMessage(socket: ISocket, message: Request) {
     // console.log(message);
@@ -64,5 +62,15 @@ export class Server {
         this.lobbies[lobbyID].onMessage(socket, message);
       }
     }
+  }
+  updateNumUsers() {
+    const now = `[${new Date().toISOString()}]`;
+    console.log(
+      now,
+      "Connected Users:",
+      Object.keys(this.sockets).length,
+      "Lobbies:",
+      Object.keys(this.lobbies).length
+    );
   }
 }

@@ -50,7 +50,11 @@ export default function ChatHistoryTabs() {
           <ChatBox />
         </Tab>
         <Tab eventKey="history" title="Vote Log">
-          <VoteHistoryBox />
+          <VoteHistoryBox
+            players={state.game.players}
+            colors={state.game.colorOrder}
+            hist={state.game.teamHistory}
+          />
         </Tab>
       </Tabs>
     </div>

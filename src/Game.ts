@@ -218,6 +218,7 @@ export class Game {
         }
         break;
       case "send-chat-message":
+        if (message.content === "") break;
         index = this.socketIDs.indexOf(socket.id);
         this.sendChatMessage(message.content, index === -1 ? undefined : index);
         break;
@@ -423,15 +424,6 @@ export class Game {
         `with a vote of [[success:${acceptVotes}]] to [[fail:${rejectVotes}]]`;
     }
     this.updateStatus(statusMessage);
-
-    const votesFor = this.state.teamProposalVote
-      .map((v, i) => (v === "accept" ? `[[${i}]]` : null))
-      .filter((v) => v !== null);
-    const votesAgainst = this.state.teamProposalVote
-      .map((v, i) => (v === "reject" ? `[[${i}]]` : null))
-      .filter((v) => v !== null);
-    this.sendChatMessage(`Accept Votes: ${votesFor.join(" ")}`);
-    this.sendChatMessage(`Reject Votes: ${votesAgainst.join(" ")}`);
   }
   tick_mission() {
     this.state.missionActions = {};

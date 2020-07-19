@@ -54,9 +54,9 @@ const calculateSize = (size: number[], numSprites: number): Layout => {
   const canvasW = size[0];
   const canvasH = size[1];
   const screenX = canvasW * (1 / 4);
-  const screenY = canvasH * (2 / 10);
+  const screenY = canvasH * (1 / 4);
   const screenW = canvasW * (2 / 4);
-  const screenH = canvasH * (5 / 10);
+  const screenH = canvasH * (2 / 4);
   const ellipseX = screenX + screenW / 2;
   const ellipseY = screenY + screenH / 2;
   const ellipseRadiusX = (screenW - SPRITE_W) / 2;

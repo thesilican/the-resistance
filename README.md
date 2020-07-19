@@ -17,6 +17,21 @@ Similar to party games like Mafia and Werewolf, the Resistance challenges player
 - Easy-to-learn user interface
 - Many games can run simultaneously
 
+## Technologies
+
+The Resistance was build with the following technologies
+
+- Frontend: [React][react], [React Router][react-router], [Bootstrap][bootstrap], [Bootswatch][bootswatch], [Konva][konva], [SASS][sass], [Typescript][typescript], [Parcel][parcel]
+- Backend: [Node.js][nodejs], [Express][express], [Socket.IO][socketio], [Typescript][typescript], [Docker][docker]
+
+## License and Attributions
+
+The original game concept and rules belong to Don Eskridge, the creator of the game. You can buy the original [board game][resistance-amazon] here, and even check out other variations of the game like [avalon][avalon-amazon].
+
+Much of the inspiration for the user interface came from a free-to-play steam game called [MINDNIGHT][mindnight]. You should check it out! It has better graphics, cool music, and you can even save your progress.
+
+All of my source code in the repository are available under the MIT License. All image files in this repository were created by me are available under [CC BY 4.0][cc-license].
+
 ## Installation
 
 ### Docker
@@ -29,7 +44,7 @@ $ docker run -d -p 8080:8080 --name the-resistance mrsiliconguy/the-resistance
 
 Then you can access the game at `http://localhost:8080`
 
-### Manually building container
+### Building docker container
 
 If you would like to manually build a container from source, first download the repository. Then run docker build and run the container
 
@@ -43,6 +58,8 @@ $ docker run -d -p 8080:8080 --name <container_name> <image_name>
 Then you can access the game at `http://localhost:8080`
 
 ### Node.js/Javascript
+
+If you really want to, you can run the project using [node.js][nodejs]. Make sure you have at least version `>=10`.
 
 This project has the following directory structure:
 
@@ -60,7 +77,9 @@ the-resistance
 └─ src (Backend code)
 ```
 
-Here are the steps to fully build the project
+The project is split into 3 main portions - frontend, the React.js website; backend, a node.js server; and common, which contains code and types shared between frontend and backend.
+
+Here are the steps to fully build the project:
 
 ```
 Clone repository from GitHub
@@ -86,22 +105,12 @@ $ npm start
 
 Then you can access the game at `http://localhost:8080`
 
-## Technologies
-
-The Resistance was build with the following technologies
-
-- Frontend: [React][react], [React Router][react-router], [Bootstrap][bootstrap], [Bootswatch][bootswatch], [Konva][konva], [SASS][sass], [Typescript][typescript], [Parcel][parcel]
-- Backend: [Node.js][nodejs], [Express][express], [Socket.IO][socketio], [Typescript][typescript], [Docker][docker]
-
-## License and Attributions
-
-The original game concept and rules belong to Don Eskridge, the creator of the game.
-
-All code in the repository are available under the MIT License. All image files in this repository were created by me are available under [CC BY 4.0][cc-license].
-
 [my-website]: https://resistance.thesilican.com
 [rules]: http://localhost:8080/how-to-play
 [resistance-game]: https://en.wikipedia.org/wiki/The_Resistance_(game)
+[resistance-amazon]: https://www.amazon.com/The-Resistance-Dystopian-Universe/dp/B008A2BA8G
+[avalon-amazon]: https://www.amazon.com/Resistance-Avalon-Social-Deduction-Game/dp/B009SAAV0C
+[mindnight]: http://www.mindnightgame.com/
 [react]: https://reactjs.org/
 [react-router]: https://reactrouter.com/
 [bootstrap]: https://getbootstrap.com/

@@ -37,6 +37,18 @@ export default function AboutPage() {
         >
           here
         </a>
+        . If you like this game, I highly suggest you try out the board game
+        version!
+      </p>
+      <p>
+        The user interface/layout of the game was greatly inspired by the{" "}
+        <a target="_blank" href="http://www.mindnightgame.com/">
+          MINDNIGHT
+        </a>
+        , a free-to-play steam game with similar gameplay to The Resistance. If
+        you liked this game, try it out! It has better graphics, audio, and lets
+        you save your progress. You can buy skins and compete in tournaments
+        there.
       </p>
       <p>
         The Resistance was programmed by{" "}
@@ -45,7 +57,7 @@ export default function AboutPage() {
         </a>
         , using React.js and Socket.IO. Source code is available on{" "}
         <a target="blank" href="https://github.com/MrSiliconGuy/the-resistance">
-          GitHub
+          GitHub.
         </a>
       </p>
     </Container>

@@ -49,9 +49,9 @@ export const PHASE_LENGTHS: { [p in GamePhase]: number } = {
   "role-reveal": 10,
   "team-building": 60 * 3,
   "team-building-review": 3,
-  voting: 60 * 2,
+  voting: 60,
   "voting-review": 5,
-  mission: 60,
+  mission: 20,
   "mission-review": 5,
   finished: 1,
 };
