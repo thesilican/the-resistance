@@ -1,8 +1,13 @@
 import React from "react";
 import { Container } from "react-bootstrap";
+import { useStore } from "../../store";
 import imgDemo from "../../../assets/demo.png";
 
 export default function AboutPage() {
+  const [state] = useStore();
+  const usersOnline = state.online.users;
+  const lobbiesOnline = state.online.lobbies;
+  const gamesOnline = state.online.games;
   return (
     <Container className="AboutPage">
       <a className="back" href="/">
@@ -59,6 +64,10 @@ export default function AboutPage() {
         <a target="blank" href="https://github.com/MrSiliconGuy/the-resistance">
           GitHub.
         </a>
+      </p>
+      <p className="text-secondary">
+        Users Connected: {usersOnline} | Lobbies: {lobbiesOnline} | Games:{" "}
+        {gamesOnline}
       </p>
     </Container>
   );

@@ -14,4 +14,3 @@ const appState = defaultAppState;
 const { StateProvider, useStore } = createStore(reducer, appState);
 
 export { StateProvider, useStore };
-

@@ -11,7 +11,7 @@ export type Color =
   | "red"
   | "teal"
   | "yellow";
-  
+
 export const ColorOrder: Color[] = [
   "black",
   "red",

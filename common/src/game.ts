@@ -60,6 +60,11 @@ export type ServerGameState = {
 };
 
 export type ClientAppState = {
+  online: {
+    users: number;
+    lobbies: number;
+    games: number;
+  };
   urlRoomID: string;
   roomID: string;
   roomMembers: string[];

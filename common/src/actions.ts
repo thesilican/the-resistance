@@ -9,7 +9,21 @@ import {
   MissionHistory,
 } from "./game";
 
-export type Action = ClientAction | LobbyAction | ErrorAction | GameAction;
+export type Action =
+  | ServerAction
+  | ClientAction
+  | LobbyAction
+  | ErrorAction
+  | GameAction;
+
+export type ServerAction = SetOnlineAction;
+export type SetOnlineAction = {
+  category: "server";
+  type: "set-online";
+  users: number;
+  lobbies: number;
+  games: number;
+};
 
 export type ClientAction = ChangeURLIDAction;
 export type ChangeURLIDAction = {

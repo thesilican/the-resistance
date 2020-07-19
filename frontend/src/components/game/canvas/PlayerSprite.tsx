@@ -199,6 +199,7 @@ export default function PlayerSprite({
           onMouseOver={handlePointerEnter}
           onMouseOut={handlePointerLeave}
           onClick={handlePointerClick}
+          onTap={handlePointerClick}
         ></Rect>
       )}
     </>

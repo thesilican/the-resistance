@@ -18,7 +18,10 @@ export type JoinRoomRequest = {
 };
 
 // Lobby Request
-export type LobbyRequest = StartGameRequest | LeaveGameRequest | RejoinGameRequest;
+export type LobbyRequest =
+  | StartGameRequest
+  | LeaveGameRequest
+  | RejoinGameRequest;
 export type StartGameRequest = {
   category: "lobby";
   type: "start-game";

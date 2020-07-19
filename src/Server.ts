@@ -16,10 +16,21 @@ export class Server {
     io.on("connect", this.onConnect.bind(this));
   }
   onConnect(socket: SocketIO.Socket) {
+    console.debug("Connect:", socket.id);
     socket.on("disconnect", () => this.onDisconnect(socket));
     socket.on("message", (m: Request) => this.onMessage(socket, m));
     this.sockets[socket.id] = null;
-    this.updateNumUsers();
+    setTimeout(() => {
+      socket.emit("message", {
+        category: "server",
+        type: "set-online",
+        users: Object.keys(this.sockets).length,
+        lobbies: Object.keys(this.lobbies).length,
+        games: Object.keys(this.lobbies).filter(
+          (k) => this.lobbies[k].game !== null
+        ).length,
+      });
+    });
   }
   onDisconnect(socket: ISocket) {
     let roomID = this.sockets[socket.id];
@@ -32,7 +43,6 @@ export class Server {
       }
     }
     delete this.sockets[socket.id];
-    this.updateNumUsers();
   }
   onMessage(socket: ISocket, message: Request) {
     // console.log(message);
@@ -62,15 +72,5 @@ export class Server {
         this.lobbies[lobbyID].onMessage(socket, message);
       }
     }
-  }
-  updateNumUsers() {
-    const now = `[${new Date().toISOString()}]`;
-    console.log(
-      now,
-      "Connected Users:",
-      Object.keys(this.sockets).length,
-      "Lobbies:",
-      Object.keys(this.lobbies).length
-    );
   }
 }

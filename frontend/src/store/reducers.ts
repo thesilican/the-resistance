@@ -4,6 +4,7 @@ import {
   ClientAppState as AppState,
   GameAction,
   LobbyAction,
+  ServerAction,
 } from "common-types";
 
 export function reducer(state: AppState, action: Action): AppState {
@@ -16,6 +17,22 @@ export function reducer(state: AppState, action: Action): AppState {
       return gameReducer(state, action);
     case "client":
       return clientReducer(state, action);
+    case "server":
+      return serverReducer(state, action);
+  }
+}
+
+function serverReducer(state: AppState, action: ServerAction): AppState {
+  switch (action.type) {
+    case "set-online":
+      return {
+        ...state,
+        online: {
+          games: action.games,
+          lobbies: action.lobbies,
+          users: action.users,
+        },
+      };
   }
 }
 

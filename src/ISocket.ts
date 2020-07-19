@@ -14,5 +14,6 @@ export interface IEmitter {
 }
 
 export interface ISocketIO {
+  of: (namespace: "/") => IEmitter;
   to: (room: string) => IEmitter;
 }
