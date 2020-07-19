@@ -1,7 +1,4 @@
 import React, { Fragment } from "react";
-import { useStore } from "../../store";
-import iconImg from "../../../assets/iconsheet.png";
-import hatImg from "../../../assets/edit/icon-hat.png";
 import NameTransformer from "./NameTransformer";
 import { TeamHistory, Color } from "common-types";
 
@@ -10,9 +7,6 @@ type VoteHistoryBoxProps = {
   colors: Color[];
   players: string[];
 };
-
-const emptyImg =
-  "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 
 const VoteHistoryBox = React.memo(function ({
   hist,
