@@ -39,7 +39,7 @@ export default function WelcomeView() {
                 target="_blank"
                 href="https://github.com/thesilican/the-resistance"
               >
-                Github
+                GitHub
               </a>
               {" | "}
               <a
