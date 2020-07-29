@@ -39,7 +39,7 @@ All of my source code in the repository are available under the MIT License. All
 The Resistance is available on Docker Hub. Make sure you have [docker][get-docker] installed, then run:
 
 ```
-$ docker run -d -p 8080:8080 --name the-resistance mrsiliconguy/the-resistance
+$ docker run -d -p 8080:8080 --name the-resistance thesilican/the-resistance
 ```
 
 Then you can access the game at `http://localhost:8080`
@@ -49,7 +49,7 @@ Then you can access the game at `http://localhost:8080`
 If you would like to manually build a container from source, first download the repository. Then run docker build and run the container
 
 ```
-$ git clone https://github.com/MrSiliconGuy/the-resistance.git
+$ git clone https://github.com/thesilican/the-resistance.git
 $ cd the-resistance
 $ docker build . -t <image_name>
 $ docker run -d -p 8080:8080 --name <container_name> <image_name>
@@ -83,7 +83,7 @@ Here are the steps to fully build the project:
 
 ```
 Clone repository from GitHub
-$ git clone https://github.com/MrSiliconGuy/the-resistance.git
+$ git clone https://github.com/thesilican/the-resistance.git
 $ cd the-resistance
 
 Build common code

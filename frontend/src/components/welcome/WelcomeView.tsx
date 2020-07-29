@@ -32,14 +32,21 @@ export default function WelcomeView() {
               <a href="/about">About</a>
               {" | "}
               <a target="_blank" href="/how-to-play">
-                How To Play
+                How to play
               </a>
               {" | "}
               <a
                 target="_blank"
-                href="https://github.com/MrSiliconGuy/the-resistance"
+                href="https://github.com/thesilican/the-resistance"
               >
-                GitHub
+                Github
+              </a>
+              {" | "}
+              <a
+                target="_blank"
+                href="https://thesilican.com"
+              >
+                More projects
               </a>
             </div>
           </div>

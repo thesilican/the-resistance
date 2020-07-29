@@ -57,11 +57,11 @@ export default function AboutPage() {
       </p>
       <p>
         The Resistance was programmed by{" "}
-        <a target="_blank" href="https://github.com/MrSiliconGuy/">
-          MrSiliconGuy
+        <a target="_blank" href="https://github.com/thesilican/">
+          thesilican
         </a>
         , using React.js and Socket.IO. Source code is available on{" "}
-        <a target="blank" href="https://github.com/MrSiliconGuy/the-resistance">
+        <a target="blank" href="https://github.com/thesilican/the-resistance">
           GitHub.
         </a>
       </p>
