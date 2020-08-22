@@ -42,10 +42,7 @@ export default function WelcomeView() {
                 GitHub
               </a>
               {" | "}
-              <a
-                target="_blank"
-                href="https://thesilican.com"
-              >
+              <a target="_blank" href="https://thesilican.com">
                 More projects
               </a>
             </div>
