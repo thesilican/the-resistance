@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npx parcel public/index.html",
+    "watch": "npx parcel watch --out-dir build/ --public-url / --no-source-maps --no-hmr public/index.html",
     "build": "npx rimraf build/ && npx parcel build --out-dir build/ --public-url / --no-source-maps public/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

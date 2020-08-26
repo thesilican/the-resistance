@@ -49,6 +49,42 @@ const Util = {
   deepClone<T>(obj: T): T {
     return JSON.parse(JSON.stringify(obj));
   },
+  getUserAgent() {
+    const ua = navigator.userAgent;
+    // https://code-boxx.com/detect-browser-with-javascript/
+    // CHROME
+    if (ua.indexOf("Chrome") != -1) {
+      return "chrome";
+    }
+    // FIREFOX
+    else if (ua.indexOf("Firefox") != -1) {
+      return "firefox";
+    }
+    // INTERNET EXPLORER
+    else if (ua.indexOf("MSIE") != -1) {
+      return "internet explorer";
+    }
+    // EDGE
+    else if (ua.indexOf("Edge") != -1) {
+      return "internet explorer";
+    }
+    // SAFARI
+    else if (ua.indexOf("Safari") != -1) {
+      return "safari";
+    }
+    // OPERA
+    else if (ua.indexOf("Opera") != -1) {
+      return "opera";
+    }
+    // YANDEX BROWSER
+    else if (ua.indexOf("YaBrowser") != -1) {
+      return "yandex";
+    }
+    // OTHERS
+    else {
+      return "other";
+    }
+  },
 };
 
 export default Util;

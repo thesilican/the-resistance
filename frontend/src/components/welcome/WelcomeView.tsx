@@ -6,6 +6,7 @@ import AboutPage from "./AboutPage";
 import CookieBanner from "./CookieBanner";
 import CreateJoinLobbyForm from "./CreateJoinLobbyForm";
 import HowToPlayPage from "./HowToPlayPage";
+import SafariBanner from "./SafariBanner";
 
 const history = createBrowserHistory();
 
@@ -27,6 +28,7 @@ export default function WelcomeView() {
             <h1>The Resistance</h1>
             <p>A party game of lying, logical deduction, and deception</p>
             <CreateJoinLobbyForm />
+            <SafariBanner />
             <CookieBanner />
             <div className="links">
               <a href="/about">About</a>
