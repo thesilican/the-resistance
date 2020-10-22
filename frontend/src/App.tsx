@@ -1,23 +1,12 @@
-import React, { Suspense } from "react";
-const LobbyView = React.lazy(() => import("./components/lobby/LobbyView"));
-import WelcomeView from "./components/welcome/WelcomeView";
-import { useStore } from "./store";
+import React from "react";
+import styles from "./styles/App.module.scss";
 
-type AppProps = {};
-
-const fallback = (
-  <div style={{ padding: "1rem" }}>
-    <p>Loading...</p>
-  </div>
-);
-
-export default function App({}: AppProps) {
-  const [state, dispatch] = useStore();
-  return state.roomID === "" ? (
-    <WelcomeView />
-  ) : (
-    <Suspense fallback={fallback}>
-      <LobbyView />
-    </Suspense>
+function App() {
+  return (
+    <div className={styles.App}>
+      <h1>Hello, World</h1>
+    </div>
   );
 }
+
+export default App;

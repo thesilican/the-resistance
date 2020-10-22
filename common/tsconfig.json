@@ -1,11 +1,10 @@
 {
   "compilerOptions": {
-    "incremental": true,
-    "target": "es5",
+    "target": "es6",
     "module": "commonjs",
-    "outDir": "./dist",
-    "declaration": true,
     "strict": true,
+    "outDir": "dist",
+    "declaration": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true

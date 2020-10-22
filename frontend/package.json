@@ -1,37 +1,48 @@
 {
-  "name": "redux-5",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "npx parcel public/index.html",
-    "watch": "npx parcel watch --out-dir build/ --public-url / --no-source-maps --no-hmr public/index.html",
-    "build": "npx rimraf build/ && npx parcel build --out-dir build/ --public-url / --no-source-maps public/index.html",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "parcel": "^1.12.4",
-    "sass": "^1.26.10",
-    "typescript": "^3.9.7"
-  },
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "@types/react": "^16.9.43",
+    "@inlet/react-pixi": "^6.0.0",
+    "@reduxjs/toolkit": "^1.4.0",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "@types/jest": "^24.9.1",
+    "@types/node": "^12.19.0",
+    "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
-    "@types/react-router-dom": "^5.1.5",
-    "@types/socket.io-client": "^1.4.33",
-    "bootstrap": "^4.5.0",
-    "bootswatch": "^4.5.0",
-    "common-types": "file:../common",
-    "its-not-redux": "^0.4.2",
-    "konva": "^7.0.3",
-    "react": "^16.13.1",
-    "react-bootstrap": "^1.2.2",
-    "react-dom": "^16.13.1",
-    "react-konva": "^16.13.0-3",
+    "@types/react-router-dom": "^5.1.6",
+    "bootstrap": "^4.5.3",
+    "common-modules": "file:../common",
+    "node-sass": "^4.14.1",
+    "react": "^17.0.1",
+    "react-bootstrap": "^1.4.0",
+    "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
-    "socket.io-client": "^2.3.0",
-    "use-image": "^1.0.6"
+    "react-scripts": "3.4.4",
+    "socket.io": "^2.3.0",
+    "typescript": "^3.7.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

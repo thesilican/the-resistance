@@ -1,33 +1,42 @@
-FROM node:lts-alpine as common
+FROM node:lts as common
 
-WORKDIR /usr/src/app/common
-COPY common/package*.json ./
-RUN npm install --save-prod
+# Build common modules first
+WORKDIR /app/common
+COPY ./common/package*.json ./
+RUN npm ci
 COPY ./common ./
 RUN npm run build
 
+# Copy common from frontend
 FROM node:lts as frontend
-WORKDIR /usr/src/app
-COPY --from=common /usr/src/app/common/dist ./common/dist/
-COPY --from=common /usr/src/app/common/package*.json ./common/
+WORKDIR /app
+COPY --from=common /app/common/package*.json ./common/
+COPY --from=common /app/common/dist ./common/dist/
 
-WORKDIR /usr/src/app/frontend
-COPY frontend/package*.json ./
-RUN npm install --save-prod
+# Build frontend
+WORKDIR /app/frontend
+COPY ./frontend/package*.json ./
+RUN npm ci
 COPY ./frontend ./
 RUN npm run build
 
-FROM node:lts-alpine as server
-WORKDIR /usr/src/app
-COPY --from=common /usr/src/app/common/dist ./common/dist/
-COPY --from=common /usr/src/app/common/package*.json ./common/
-COPY --from=frontend /usr/src/app/frontend/build ./frontend/build/
+# Copy common from backend
+FROM node:lts-alpine as backend
+WORKDIR /app
+COPY --from=common /app/common/dist ./common/dist/
+COPY --from=common /app/common/package*.json ./common/
 COPY package*.json ./
-RUN npm install --save-prod
+RUN npm ci
+
+# Build backend
 COPY ./src ./src
 COPY tsconfig.json ./
 RUN npm run build
 
+# Copy frontend build
+COPY --from=frontend /app/frontend/build ./frontend/build/
+
+# Config and publish
 EXPOSE 8080
 ENV NODE_ENV production
 CMD [ "node", "dist/index.js" ]

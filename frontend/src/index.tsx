@@ -1,18 +1,11 @@
 import React from "react";
-import { render } from "react-dom";
+import ReactDOM from "react-dom";
+import "./styles/index.scss";
 import App from "./App";
-import "./index.scss";
-import { SocketProvider } from "./socket";
-import { StateProvider } from "./store";
 
-render(
-  <StateProvider>
-    <SocketProvider>
-      <App />
-    </SocketProvider>
-  </StateProvider>,
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
   document.getElementById("root")
 );
-
-// @ts-ignore
-// if (module.hot) module.hot.accept();
