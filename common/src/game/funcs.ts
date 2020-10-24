@@ -203,7 +203,6 @@ export const GameFunc = {
     const team = state.teams[state.teams.length - 1];
     const reqPlayers =
       MissionPlayerCount[state.player.names.length][team.mission - 1];
-    console.log(reqPlayers, team.members.length);
     if (team.members.length !== reqPlayers) {
       // This really should never happen, because the UI should prevent
       // people from submitting non-full teams

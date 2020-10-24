@@ -55,6 +55,8 @@ store.dispatch(
     action: "fail",
   })
 );
+while (store.getState().game.phase !== "team-building")
+  store.dispatch(GameAction.tick());
 
 logStore();
 
