@@ -3,6 +3,8 @@ import express from "express";
 import http from "http";
 import path from "path";
 import process from "process";
+import socketIO from "socket.io";
+import { start } from "./game";
 
 const app = express();
 app.use(compression());
@@ -12,6 +14,9 @@ app.get("*", (req, res) => {
 });
 
 const httpServer = http.createServer(app);
+
+const io = socketIO(httpServer);
+start(io);
 
 const port = process.env.PORT ?? 8080;
 httpServer.listen(port, () => {

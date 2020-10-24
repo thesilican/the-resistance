@@ -4,13 +4,28 @@
   "description": "",
   "private": true,
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
+    "start": "ts-node src/test/index.ts",
+    "test": "jest",
     "build": "tsc"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/jest": "^26.0.15",
+    "jest": "^26.6.1",
+    "ts-jest": "^26.4.2",
+    "ts-node": "^9.0.0",
     "typescript": "^4.0.3"
-  }
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.4.0"
+  },
+  "files": [
+    "dist/",
+    "!dist/tsconfig.tsbuildinfo",
+    "!dist/**/*.js.map"
+  ]
 }

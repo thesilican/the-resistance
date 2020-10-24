@@ -1,10 +1,12 @@
 {
   "compilerOptions": {
+    "incremental": true,
     "target": "es6",
     "module": "commonjs",
     "strict": true,
     "outDir": "dist",
     "declaration": true,
+    "sourceMap": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true

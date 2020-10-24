@@ -1,4 +1,10 @@
-export type GameMode = "normal" | "mainframe";
+export type GameInitOptions = {
+  gamemode: GameMode;
+  socketIDs: string[];
+  names: string[];
+  seed: number;
+};
+export type GameMode = "normal" | "assasins";
 export type GamePhase =
   | "role-reveal"
   | "team-building"
@@ -7,7 +13,7 @@ export type GamePhase =
   | "voting-review"
   | "mission"
   | "mission-review"
-  | "finished-nuking"
+  | "finished-assasinate"
   | "finished";
 
 export type ChatMessage = PlayerChatMessage | SystemChatMessage;
@@ -22,17 +28,27 @@ export type SystemChatMessage = {
 };
 
 export type ProposalVote = "accept" | "reject" | "none";
-export type MissionAction = "secure" | "hack";
+export type MissionAction = "success" | "fail";
 export type TeamHistory = {
+  mission: number;
   leader: number;
   members: number[];
   votes: ProposalVote[];
 };
 export type MissionHistory = {
-  actions: { [player: number]: MissionAction };
+  mission: number;
+  members: number[];
+  actions: (MissionAction | null)[];
 };
-export type Team = "agent" | "hacker";
-export type Role = "agent" | "admin" | "hacker" | "nuker" | "scripty";
+export type Team = "agent" | "spy";
+export type Role =
+  | "agent"
+  | "captain"
+  | "escort"
+  | "spy"
+  | "assasin"
+  | "emissary"
+  | "mole";
 
 export type GameState = {
   player: {
@@ -46,8 +62,8 @@ export type GameState = {
     mission: number;
     phaseCountdown: number;
   };
-  team: TeamHistory[];
-  mission: MissionHistory[];
+  teams: TeamHistory[];
+  missions: MissionHistory[];
   chat: ChatMessage[];
   statusMessage: string | null;
 };
