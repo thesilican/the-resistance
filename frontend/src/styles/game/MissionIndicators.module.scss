@@ -1,0 +1,97 @@
+@import "../common";
+
+.MissionIndicators {
+  align-self: center;
+
+  justify-self: right;
+  pointer-events: auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 2rem;
+}
+
+@keyframes breathe {
+  0% {
+    box-shadow: 0px 1px 15px -1px $white;
+  }
+  100% {
+    box-shadow: 0px 1px 10px -1px $gray-300;
+  }
+}
+@keyframes shake {
+  0% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 4rem;
+  height: 4rem;
+
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  background-color: $gray-600;
+  color: $dark;
+  box-shadow: 0px 1px 5px -1px $gray-600;
+  transition: box-shadow 1s linear;
+  font-family: $font-family-monospace;
+}
+.indicator.active {
+  background-color: $white;
+  animation: breathe 2s ease 0s infinite alternate;
+}
+.indicator.success {
+  color: $light;
+  background-color: scale-color($success, $lightness: -20%);
+  box-shadow: 0px 1px 20px -1px $success;
+  animation: shake 1s ease;
+}
+.indicator.fail {
+  color: $dark;
+  background-color: scale-color($red, $lightness: -20%);
+  box-shadow: 0px 1px 10px -1px $red;
+}
+.indicator {
+  .label1 {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    font-size: 2rem;
+    line-height: 0.75;
+  }
+  .label2 {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    font-size: 0.5rem;
+  }
+}
+
+.proposals {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .label1 {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    font-size: 2rem;
+    line-height: 0.75;
+  }
+  .label2 {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    font-size: 0.75rem;
+  }
+}

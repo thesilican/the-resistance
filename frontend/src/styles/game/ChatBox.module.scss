@@ -1,0 +1,38 @@
+@import "../common";
+
+.ChatBox {
+  height: 100%;
+
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+.chatWrapper {
+  position: relative;
+  overflow-y: scroll;
+  background-color: $nav-tabs-link-active-bg;
+  border-left: $nav-tabs-border-width solid $nav-tabs-border-color;
+  border-right: $nav-tabs-border-width solid $nav-tabs-border-color;
+}
+
+.chat {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.form {
+  justify-content: stretch;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: row;
+  width: 100% !important;
+}
+
+.input {
+  flex-grow: 1;
+}

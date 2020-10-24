@@ -1,0 +1,11 @@
+@import "../common";
+
+.VoteHistoryBox {
+  height: 100%;
+
+  background-color: $nav-tabs-link-active-bg;
+
+  border-left: $nav-tabs-border-width solid $nav-tabs-border-color;
+  border-right: $nav-tabs-border-width solid $nav-tabs-border-color;
+  border-bottom: $nav-tabs-border-width solid $nav-tabs-border-color;
+}

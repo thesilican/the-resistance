@@ -1,4 +1,18 @@
-import { GameMode, GamePhase, Role } from "./types";
+import { Color, GameMode, GamePhase, Role } from "./types";
+
+export const ColorOrder: Color[] = [
+  "black",
+  "red",
+  "yellow",
+  "blue",
+  "orange",
+  "green",
+  "purple",
+  "pink",
+  "cyan",
+  "teal",
+  "indigo",
+];
 
 export const GamePhaseLengths: { [p in GamePhase]: number } = {
   "role-reveal": 10,

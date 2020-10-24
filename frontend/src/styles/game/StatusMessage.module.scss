@@ -1,0 +1,12 @@
+.StatusMessage {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  pointer-events: auto;
+  padding-bottom: 1rem;
+}
+
+.text {
+  text-align: center;
+}

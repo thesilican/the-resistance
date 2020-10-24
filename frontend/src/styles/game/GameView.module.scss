@@ -1,0 +1,33 @@
+.GameView {
+  position: relative;
+
+  height: 100vh;
+}
+
+.grid {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  pointer-events: none;
+}
+
+.col1 {
+  display: grid;
+  grid-template-rows: auto 1fr minmax(50%, 75%);
+}
+
+.col2 {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.col3 {
+  display: grid;
+  grid-template-rows: auto 1fr 4rem;
+}

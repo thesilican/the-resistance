@@ -4,6 +4,19 @@ export type GameInitOptions = {
   names: string[];
   seed: number;
 };
+export type Color =
+  | "black"
+  | "blue"
+  | "cyan"
+  | "green"
+  | "indigo"
+  | "orange"
+  | "pink"
+  | "purple"
+  | "red"
+  | "teal"
+  | "yellow";
+
 export type GameMode = "normal" | "assasins";
 export type GamePhase =
   | "role-reveal"
