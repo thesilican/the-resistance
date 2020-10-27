@@ -28,7 +28,6 @@ export default React.memo(function TextTransformer(
 
   for (let i = 1; i < splits.length; i += 2) {
     const split = splits[i] as string;
-    console.log(split);
     if (split.startsWith("fail:")) {
       const substr = split.substring("fail:".length);
       splits[i] = (

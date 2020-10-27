@@ -1,21 +1,21 @@
+import cn from "classnames";
 import React from "react";
-import FormControl from "react-bootstrap/esm/FormControl";
 import styles from "../../styles/game/GameRoomCode.module.scss";
 
 type GameRoomCodeProps = {};
 
 export default function GameRoomCode(props: GameRoomCodeProps) {
-  const gameCode = "ABCD";
+  const gameCode = "ABCDEF";
   return (
     <div className={styles.GameRoomCode}>
       <span className={styles.label}>Room Code: </span>
-      <FormControl
-        className={styles.code}
+      <input
+        className={cn("form-control", styles.code)}
+        size={3}
         value={gameCode}
-        onClick={(e: React.MouseEvent<HTMLInputElement>) =>
-          e.currentTarget.select()
-        }
-        onChange={() => {}}
+        readOnly
+        onClick={(e) => (e.target as HTMLInputElement).select()}
+        onBlur={(e) => e.target.setSelectionRange(0, 0)}
       />
     </div>
   );

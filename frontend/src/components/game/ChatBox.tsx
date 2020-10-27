@@ -1,17 +1,23 @@
+import cn from "classnames";
 import { ChatMessage } from "common-modules";
 import React from "react";
-import Button from "react-bootstrap/esm/Button";
 import Form from "react-bootstrap/esm/Form";
 import FormControl from "react-bootstrap/esm/FormControl";
-import InputGroup from "react-bootstrap/esm/InputGroup";
 import styles from "../../styles/game/ChatBox.module.scss";
 import TextTransformer from "./TextTransformer";
-import cn from "classnames";
 
 let messages: ChatMessage[] = [
   {
     type: "system",
-    content: "Hi",
+    content: "The mission {{fail:failed}} (1 spy detected)",
+  },
+  {
+    type: "system",
+    content: "The mission was {{success:successful}}",
+  },
+  {
+    type: "system",
+    content: "The mission {{fail:failed}}",
   },
   ...Array.from(Array(10)).map((_, i) => ({
     type: "player" as "player",
@@ -30,19 +36,8 @@ export default function ChatBox(props: ChatBoxProps) {
           <ChatMessageList messages={messages} />
         </div>
       </div>
-      <Form inline className={styles.form}>
-        <InputGroup className={styles.inputGroup}>
-          <FormControl
-            className={styles.input}
-            placeholder="Send a Message"
-            aria-label="Send a Message"
-          />
-          <InputGroup.Append>
-            <Button variant="primary" type="submit">
-              Send
-            </Button>
-          </InputGroup.Append>
-        </InputGroup>
+      <Form inline className={styles.form} onSubmit={(e) => e.preventDefault()}>
+        <FormControl className={styles.input} placeholder="Send us a message" />
       </Form>
     </div>
   );
@@ -76,7 +71,7 @@ type UserChatMessageProps = {
 function UserChatMessage({ player, text }: UserChatMessageProps) {
   return (
     <p className={cn(styles.chatMessage, styles.user)}>
-      <TextTransformer>{`[{{name:${player}}}] ${text}`}</TextTransformer>
+      <TextTransformer>{`{{name:${player}}}: ${text}`}</TextTransformer>
     </p>
   );
 }
@@ -88,7 +83,7 @@ type SystemChatMessageProps = {
 function SystemChatMessage({ text }: SystemChatMessageProps) {
   return (
     <p className={cn(styles.chatMessage, styles.system)}>
-      <TextTransformer>{`[{{success:System}}] ${text}`}</TextTransformer>
+      <TextTransformer>{`${text}`}</TextTransformer>
     </p>
   );
 }

@@ -2,38 +2,35 @@
 
 .MissionIndicators {
   align-self: center;
-
   justify-self: right;
-  pointer-events: auto;
 
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  padding: 2rem;
+  padding-right: 2rem;
+
+  pointer-events: auto;
+  > .title {
+    text-align: center;
+    font-size: 1.25rem;
+    padding-bottom: 1rem;
+  }
 }
 
-@keyframes breathe {
-  0% {
-    box-shadow: 0px 1px 15px -1px $white;
-  }
-  100% {
-    box-shadow: 0px 1px 10px -1px $gray-300;
-  }
+@mixin shadow($color, $size: 10px) {
+  box-shadow: 0px 1px $size -1px $color;
 }
-@keyframes shake {
-  0% {
-    transform: scale(1.5);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
+
 .indicator {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
 
   width: 4rem;
   height: 4rem;
@@ -41,38 +38,35 @@
   border-radius: 50%;
   margin-bottom: 1rem;
   background-color: $gray-600;
-  color: $dark;
-  box-shadow: 0px 1px 5px -1px $gray-600;
-  transition: box-shadow 1s linear;
+  @include shadow($gray-700);
+  color: $light;
+  transition: box-shadow 1s linear, transform 0.25s ease,
+    background-color 1s ease;
   font-family: $font-family-monospace;
 }
+.indicator:hover {
+  transform: scale(1.05);
+}
 .indicator.active {
+  color: $dark;
   background-color: $white;
-  animation: breathe 2s ease 0s infinite alternate;
+  @include shadow($white);
 }
 .indicator.success {
-  color: $light;
   background-color: scale-color($success, $lightness: -20%);
-  box-shadow: 0px 1px 20px -1px $success;
-  animation: shake 1s ease;
+  @include shadow($success, 20px);
 }
 .indicator.fail {
   color: $dark;
   background-color: scale-color($red, $lightness: -20%);
-  box-shadow: 0px 1px 10px -1px $red;
+  @include shadow($red);
 }
 .indicator {
   .label1 {
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
     font-size: 2rem;
     line-height: 0.75;
   }
   .label2 {
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
     font-size: 0.5rem;
   }
 }
@@ -82,16 +76,18 @@
   flex-direction: column;
   align-items: center;
   .label1 {
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
     font-size: 2rem;
     line-height: 0.75;
   }
   .label2 {
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
     font-size: 0.75rem;
+  }
+}
+
+.tooltip {
+  display: flex;
+  flex-direction: column;
+  .title {
+    font-size: 1.25rem;
   }
 }

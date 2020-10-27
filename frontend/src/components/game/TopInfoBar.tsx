@@ -7,8 +7,14 @@ type TopInfoBarProps = {};
 export default function TopInfoBar(props: TopInfoBarProps) {
   return (
     <div className={styles.TopInfoBar}>
-      <h1 className={styles.title}>Progress</h1>
-      <ProgressBar className={styles.progress} min={0} max={3} now={1} />
+      <span className={styles.title}>Mission 2 - Team Building</span>
+      <ProgressBar
+        className={styles.progress}
+        variant="primary"
+        min={0}
+        max={3}
+        now={1}
+      />
     </div>
   );
 }

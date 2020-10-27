@@ -1,16 +1,13 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
-import { Layer, Image, Stage, Sprite, Rect } from "react-konva";
-import useImage from "use-image";
+import React, { Fragment, useEffect, useState } from "react";
+import { Layer, Rect, Stage } from "react-konva";
 import styles from "../../../styles/game/GameCanvas.module.scss";
-
-const tmpurl = `${process.env.PUBLIC_URL}/assets/stickman.png`;
+import Texture from "./Texture";
 
 const getDim = () => {
   return [window.innerWidth, window.innerHeight];
 };
 
 export default function GameCanvas() {
-  const divRef = useRef(null as HTMLDivElement | null);
   const [dim, setDim] = useState(getDim);
   useEffect(() => {
     const handler = () => {
@@ -22,7 +19,12 @@ export default function GameCanvas() {
 
   return (
     <Stage width={dim[0]} height={dim[1]} className={styles.canvasWrapper}>
-      <Layer>{/* <PlayerSprite x={dim[0] / 2} y={dim[1] / 2} /> */}</Layer>
+      <Layer>
+        <PlayerSprite flipped x={dim[0] / 2 + 200} y={dim[1] / 2} />
+        <PlayerSprite flipped x={dim[0] / 2} y={dim[1] / 2 + 100} />
+        <PlayerSprite x={dim[0] / 2} y={dim[1] / 2 - 100} />
+        <PlayerSprite x={dim[0] / 2 - 200} y={dim[1] / 2} />
+      </Layer>
     </Stage>
   );
 }
@@ -30,34 +32,52 @@ export default function GameCanvas() {
 type PlayerSpriteProps = {
   x: number;
   y: number;
+  flipped?: boolean;
 };
 
 function PlayerSprite(props: PlayerSpriteProps) {
-  const [image, state] = useImage(tmpurl);
   const [hover, setHover] = useState(false);
-  if (state === "loading" || state === "failed") {
-    return <Fragment />;
-  }
-  const width = hover ? 300 : 200;
-  const height = hover ? 450 : 300;
+  const [selected, setSelected] = useState(false);
+  const width = 100;
+  const height = 150;
 
   return (
     <Fragment>
-      <Image
-        image={image!}
+      <Texture
+        type={"select"}
         x={props.x - width / 2}
         y={props.y - width / 2}
+        flipped={props.flipped}
+        width={width}
+        height={height}
+        opacity={selected ? 0.9 : hover ? 0.5 : 0.1}
+      />
+      <Texture
+        type={"stickman"}
+        x={props.x - width / 2}
+        y={props.y - width / 2}
+        flipped={props.flipped}
         width={width}
         height={height}
       />
+      <Texture
+        type={"hat"}
+        x={props.x - width / 2}
+        y={props.y - width / 2}
+        flipped={props.flipped}
+        width={width}
+        height={height}
+      />
+      {/* Hitbox */}
       <Rect
         x={props.x - width / 2}
         y={props.y - width / 2}
         width={width}
         height={height}
-        stroke="white"
+        // stroke="white"
         onMouseOut={() => setHover(false)}
         onMouseOver={() => setHover(true)}
+        onMouseDown={() => setSelected((x) => !x)}
       />
     </Fragment>
   );

@@ -61,6 +61,11 @@ export type Role =
   | "assasin"
   | "emissary"
   | "mole";
+// Agent knows noone
+// Captain knows all spies
+// Escort knows captain and emissary
+// Spies know all spies except mole
+// Mole knows noone
 
 export type GameState = {
   player: {

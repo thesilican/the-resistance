@@ -3,9 +3,60 @@
 .VoteHistoryBox {
   height: 100%;
 
+  position: relative;
+
   background-color: $nav-tabs-link-active-bg;
 
   border-left: $nav-tabs-border-width solid $nav-tabs-border-color;
   border-right: $nav-tabs-border-width solid $nav-tabs-border-color;
   border-bottom: $nav-tabs-border-width solid $nav-tabs-border-color;
+}
+
+.grid {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  display: grid;
+  align-items: stretch;
+  vertical-align: center;
+
+  overflow-x: scroll;
+  overflow-y: auto;
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  &.name,
+  &.empty {
+    padding: 0.25rem;
+    padding-left: 0.5rem;
+    position: sticky;
+    background-color: $dark;
+    left: 0;
+  }
+  &.mission {
+    padding: 0.25rem;
+    padding-top: 0.5rem;
+    justify-content: center;
+    font-size: 1.5rem;
+  }
+  &.vote {
+    box-sizing: border-box;
+    width: 2.5rem;
+    height: 2.5rem;
+    background-size: cover;
+    &.reject {
+      background-position-x: right;
+    }
+    &.leader {
+      border: 2px solid $white;
+    }
+    &.team {
+      background-color: scale-color($white, $lightness: -30%);
+    }
+  }
 }

@@ -30,17 +30,19 @@ $danger: $red !default;
 $light: $gray-200 !default;
 $dark: $gray-800 !default;
 
-$font-family-sans-serif: "Ubuntu", sans-serif, "Apple Color Emoji",
+$font-family-sans-serif: "Poppins", sans-serif, "Apple Color Emoji",
   "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 $font-family-monospace: "Oxygen Mono", monospace;
 
 $body-bg: $dark;
 $body-color: $light;
 $input-bg: $dark;
+$input-disabled-bg: $dark;
 $input-placeholder-color: $gray-500;
 $input-color: $light;
 $nav-tabs-link-active-color: $light;
 $nav-tabs-link-active-bg: $dark;
+$tooltip-bg: $gray-900;
 
 @import "../../node_modules/bootstrap/scss/functions";
 @import "../../node_modules/bootstrap/scss/variables";
