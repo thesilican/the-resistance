@@ -19,7 +19,7 @@
 
 .col1 {
   display: grid;
-  grid-template-rows: auto 1fr minmax(50%, 75%);
+  grid-template-rows: auto 1rem 1fr;
 }
 
 .col2 {
@@ -29,5 +29,5 @@
 
 .col3 {
   display: grid;
-  grid-template-rows: auto 1fr 4rem;
+  grid-template-rows: auto 1fr auto;
 }

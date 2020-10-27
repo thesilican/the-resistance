@@ -1,0 +1,35 @@
+@import "../common";
+
+$c-red: #ff0000;
+$c-orange: #e18700;
+$c-yellow: #b0b000;
+$c-green: #3cff00;
+$c-teal: #00ff67;
+$c-cyan: #00b4b4;
+$c-blue: #0067ff;
+$c-indigo: #3c00ff;
+$c-purple: #a000c8;
+$c-pink: #e10087;
+$c-fail: $danger;
+$c-success: $success;
+
+$c-colors: (
+  "red": $c-red,
+  "orange": $c-orange,
+  "yellow": $c-yellow,
+  "green": $c-green,
+  "teal": $c-teal,
+  "cyan": $c-cyan,
+  "blue": $c-blue,
+  "indigo": $c-indigo,
+  "purple": $c-purple,
+  "pink": $c-pink,
+  "fail": $c-fail,
+  "success": $c-success,
+);
+// Color Selectors
+@each $name, $color in $c-colors {
+  .#{$name} {
+    color: $color;
+  }
+}

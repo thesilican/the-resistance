@@ -5,17 +5,16 @@ export type GameInitOptions = {
   seed: number;
 };
 export type Color =
-  | "black"
-  | "blue"
-  | "cyan"
-  | "green"
-  | "indigo"
-  | "orange"
-  | "pink"
-  | "purple"
   | "red"
+  | "orange"
+  | "yellow"
+  | "green"
   | "teal"
-  | "yellow";
+  | "cyan"
+  | "blue"
+  | "indigo"
+  | "purple"
+  | "pink";
 
 export type GameMode = "normal" | "assasins";
 export type GamePhase =

@@ -5,16 +5,20 @@ import Form from "react-bootstrap/esm/Form";
 import FormControl from "react-bootstrap/esm/FormControl";
 import InputGroup from "react-bootstrap/esm/InputGroup";
 import styles from "../../styles/game/ChatBox.module.scss";
+import TextTransformer from "./TextTransformer";
+import cn from "classnames";
 
 let messages: ChatMessage[] = [
   {
     type: "system",
     content: "Hi",
   },
+  ...Array.from(Array(10)).map((_, i) => ({
+    type: "player" as "player",
+    player: i,
+    content: "What is up, my fellow gamerss!!",
+  })),
 ];
-for (let i = 0; i < 5; i++) {
-  messages = [...messages, ...messages];
-}
 
 type ChatBoxProps = {};
 
@@ -53,11 +57,11 @@ const ChatMessageList = React.memo(function ({
 }: ChatMessageListProps) {
   return (
     <>
-      {messages.map((m, i) =>
-        m.type === "player" ? (
-          <UserChatMessage key={i} text={m.content} />
+      {messages.map((msg, i) =>
+        msg.type === "player" ? (
+          <UserChatMessage key={i} player={msg.player} text={msg.content} />
         ) : (
-          <SystemChatMessage key={i} text={m.content} />
+          <SystemChatMessage key={i} text={msg.content} />
         )
       )}
     </>
@@ -66,13 +70,14 @@ const ChatMessageList = React.memo(function ({
 
 type UserChatMessageProps = {
   text: string;
+  player: number;
 };
 
-function UserChatMessage({ text }: UserChatMessageProps) {
+function UserChatMessage({ player, text }: UserChatMessageProps) {
   return (
-    <div className="ChatMessage">
-      <span>{text}</span>
-    </div>
+    <p className={cn(styles.chatMessage, styles.user)}>
+      <TextTransformer>{`[{{name:${player}}}] ${text}`}</TextTransformer>
+    </p>
   );
 }
 
@@ -82,8 +87,8 @@ type SystemChatMessageProps = {
 
 function SystemChatMessage({ text }: SystemChatMessageProps) {
   return (
-    <div className="ChatMessage system">
-      <span>{text}</span>
-    </div>
+    <p className={cn(styles.chatMessage, styles.system)}>
+      <TextTransformer>{`[{{success:System}}] ${text}`}</TextTransformer>
+    </p>
   );
 }

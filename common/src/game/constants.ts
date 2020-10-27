@@ -1,7 +1,6 @@
 import { Color, GameMode, GamePhase, Role } from "./types";
 
 export const ColorOrder: Color[] = [
-  "black",
   "red",
   "yellow",
   "blue",
