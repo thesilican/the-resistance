@@ -15,17 +15,17 @@ export default function GameView() {
   const [flashSuccess, setFlashSuccess] = useState(false);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setDark(true);
-      setTimeout(() => {
-        setDark(false);
-        setFlashFail(true);
-        setTimeout(() => {
-          setFlashFail(false);
-        }, 2000);
-      }, 3000);
-    }, 6000);
-    return () => clearInterval(interval);
+    // const interval = setInterval(() => {
+    //   setDark(true);
+    //   setTimeout(() => {
+    //     setDark(false);
+    //     setFlashFail(true);
+    //     setTimeout(() => {
+    //       setFlashFail(false);
+    //     }, 2000);
+    //   }, 3000);
+    // }, 6000);
+    // return () => clearInterval(interval);
   }, []);
 
   return (

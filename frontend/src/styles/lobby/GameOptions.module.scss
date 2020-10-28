@@ -1,0 +1,33 @@
+@import "../common";
+
+.GameOptions {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.optionsBox {
+  border: 1px solid $light;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.rolesBox {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: flex-start;
+}
+
+.howToPlayButton {
+  margin-top: 1rem;
+  align-self: center;
+}
+
+.startButton {
+  margin-right: 1rem;
+  align-self: center;
+}
