@@ -32,6 +32,18 @@ SPRITE_W = 400
 SPRITE_H = 600
 ICON_W = 100
 ICON_H = 100
+COLORS = {
+    "red": "#ea3818",
+    "orange": "#e58a00",
+    "yellow": "#dbbd0d",
+    "green": "#5ec90c",
+    "teal": "#00e07f",
+    "cyan": "#17dbdb",
+    "blue": "#70aaff",
+    "indigo": "#a899ff",
+    "purple": "#c45cff",
+    "pink": "#e617a0",
+}
 spriteList = []
 iconList = []
 try:
@@ -51,13 +63,16 @@ os.system(
 spriteList += [f"tmp/sprite-{x}.png" for x in range(0, 4)]
 
 # Recolor (temporary)
-os.system(
-    f'magick convert tmp/sprite-2.png ' +
-    'xc:"#e58a00" -channel RGB -clut tmp/sprite-2.png')
+for color in COLORS.values():
+    os.system(
+        f'magick convert tmp/sprite-2.png ' +
+        f'xc:"{color}" -channel RGB -clut tmp/sprite-2-{color}.png')
+    spriteList.append(f"tmp/sprite-2-{color}.png")
+spriteList.remove("tmp/sprite-2.png")
 
-# Make spritesheet, 6 images wide
+# Make spritesheet
 images = [Image.open(x) for x in spriteList]
-spritesheet = combineImages(images, (SPRITE_W, SPRITE_H), 2)
+spritesheet = combineImages(images, (SPRITE_W, SPRITE_H), 6)
 spritesheet.save("../public/assets/spritesheet.png")
 
 

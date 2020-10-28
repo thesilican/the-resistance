@@ -1,3 +1,4 @@
+import { Color } from "common-modules";
 import React, { Fragment } from "react";
 import { Image } from "react-konva";
 import useImage from "use-image";
@@ -9,13 +10,25 @@ const SPRITE_W = 400;
 const SPRITE_H = 600;
 
 export const textureMap = {
-  hat: [1, 1],
-  stickman: [0, 1],
   select: [1, 0],
+  hat: [2, 0],
+  stickman: {
+    red: [3, 0],
+    orange: [4, 0],
+    yellow: [5, 0],
+    green: [0, 1],
+    teal: [1, 1],
+    cyan: [2, 1],
+    blue: [3, 1],
+    indigo: [4, 1],
+    purple: [5, 1],
+    pink: [0, 2],
+  },
 };
 
 type TextureProps = {
   type: TextureType;
+  color?: Color;
   x: number;
   y: number;
   width: number;
@@ -30,7 +43,12 @@ export default function Texture(props: TextureProps) {
     return <Fragment />;
   }
 
-  const map = textureMap[props.type];
+  let map: number[];
+  if (props.type === "stickman") {
+    map = textureMap.stickman[props.color!];
+  } else {
+    map = textureMap[props.type];
+  }
 
   return (
     <Image

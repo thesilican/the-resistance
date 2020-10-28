@@ -1,15 +1,36 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { Layer, Rect, Stage } from "react-konva";
+import React, { useEffect, useMemo, useState } from "react";
+import { Layer, Stage } from "react-konva";
+import "../../../lib/util";
+import { equalSpaceEllipse, Vec2 } from "../../../lib/util";
 import styles from "../../../styles/game/GameCanvas.module.scss";
-import Texture from "./Texture";
+import { PlayerSprite } from "./PlayerSprite";
 
 const getDim = () => {
-  return [window.innerWidth, window.innerHeight];
+  return [window.innerWidth, window.innerHeight] as Vec2;
+};
+
+const getStageDim = (numPlayers: number, dim: Vec2) => {
+  const origSpriteDim = [100, 170] as Vec2;
+  const stageDim: Vec2 = [dim[0] / 2, dim[1] / 1.5];
+  const stagePos: Vec2 = [
+    (dim[0] - stageDim[0]) / 2,
+    (dim[1] - stageDim[1]) / 2,
+  ];
+  const res = equalSpaceEllipse(numPlayers, stageDim, origSpriteDim);
+  return {
+    spritePos: res.spritePoints,
+    spriteDim: res.spriteDim,
+    stageDim,
+    stagePos,
+  };
 };
 
 export default function GameCanvas() {
   const [dim, setDim] = useState(getDim);
+  const [numPlayers] = useState(5);
+
   useEffect(() => {
+    // Handle window resize
     const handler = () => {
       setDim(getDim());
     };
@@ -17,68 +38,28 @@ export default function GameCanvas() {
     return () => window.removeEventListener("resize", handler);
   }, []);
 
+  // 170 height to adjust for text height
+  const { spritePos, spriteDim, stagePos } = useMemo(
+    () => getStageDim(numPlayers, dim),
+    [numPlayers, dim]
+  );
+
   return (
     <Stage width={dim[0]} height={dim[1]} className={styles.canvasWrapper}>
       <Layer>
-        <PlayerSprite flipped x={dim[0] / 2 + 200} y={dim[1] / 2} />
-        <PlayerSprite flipped x={dim[0] / 2} y={dim[1] / 2 + 100} />
-        <PlayerSprite x={dim[0] / 2} y={dim[1] / 2 - 100} />
-        <PlayerSprite x={dim[0] / 2 - 200} y={dim[1] / 2} />
+        {spritePos.map((p, i) => (
+          <PlayerSprite
+            key={i}
+            index={i}
+            x={p[0] + stagePos[0]}
+            y={p[1] + stagePos[1]}
+            width={spriteDim[0]}
+            height={spriteDim[1] * (15 / 17)}
+            textHeight={spriteDim[1] * (2 / 17)}
+            flipped={p[0] + stagePos[0] > dim[0] / 2}
+          />
+        ))}
       </Layer>
     </Stage>
-  );
-}
-
-type PlayerSpriteProps = {
-  x: number;
-  y: number;
-  flipped?: boolean;
-};
-
-function PlayerSprite(props: PlayerSpriteProps) {
-  const [hover, setHover] = useState(false);
-  const [selected, setSelected] = useState(false);
-  const width = 100;
-  const height = 150;
-
-  return (
-    <Fragment>
-      <Texture
-        type={"select"}
-        x={props.x - width / 2}
-        y={props.y - width / 2}
-        flipped={props.flipped}
-        width={width}
-        height={height}
-        opacity={selected ? 0.9 : hover ? 0.5 : 0.1}
-      />
-      <Texture
-        type={"stickman"}
-        x={props.x - width / 2}
-        y={props.y - width / 2}
-        flipped={props.flipped}
-        width={width}
-        height={height}
-      />
-      <Texture
-        type={"hat"}
-        x={props.x - width / 2}
-        y={props.y - width / 2}
-        flipped={props.flipped}
-        width={width}
-        height={height}
-      />
-      {/* Hitbox */}
-      <Rect
-        x={props.x - width / 2}
-        y={props.y - width / 2}
-        width={width}
-        height={height}
-        // stroke="white"
-        onMouseOut={() => setHover(false)}
-        onMouseOver={() => setHover(true)}
-        onMouseDown={() => setSelected((x) => !x)}
-      />
-    </Fragment>
   );
 }

@@ -1,7 +1,45 @@
+@import "../common";
+
+@keyframes flash-success {
+  0% {
+  }
+  50% {
+    background-color: mix($green, $dark, $weight: 20%);
+  }
+  100% {
+  }
+}
+@keyframes flash-fail {
+  0% {
+    background-color: $red;
+  }
+  25% {
+    background-color: $red;
+  }
+  100% {
+  }
+}
+
 .GameView {
   position: relative;
 
   height: 100vh;
+
+  transition: background-color 1s ease;
+  background-color: $dark;
+  &.dark {
+    background-color: $black;
+    .col1,
+    .col3 {
+      filter: opacity(0.25);
+    }
+  }
+  &.success {
+    animation: flash-success 2s ease;
+  }
+  &.fail {
+    animation: flash-fail 1s ease;
+  }
 }
 
 .grid {
@@ -20,6 +58,7 @@
 .col1 {
   display: grid;
   grid-template-rows: auto 1rem 1fr;
+  transition: filter 1s ease;
 }
 
 .col2 {
@@ -30,4 +69,5 @@
 .col3 {
   display: grid;
   grid-template-rows: auto 1fr auto;
+  transition: filter 1s ease;
 }
