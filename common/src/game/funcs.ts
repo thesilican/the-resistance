@@ -3,16 +3,17 @@ import {
   GameMaxPlayers,
   GameMinPlayers,
   GamePhaseLengths,
-  GameRolePools,
   MissionNeedDouble,
   MissionPlayerCount,
+  TeamPoolsAssasins,
+  TeamPoolsNormal,
 } from "./constants";
 import {
   ChatMessage,
   GameInitOptions,
+  GameCustomRoleOptions,
   GameState,
   MissionAction,
-  MissionHistory,
   ProposalVote,
   Role,
   Team,
@@ -20,6 +21,36 @@ import {
 } from "./types";
 
 export const GameFunc = {
+  getCustomRoleList(numPlayers: number, roleOptions: GameCustomRoleOptions) {
+    const pool = TeamPoolsNormal[numPlayers].slice();
+    const numAgents = pool.reduce((a, v) => (v === "agent" ? a + 1 : a), 0);
+    const numSpies = pool.reduce((a, v) => (v === "spy" ? a + 1 : a), 0);
+
+    const roleList: Role[] = [];
+    // Agents
+    const agentRoles: Role[] = [];
+    const spyRoles: Role[] = [];
+    if (roleOptions.captain) agentRoles.push("captain");
+    if (roleOptions.deputy) agentRoles.push("deputy");
+    if (roleOptions.assasin) spyRoles.push("assasin");
+    if (roleOptions.imposter) spyRoles.push("imposter");
+    if (roleOptions.intern) spyRoles.push("intern");
+    if (roleOptions.mole) spyRoles.push("mole");
+    console.log(agentRoles, spyRoles);
+
+    for (let i = 0; i < numAgents; i++) {
+      const newRole = agentRoles.splice(0, 1)[0];
+      if (newRole) roleList.push(newRole);
+      else roleList.push("agent");
+    }
+    for (let i = 0; i < numSpies; i++) {
+      const newRole = spyRoles.splice(0, 1)[0];
+      if (newRole) roleList.push(newRole);
+      else roleList.push("spy");
+    }
+
+    return roleList;
+  },
   init(options: GameInitOptions): GameState | null {
     let seed = options.seed;
     const numPlayers = options.names.length;
@@ -30,16 +61,7 @@ export const GameFunc = {
       return null;
     }
 
-    const roles: Role[] = [];
-    const pool = GameRolePools[options.gamemode][numPlayers];
-    for (const role in pool) {
-      for (let i = 0; i < pool[role as Role]; i++) {
-        roles.push(role as Role);
-      }
-    }
-    shuffle(roles, seed++);
-
-    // Shuffle names and sockeIDs together
+    // Shuffle names and socketIDs together
     const mixed: [string, string][] = options.names.map((x, i) => [
       x,
       options.socketIDs[i],
@@ -47,6 +69,16 @@ export const GameFunc = {
     shuffle(mixed, seed++);
     const names = mixed.map((x) => x[0]);
     const socketIDs = mixed.map((x) => x[1]);
+
+    const roles: Role[] = [];
+    if (options.gamemode === "normal") {
+      roles.push(...TeamPoolsNormal[numPlayers]);
+    } else if (options.gamemode === "assasins") {
+      roles.push(...TeamPoolsAssasins[numPlayers]);
+    } else {
+      roles.push(...this.getCustomRoleList(numPlayers, options.gamemode));
+    }
+    shuffle(roles, seed++);
 
     return {
       player: {

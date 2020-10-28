@@ -1,12 +1,19 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { LobbyState } from "./types";
-import { hydrate, initialize, memberJoin, memberLeave } from "./actions";
+import {
+  hydrate,
+  initialize,
+  memberJoin,
+  memberLeave,
+  updateGameOptions,
+} from "./actions";
 
 const initialState: LobbyState = {
   id: "",
   inGame: false,
   memberIDs: [],
   names: [],
+  gameInitOptions: "normal",
 };
 
 export const LobbyReducer = createReducer(initialState, (builder) => {
@@ -32,6 +39,11 @@ export const LobbyReducer = createReducer(initialState, (builder) => {
         inGame: false,
         memberIDs: [],
         names: [],
+        gameInitOptions: "normal",
       };
+    })
+    .addCase(updateGameOptions, (state, action) => {
+      state.gameInitOptions = action.payload.options;
+      return state;
     });
 });

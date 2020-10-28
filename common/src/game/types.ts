@@ -1,8 +1,16 @@
 export type GameInitOptions = {
-  gamemode: GameMode;
   socketIDs: string[];
   names: string[];
   seed: number;
+  gamemode: GameMode | GameCustomRoleOptions;
+};
+export type GameCustomRoleOptions = {
+  captain: boolean;
+  deputy: boolean;
+  assasin: boolean;
+  imposter: boolean;
+  intern: boolean;
+  mole: boolean;
 };
 export type Color =
   | "red"
@@ -56,16 +64,22 @@ export type Team = "agent" | "spy";
 export type Role =
   | "agent"
   | "captain"
-  | "escort"
+  | "deputy"
   | "spy"
   | "assasin"
-  | "emissary"
-  | "mole";
+  | "imposter"
+  | "mole"
+  | "intern";
+// --- Team Agent ---
 // Agent knows noone
-// Captain knows all spies
-// Escort knows captain and emissary
-// Spies know all spies except mole
-// Mole knows noone
+// Captain knows who spies are
+// Deputy knows captain and impostor but doesn't know who's who
+// --- Team Spies ---
+// Spies know fellow spies (except intern)
+// Assasin knows fellow spies (except intern), can kill one person at end of game
+// Imposter knows fellow spies, appears as Captain to Deputy
+// Mole is unknown to Captain
+// Intern is unknown to other spies
 
 export type GameState = {
   player: {

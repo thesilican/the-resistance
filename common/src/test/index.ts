@@ -8,10 +8,17 @@ const store = configureStore({
 
 store.dispatch(
   GameAction.initialize({
-    gamemode: "normal",
     names: ["alice", "bob", "charlie", "david", "edward"],
     socketIDs: ["a", "b", "c", "d", "e"],
     seed: 0,
+    gamemode: {
+      captain: true,
+      assasin: true,
+      deputy: true,
+      imposter: true,
+      intern: true,
+      mole: true,
+    },
   })
 );
 
