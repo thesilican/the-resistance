@@ -43,25 +43,26 @@
   transition: box-shadow 1s linear, transform 0.25s ease,
     background-color 1s ease;
   font-family: $font-family-monospace;
-}
-.indicator:hover {
-  transform: scale(1.05);
-}
-.indicator.active {
-  color: $dark;
-  background-color: $white;
-  @include shadow($white);
-}
-.indicator.success {
-  background-color: scale-color($success, $lightness: -20%);
-  @include shadow($success, 20px);
-}
-.indicator.fail {
-  color: $dark;
-  background-color: scale-color($red, $lightness: -20%);
-  @include shadow($red);
-}
-.indicator {
+  &:hover {
+    transform: scale(1.05);
+  }
+  &.double {
+    border-radius: 5%;
+  }
+  &.active {
+    color: $dark;
+    background-color: $white;
+    @include shadow($white);
+  }
+  &.success {
+    background-color: scale-color($green, $lightness: -20%);
+    @include shadow($green, 20px);
+  }
+  &.fail {
+    color: $dark;
+    background-color: scale-color($red, $lightness: -20%);
+    @include shadow($red);
+  }
   .label1 {
     font-size: 2rem;
     line-height: 0.75;

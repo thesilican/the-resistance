@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import styles from "../../styles/game/VoteHistoryBox.module.scss";
-import TextTransformer from "./TextTransformer";
+import TextTransformer from "../common/TextTransformer";
 import cn from "classnames";
 
 const iconURL = `${process.env.PUBLIC_URL}/assets/iconsheet.png`;

@@ -1,10 +1,10 @@
 import cn from "classnames";
 import { ChatMessage } from "common-modules";
-import React from "react";
+import React, { useState } from "react";
 import Form from "react-bootstrap/esm/Form";
 import FormControl from "react-bootstrap/esm/FormControl";
 import styles from "../../styles/game/ChatBox.module.scss";
-import TextTransformer from "./TextTransformer";
+import TextTransformer from "../common/TextTransformer";
 
 let messages: ChatMessage[] = [
   {
@@ -29,6 +29,18 @@ let messages: ChatMessage[] = [
 type ChatBoxProps = {};
 
 export default function ChatBox(props: ChatBoxProps) {
+  const [typingMessage, setTypingMessage] = useState("");
+  const handleTypeCharacter = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length > 200) return;
+    setTypingMessage(e.target.value);
+  };
+  const handleSendMessage = (e: React.FormEvent) => {
+    e.preventDefault();
+    setTypingMessage("");
+  };
+
+  // Add a global event listener to focus
+
   return (
     <div className={styles.ChatBox}>
       <div className={styles.chatWrapper}>
@@ -36,8 +48,13 @@ export default function ChatBox(props: ChatBoxProps) {
           <ChatMessageList messages={messages} />
         </div>
       </div>
-      <Form inline className={styles.form} onSubmit={(e) => e.preventDefault()}>
-        <FormControl className={styles.input} placeholder="Send us a message" />
+      <Form inline className={styles.form} onSubmit={handleSendMessage}>
+        <FormControl
+          className={styles.input}
+          value={typingMessage}
+          onChange={handleTypeCharacter}
+          placeholder="Send a message"
+        />
       </Form>
     </div>
   );

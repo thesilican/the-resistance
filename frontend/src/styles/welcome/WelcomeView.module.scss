@@ -1,0 +1,17 @@
+@import "../common";
+
+.WelcomeView {
+  padding-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.linksBox {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 1.25rem;
+  a {
+    color: $gray-400;
+  }
+}

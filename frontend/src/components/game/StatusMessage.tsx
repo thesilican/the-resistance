@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "../../styles/game/StatusMessage.module.scss";
-import TextTransformer from "./TextTransformer";
+import TextTransformer from "../common/TextTransformer";
 
 type StatusMessageProps = {};
 

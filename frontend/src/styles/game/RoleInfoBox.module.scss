@@ -4,8 +4,13 @@
   pointer-events: auto;
 
   display: flex;
-  flex-direction: column;
+  align-items: flex-start;
   span {
     font-size: 1.5rem;
   }
+  flex-direction: column;
+}
+
+.howToPlayButton {
+  margin-top: 0.5rem;
 }

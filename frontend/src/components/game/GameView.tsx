@@ -8,9 +8,10 @@ import RoleInfoBox from "./RoleInfoBox";
 import StatusMessage from "./StatusMessage";
 import TopInfoBar from "./TopInfoBar";
 import cn from "classnames";
+import CenterControls from "./CenterControls";
 
 export default function GameView() {
-  const [dark, setDark] = useState(false);
+  const [dark, setDark] = useState(true);
   const [flashFail, setFlashFail] = useState(false);
   const [flashSuccess, setFlashSuccess] = useState(false);
 
@@ -44,7 +45,7 @@ export default function GameView() {
         </div>
         <div className={styles.col2}>
           <TopInfoBar />
-          <div />
+          <CenterControls />
           <StatusMessage />
         </div>
         <div className={styles.col3}>

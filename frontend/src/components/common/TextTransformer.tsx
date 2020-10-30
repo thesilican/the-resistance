@@ -1,6 +1,6 @@
 import { ColorOrder } from "common-modules";
 import React, { Fragment, ReactNode } from "react";
-import styles from "../../styles/game/TextTransformer.module.scss";
+import styles from "../../styles/common/TextTransformer.module.scss";
 
 const pattern = /{{(fail:.+?|success:.+?|name:.+?)}}/;
 
@@ -53,6 +53,8 @@ export default React.memo(function TextTransformer(
             {name}
           </span>
         );
+      } else {
+        splits[i] = "undefined";
       }
     }
   }

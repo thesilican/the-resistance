@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import styles from "../../styles/lobby/GameOptions.module.scss";
 import Form from "react-bootstrap/esm/Form";
 import Button from "react-bootstrap/esm/Button";
-import TextTransformer from "../game/TextTransformer";
+import TextTransformer from "../common/TextTransformer";
 import RolesModal from "../common/RolesModal";
 
 export default function GameOptions() {
   const [gamemode, setGameMode] = useState("normal");
   const [showHowToPlay, setShowHowToPlay] = useState(false);
+  const [host] = useState(true);
 
   return (
     <div className={styles.GameOptions}>
@@ -15,13 +16,15 @@ export default function GameOptions() {
         show={showHowToPlay}
         onClose={() => setShowHowToPlay(false)}
       />
-      <h3>Game Options</h3>
+      <span className={styles.title}>Game Options</span>
       <div className={styles.optionsBox}>
         <Form.Group id="lobby-gamemode">
           <Form.Label>Game Mode</Form.Label>
           <Form.Control
+            className={styles.select}
             as="select"
             value={gamemode}
+            disabled={!host}
             onChange={(e) => setGameMode(e.target.value)}
           >
             <option value="normal">Normal</option>
@@ -39,7 +42,10 @@ export default function GameOptions() {
                   key={x}
                   type="checkbox"
                   id={`lobby-game-role-agent-${i}`}
-                  label={x}
+                  label={
+                    <TextTransformer>{`{{success:${x}}}`}</TextTransformer>
+                  }
+                  disabled={!host}
                 />
               ))}
               {["Assasin", "Imposter", "Mole", "Intern"].map((x, i) => (
@@ -47,7 +53,8 @@ export default function GameOptions() {
                   key={x}
                   type="checkbox"
                   id={`lobby-game-role-spy-${i}`}
-                  label={x}
+                  label={<TextTransformer>{`{{fail:${x}}}`}</TextTransformer>}
+                  disabled={!host}
                 />
               ))}
             </Form.Group>
@@ -70,7 +77,9 @@ export default function GameOptions() {
           About Roles
         </Button>
       </div>
-      <Button className={styles.startButton}>Start Game</Button>
+      <Button className={styles.startButton} disabled={!host}>
+        Start Game
+      </Button>
       <span>Only the host can start the game</span>
       <span>5-10 players can play The Resistance</span>
     </div>

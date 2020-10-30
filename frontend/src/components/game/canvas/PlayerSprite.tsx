@@ -10,22 +10,22 @@ export type PlayerSpriteProps = {
   y: number;
   width: number;
   height: number;
-  textHeight: number;
   flipped?: boolean;
 };
 
 export function PlayerSprite(props: PlayerSpriteProps) {
-  const { width, height, textHeight, flipped, index } = props;
-  const [hover, setHover] = useState(false);
-  const [selected, setSelected] = useState(false);
-
-  const hat = index === 0;
-  const color = ColorOrder[index] ?? ColorOrder[0];
-  const colorCode = ColorValues[color];
-
-  // X and Y are anchored in center
+  const { width, height, flipped, index } = props;
   const x = props.x - width / 2;
   const y = props.y - height / 2;
+  const spriteHeight = height * (15 / 17);
+  const textHeight = height * (2 / 17);
+  const [hover, setHover] = useState(false);
+  const [selected, setSelected] = useState(() => index % 3 === 0);
+
+  const hat = index === 1;
+  const color = ColorOrder[index] ?? ColorOrder[0];
+  const colorCode = ColorValues[color];
+  const opacity = selected ? 1 : 0.25;
 
   return (
     <Fragment>
@@ -34,9 +34,9 @@ export function PlayerSprite(props: PlayerSpriteProps) {
         x={x}
         y={y}
         width={width}
-        height={height}
+        height={spriteHeight}
         flipped={flipped}
-        opacity={selected ? 0.9 : hover ? 0.5 : 0.0}
+        opacity={selected ? 0.9 : hover ? 0.5 : 0.1}
       />
       <Texture
         type={"stickman"}
@@ -44,8 +44,9 @@ export function PlayerSprite(props: PlayerSpriteProps) {
         x={x}
         y={y}
         width={width}
-        height={height}
+        height={spriteHeight}
         flipped={flipped}
+        opacity={opacity}
       />
       {hat && (
         <Texture
@@ -53,19 +54,21 @@ export function PlayerSprite(props: PlayerSpriteProps) {
           x={x}
           y={y}
           width={width}
-          height={height}
+          height={spriteHeight}
           flipped={flipped}
+          opacity={opacity}
         />
       )}
       <Text
         x={x}
-        y={y + height}
+        y={y + spriteHeight}
         width={width}
         height={textHeight}
         fontSize={textHeight}
         fill={colorCode}
         align={"center"}
         text={"Bobby"}
+        opacity={opacity}
       />
       {/* Hitbox */}
       <Rect

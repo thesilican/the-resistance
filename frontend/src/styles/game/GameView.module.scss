@@ -11,10 +11,10 @@
 }
 @keyframes flash-fail {
   0% {
-    background-color: $red;
+    background-color: scale-color($red, $lightness: -20%);
   }
   25% {
-    background-color: $red;
+    background-color: scale-color($red, $lightness: -20%);
   }
   100% {
   }
@@ -34,9 +34,9 @@
       filter: opacity(0.25);
     }
   }
-  &.success {
-    animation: flash-success 2s ease;
-  }
+  // &.success {
+  //   animation: flash-success 2s ease;
+  // }
   &.fail {
     animation: flash-fail 1s ease;
   }
@@ -63,7 +63,7 @@
 
 .col2 {
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: 1fr 6fr 1fr;
 }
 
 .col3 {

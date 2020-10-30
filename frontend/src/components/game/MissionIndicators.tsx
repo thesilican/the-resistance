@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import OverlayTrigger from "react-bootstrap/esm/OverlayTrigger";
 import Tooltip from "react-bootstrap/esm/Tooltip";
 import styles from "../../styles/game/MissionIndicators.module.scss";
-import TextTransformer from "./TextTransformer";
+import TextTransformer from "../common/TextTransformer";
 
 type MissionIndicatorsProps = {};
 
@@ -17,7 +17,7 @@ export default function MissionIndicators(props: MissionIndicatorsProps) {
         Progress
       </span>
       {missions.map((_, i) => (
-        <MissionIndicator key={i} index={i} />
+        <MissionIndicator key={i} index={i + 1} />
       ))}
       <div className={styles.proposals}>
         <span className={styles.label1}>5</span>
@@ -36,10 +36,11 @@ type MissionIndicatorProps = {
 };
 
 function MissionIndicator(props: MissionIndicatorProps) {
-  const [state, setState] = useState(0);
-  const fail = state === 1;
-  const success = state === 2;
-  const active = state === 3;
+  const { index } = props;
+  const fail = index === 1;
+  const success = index === 2;
+  const active = index === 3;
+  const double = index === 4;
 
   const popover = (
     <Tooltip id="mission-indicator-tooltip">
@@ -62,6 +63,10 @@ function MissionIndicator(props: MissionIndicatorProps) {
               <TextTransformer>{`{{success:Mission 1 Success}}`}</TextTransformer>
             </span>
             <span>
+              {/* For N4 double only */}
+              <TextTransformer>{`1 fail detected`}</TextTransformer>
+            </span>
+            <span>
               <TextTransformer>{`{{name:0}}, {{name:1}}, {{name:2}} by {{name:0}}`}</TextTransformer>
             </span>
           </>
@@ -71,7 +76,11 @@ function MissionIndicator(props: MissionIndicatorProps) {
               <TextTransformer>{`Mission 5`}</TextTransformer>
             </span>
             <span>
-              <TextTransformer>{`5 players required`}</TextTransformer>
+              {/* For N4 double only */}
+              <TextTransformer>{`2 spies needed to fail`}</TextTransformer>
+            </span>
+            <span>
+              <TextTransformer>{`5 player team`}</TextTransformer>
             </span>
           </>
         )}
@@ -91,8 +100,8 @@ function MissionIndicator(props: MissionIndicatorProps) {
           [styles.fail]: fail,
           [styles.success]: success,
           [styles.active]: active,
+          [styles.double]: double,
         })}
-        onClick={() => setState((x) => (x + 1) % 4)}
       >
         <span className={styles.label1}>2</span>
         <span className={styles.label2}>players</span>

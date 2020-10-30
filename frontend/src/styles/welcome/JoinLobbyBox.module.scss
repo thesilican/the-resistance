@@ -1,0 +1,16 @@
+@import "../common";
+
+.JoinLobbyBox {
+  border: 1px solid $light;
+  border-radius: 1rem;
+  padding: 1rem;
+  width: 20rem;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.createJoinBox {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
