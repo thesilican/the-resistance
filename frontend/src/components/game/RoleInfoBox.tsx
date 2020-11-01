@@ -23,13 +23,21 @@ export default function RoleInfoBox(props: RoleInfoBoxProps) {
       <span>
         <TextTransformer>{`{{fail:Spies}} - {{name:0}} {{name:1}}`}</TextTransformer>
       </span>
+      <span className={styles.small}>
+        Roles:{" "}
+        <TextTransformer>
+          {`2 {{success:agent}} 1 {{success:captain}} ` +
+            `1 {{fail:spy}} 1 {{fail:assasin}} ` +
+            `1 {{fail:spy}} 1 {{fail:assasin}}`}
+        </TextTransformer>
+      </span>
       <Button
         className={styles.howToPlayButton}
         variant={"secondary"}
         onClick={() => setShowHowToPlay(true)}
         size="sm"
       >
-        Help with Roles
+        See all Roles
       </Button>
     </div>
   );

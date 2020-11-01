@@ -11,7 +11,7 @@ import cn from "classnames";
 import CenterControls from "./CenterControls";
 
 export default function GameView() {
-  const [dark, setDark] = useState(true);
+  const [dark, setDark] = useState(false);
   const [flashFail, setFlashFail] = useState(false);
   const [flashSuccess, setFlashSuccess] = useState(false);
 
