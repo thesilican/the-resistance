@@ -5,7 +5,7 @@ import WelcomeView from "./components/welcome/WelcomeView";
 import styles from "./styles/App.module.scss";
 
 function App() {
-  const [view, setView] = useState("game");
+  const [view, setView] = useState("lobby");
   return (
     <div className={styles.App}>
       {view === "game" ? (

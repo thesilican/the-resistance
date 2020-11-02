@@ -74,7 +74,7 @@ export default function GameOptions() {
           onClick={() => setShowHowToPlay(true)}
           size="sm"
         >
-          About Roles
+          View Role List
         </Button>
       </div>
       <Button className={styles.startButton} disabled={!host}>
