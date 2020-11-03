@@ -6,6 +6,7 @@ import {
   memberJoin,
   memberLeave,
   updateGameOptions,
+  updateGameState,
 } from "./actions";
 
 const initialState: LobbyState = {
@@ -18,18 +19,6 @@ const initialState: LobbyState = {
 
 export const LobbyReducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(memberJoin, (state, action) => {
-      state.memberIDs.push(action.payload.memberID);
-      state.names.push(action.payload.name);
-    })
-    .addCase(memberLeave, (state, action) => {
-      const index = state.memberIDs.findIndex(
-        (x) => x === action.payload.memberID
-      );
-      if (index === -1) return state;
-      state.memberIDs.splice(index, 1);
-      state.names.splice(index, 1);
-    })
     .addCase(hydrate, (state, action) => {
       return action.payload;
     })
@@ -42,8 +31,23 @@ export const LobbyReducer = createReducer(initialState, (builder) => {
         gameInitOptions: "normal",
       };
     })
+    .addCase(memberJoin, (state, action) => {
+      state.memberIDs.push(action.payload.memberID);
+      state.names.push(action.payload.name);
+    })
+    .addCase(memberLeave, (state, action) => {
+      const index = state.memberIDs.findIndex(
+        (x) => x === action.payload.memberID
+      );
+      if (index === -1) return state;
+      state.memberIDs.splice(index, 1);
+      state.names.splice(index, 1);
+    })
     .addCase(updateGameOptions, (state, action) => {
       state.gameInitOptions = action.payload.options;
       return state;
+    })
+    .addCase(updateGameState, (state, action) => {
+      state.inGame = action.payload.inGame;
     });
 });
