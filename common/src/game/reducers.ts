@@ -48,7 +48,10 @@ export const GameReducer = createReducer(initialState, (builder) => {
       return res;
     })
     .addCase(playerDisconnect, (state, action) => {
-      state.player.socketIDs[action.payload.index] = null;
+      const index = state.player.socketIDs.indexOf(action.payload.socketID);
+      if (index >= 0 && index < state.player.socketIDs.length) {
+        state.player.socketIDs[index] = null;
+      }
       return state;
     })
     .addCase(playerReconnect, (state, action) => {

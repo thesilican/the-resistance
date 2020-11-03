@@ -12,7 +12,7 @@ export const hydrate = createAction<GameState>("game/hydrate");
 export const initialize = createAction<GameInitOptions>("game/initialize");
 
 export const playerDisconnect = createAction<{
-  index: number;
+  socketID: string;
 }>("game/player-disconnect");
 
 export const playerReconnect = createAction<{
