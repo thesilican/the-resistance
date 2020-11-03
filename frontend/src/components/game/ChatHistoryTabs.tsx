@@ -5,9 +5,7 @@ import ChatBox from "./ChatBox";
 import VoteHistoryBox from "./VoteHistoryBox";
 import styles from "../../styles/game/ChatHistoryTabs.module.scss";
 
-type ChatHistoryTabsProps = {};
-
-export default function ChatHistoryTabs(props: ChatHistoryTabsProps) {
+export default function ChatHistoryTabs() {
   return (
     <div className={styles.ChatHistoryTabs}>
       <Tabs defaultActiveKey="chat" id="chat-history-tabs">

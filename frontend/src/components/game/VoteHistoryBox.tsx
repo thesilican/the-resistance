@@ -5,9 +5,7 @@ import cn from "classnames";
 
 const iconURL = `${process.env.PUBLIC_URL}/assets/iconsheet.png`;
 
-type VoteHistoryBoxProps = {};
-
-export default function VoteHistoryBox(props: VoteHistoryBoxProps) {
+export default function VoteHistoryBox() {
   const numPlayers = 10;
   const numMissions = 10;
   return (

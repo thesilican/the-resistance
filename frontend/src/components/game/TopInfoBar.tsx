@@ -2,9 +2,7 @@ import React from "react";
 import ProgressBar from "react-bootstrap/esm/ProgressBar";
 import styles from "../../styles/game/TopInfoBar.module.scss";
 
-type TopInfoBarProps = {};
-
-export default function TopInfoBar(props: TopInfoBarProps) {
+export default function TopInfoBar() {
   return (
     <div className={styles.TopInfoBar}>
       <span className={styles.title}>Mission 2 - Team Building</span>

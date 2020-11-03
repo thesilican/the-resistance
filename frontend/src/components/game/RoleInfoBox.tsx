@@ -15,19 +15,23 @@ export default function RoleInfoBox(props: RoleInfoBoxProps) {
         onClose={() => setShowHowToPlay(false)}
       />
       <span>
-        <TextTransformer>{`{{name:0}}`}</TextTransformer>
+        <TextTransformer>{`{{name:0}} - (you) {{fail:Spy}}`}</TextTransformer>
       </span>
       <span>
-        <TextTransformer>{`You are a {{fail:spy}}`}</TextTransformer>
+        <TextTransformer>{`{{name:1}} - {{fail:Spy}}`}</TextTransformer>
       </span>
       <span>
-        <TextTransformer>{`{{fail:Spies}} - {{name:0}} {{name:1}}`}</TextTransformer>
+        <TextTransformer>{`{{name:2}} - {{fail:Spy}}`}</TextTransformer>
       </span>
       <span className={styles.small}>
-        Roles:{" "}
+        Roles:
+        <br />
         <TextTransformer>
-          {`2 {{success:agent}} 1 {{success:captain}} ` +
-            `1 {{fail:spy}} 1 {{fail:assasin}} ` +
+          {`2 {{success:agent}} 1 {{success:captain}}`}
+        </TextTransformer>
+        <br />
+        <TextTransformer>
+          {`1 {{fail:spy}} 1 {{fail:assasin}} ` +
             `1 {{fail:spy}} 1 {{fail:assasin}}`}
         </TextTransformer>
       </span>

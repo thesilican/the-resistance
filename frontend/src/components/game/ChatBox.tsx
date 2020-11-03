@@ -26,9 +26,7 @@ let messages: ChatMessage[] = [
   })),
 ];
 
-type ChatBoxProps = {};
-
-export default function ChatBox(props: ChatBoxProps) {
+export default function ChatBox() {
   const [typingMessage, setTypingMessage] = useState("");
   const handleTypeCharacter = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length > 200) return;

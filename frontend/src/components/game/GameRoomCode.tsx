@@ -2,9 +2,7 @@ import cn from "classnames";
 import React from "react";
 import styles from "../../styles/game/GameRoomCode.module.scss";
 
-type GameRoomCodeProps = {};
-
-export default function GameRoomCode(props: GameRoomCodeProps) {
+export default function GameRoomCode() {
   const gameCode = "ABCDEF";
   return (
     <div className={styles.GameRoomCode}>

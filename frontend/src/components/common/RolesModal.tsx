@@ -47,7 +47,7 @@ export default function RolesModal(props: RolesModalProps) {
           <span className={styles.flavorText}>
             <TF>
               {`The government {{fail:spies}} have infiltrated the resistance collective and work ` +
-                `secretly to sabotage the agents' objective`}
+                `secretly to sabotage the agents' missions`}
             </TF>
           </span>
           <ul>
@@ -151,7 +151,7 @@ export default function RolesModal(props: RolesModalProps) {
           <br />
           <span className={styles.flavorText}>
             <TF>
-              {`As the {{success:Captain}}'s most loyal assistant, the {{success:Deputy}} must help lead ` +
+              {`As the {{success:Captain}}'s most loyal assistant, the {{success:Deputy}} must assist with leading ` +
                 `the resistance collective to victory`}
             </TF>
           </span>

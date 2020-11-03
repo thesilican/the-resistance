@@ -2,9 +2,7 @@ import React from "react";
 import styles from "../../styles/game/StatusMessage.module.scss";
 import TextTransformer from "../common/TextTransformer";
 
-type StatusMessageProps = {};
-
-export default function StatusMessage(props: StatusMessageProps) {
+export default function StatusMessage() {
   return (
     <div className={styles.StatusMessage}>
       <span className={styles.text}>

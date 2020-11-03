@@ -1,9 +1,7 @@
 import React from "react";
 import styles from "../../styles/lobby/MembersList.module.scss";
 
-type MembersListProps = {};
-
-export default function MembersList(props: MembersListProps) {
+export default function MembersList() {
   return (
     <div className={styles.MembersList}>
       <span className={styles.title}>Room Members (1 player)</span>

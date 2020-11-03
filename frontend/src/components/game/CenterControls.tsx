@@ -10,6 +10,7 @@ export default function CenterControls() {
       {false && <VoteButtons />}
       {false && <ProposeButtons />}
       {false && <NukeButtons />}
+      {true && <LeaveGameButtons />}
     </div>
   );
 }
@@ -104,6 +105,14 @@ function NukeButtons() {
   return (
     <div className={styles.centerButtonBox}>
       <Button disabled={disabled}>Nuke</Button>
+    </div>
+  );
+}
+
+function LeaveGameButtons() {
+  return (
+    <div className={styles.centerButtonBox}>
+      <Button variant="outline-secondary">Return to Lobby</Button>
     </div>
   );
 }

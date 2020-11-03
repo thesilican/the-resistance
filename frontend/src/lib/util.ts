@@ -80,7 +80,7 @@ export function equalSpaceEllipse(
         p[1] * scaleRatio + screenDim[1] / 2,
       ] as Vec2
   );
-  const newSpriteDim = [maxSpriteW * scaleRatio, maxSpriteH * scaleRatio];
+  const newSpriteDim: Vec2 = [maxSpriteW * scaleRatio, maxSpriteH * scaleRatio];
 
   return { spritePoints, spriteDim: newSpriteDim, scaleRatio };
 }

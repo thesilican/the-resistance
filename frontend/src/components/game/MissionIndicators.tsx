@@ -1,13 +1,11 @@
 import cn from "classnames";
-import React, { useState } from "react";
+import React from "react";
 import OverlayTrigger from "react-bootstrap/esm/OverlayTrigger";
 import Tooltip from "react-bootstrap/esm/Tooltip";
 import styles from "../../styles/game/MissionIndicators.module.scss";
 import TextTransformer from "../common/TextTransformer";
 
-type MissionIndicatorsProps = {};
-
-export default function MissionIndicators(props: MissionIndicatorsProps) {
+export default function MissionIndicators() {
   const missions = Array.from(Array(5)).fill(null);
   return (
     <div className={styles.MissionIndicators}>
