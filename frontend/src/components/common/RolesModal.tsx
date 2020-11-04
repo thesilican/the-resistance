@@ -16,7 +16,7 @@ export default function RolesModal(props: RolesModalProps) {
       </Modal.Header>
       <Modal.Body>
         <h3>Classic Mode</h3>
-        <p>
+        <div className={styles.roleBox}>
           <span className={styles.role}>
             <TF>{`{{success:Agent}}`}</TF>
           </span>
@@ -38,8 +38,8 @@ export default function RolesModal(props: RolesModalProps) {
               </TF>
             </li>
           </ul>
-        </p>
-        <p>
+        </div>
+        <div className={styles.roleBox}>
           <span className={styles.role}>
             <TF>{`{{fail:Spy}}`}</TF>
           </span>
@@ -61,10 +61,10 @@ export default function RolesModal(props: RolesModalProps) {
               </TF>
             </li>
           </ul>
-        </p>
+        </div>
 
         <h3>Assasins Mode</h3>
-        <p>
+        <div className={styles.roleBox}>
           <span className={styles.role}>
             <TF>{`{{success:Captain}}`}</TF>
           </span>
@@ -86,8 +86,8 @@ export default function RolesModal(props: RolesModalProps) {
               </TF>
             </li>
           </ul>
-        </p>
-        <p>
+        </div>
+        <div className={styles.roleBox}>
           <span className={styles.role}>
             <TF>{`{{fail:Assasin}}`}</TF>
           </span>
@@ -111,8 +111,8 @@ export default function RolesModal(props: RolesModalProps) {
               </TF>
             </li>
           </ul>
-        </p>
-        <p>
+        </div>
+        <div className={styles.roleBox}>
           <span className={styles.role}>
             <TF>{`{{fail:Intern}}`}</TF>
           </span>
@@ -141,10 +141,10 @@ export default function RolesModal(props: RolesModalProps) {
               </TF>
             </li>
           </ul>
-        </p>
+        </div>
 
         <h3>Custom Mode</h3>
-        <p>
+        <div className={styles.roleBox}>
           <span className={styles.role}>
             <TF>{`{{success:Deputy}}`}</TF>
           </span>
@@ -167,8 +167,8 @@ export default function RolesModal(props: RolesModalProps) {
               </TF>
             </li>
           </ul>
-        </p>
-        <p>
+        </div>
+        <div className={styles.roleBox}>
           <span className={styles.role}>
             <TF>{`{{fail:Imposter}}`}</TF>
           </span>
@@ -186,8 +186,8 @@ export default function RolesModal(props: RolesModalProps) {
               </TF>
             </li>
           </ul>
-        </p>
-        <p>
+        </div>
+        <div className={styles.roleBox}>
           <span className={styles.role}>
             <TF>{`{{fail:Mole}}`}</TF>
           </span>
@@ -205,7 +205,7 @@ export default function RolesModal(props: RolesModalProps) {
               </TF>
             </li>
           </ul>
-        </p>
+        </div>
       </Modal.Body>
     </Modal>
   );
