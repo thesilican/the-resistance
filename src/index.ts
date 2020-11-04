@@ -4,7 +4,8 @@ import http from "http";
 import path from "path";
 import process from "process";
 import socketIO from "socket.io";
-import { start } from "./game";
+import { Server } from "./server";
+import { actionFromServer, generateUniqueID } from "./util";
 
 const app = express();
 app.use(compression());
@@ -16,9 +17,11 @@ app.get("*", (req, res) => {
 const httpServer = http.createServer(app);
 
 const io = socketIO(httpServer);
-start(io);
+const server = new Server(io);
 
 const port = process.env.PORT ?? 8080;
 httpServer.listen(port, () => {
   console.log("😎 Starting HTTP server on port " + port);
 });
+
+console.log(actionFromServer({ type: "me" }));
