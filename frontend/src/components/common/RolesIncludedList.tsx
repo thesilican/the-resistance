@@ -8,7 +8,6 @@ type RolesIncludedListProps = {
 
 export default function RolesIncludedList(props: RolesIncludedListProps) {
   const { rolesList } = props;
-  console.log(rolesList);
   const rolesListMap = rolesList
     .slice()
     .sort((a, b) => GameRolesOrder.indexOf(a) - GameRolesOrder.indexOf(b))

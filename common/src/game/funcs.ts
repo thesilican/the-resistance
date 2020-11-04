@@ -19,6 +19,7 @@ import {
   Role,
   Team,
   TeamHistory,
+  MissionHistory,
 } from "./types";
 
 export const GameFunc = {
@@ -101,8 +102,9 @@ export const GameFunc = {
       missions: [],
       teams: [],
       chat: [],
-      statusMessage: null,
-      // statusMessage: "Welcome to the Resistance",
+      // statusMessage: null,
+      statusMessage: "Welcome to the Resistance",
+      assasinChoice: null,
     };
   },
   tick(state: GameState): GameState {
@@ -143,13 +145,21 @@ export const GameFunc = {
           if (GameFunc.util.isHammer(state)) {
             return GameFunc.beginFinished(state);
           } else {
-            return GameFunc.beginTeamBuilding(state);
+            return this.beginTeamBuilding(state, true);
           }
         }
       case "mission":
         return GameFunc.beginMissionReview(state);
       case "mission-review":
-        return GameFunc.beginTeamBuilding(state);
+        if (GameFunc.util.getWinnerFromMissions(state) === null) {
+          return GameFunc.beginTeamBuilding(state);
+        } else {
+          if (state.player.roles.includes("assasin")) {
+            return GameFunc.beginFinishedAssasinate(state);
+          } else {
+            return GameFunc.beginFinished(state);
+          }
+        }
       case "finished-assasinate":
         return GameFunc.beginFinished(state);
       case "finished":
@@ -157,9 +167,11 @@ export const GameFunc = {
         return state;
     }
   },
-  beginTeamBuilding(state: GameState): GameState {
+  beginTeamBuilding(state: GameState, noIncrementMission = false): GameState {
     // Begin new state
-    state.game.mission += 1;
+    if (!noIncrementMission) {
+      state.game.mission += 1;
+    }
     state.game.phase = "team-building";
     state.game.phaseCountdown = GamePhaseLengths["team-building"];
 
@@ -227,13 +239,8 @@ export const GameFunc = {
     state.game.phase = "finished";
     state.game.phaseCountdown = GamePhaseLengths["finished"];
 
-    // Set winner (if not set by assasinate)
-    if (!state.winner) {
-      const missionWin = GameFunc.util.getWinnerFromMissions(state);
-      const hammer = GameFunc.util.isHammer(state);
-      const winner = hammer ? "spy" : missionWin;
-      state.winner = winner;
-    }
+    // Set the winner
+    state.winner = GameFunc.util.getWinner(state);
     return state;
   },
   updateTeamMembers(state: GameState, members: number[]): GameState {
@@ -257,12 +264,7 @@ export const GameFunc = {
     }
   },
   passTeamBuilding(state: GameState) {
-    const team = state.teams[state.teams.length - 1];
-    team.leader = (team.leader + 1) % state.player.names.length;
-    team.members = [];
-    // Extend time
-    state.game.phaseCountdown = GamePhaseLengths["team-building"];
-    return state;
+    return this.beginTeamBuilding(state, true);
   },
   sendProposalVote(state: GameState, player: number, vote: ProposalVote) {
     if (state.game.phase !== "voting") {
@@ -296,16 +298,14 @@ export const GameFunc = {
     // If all actions are sent
     return GameFunc.beginMissionReview(state);
   },
-  sendAssasinChoice(state: GameState, player: number) {
-    // Set win or lose if it was admin
+  updateAssasinChoice(state: GameState, player: number) {
+    state.assasinChoice = player;
+  },
+  finishAssasinChoice(state: GameState) {
     if (state.game.phase !== "finished-assasinate") {
       return state;
     }
-    if (state.player.roles[player] === "captain") {
-      state.winner = "spy";
-    } else {
-      state.winner = "agent";
-    }
+
     return GameFunc.beginFinished(state);
   },
   newChatMessage(state: GameState, message: ChatMessage) {
@@ -317,6 +317,26 @@ export const GameFunc = {
     return state;
   },
   util: {
+    // Return the winner of a game
+    getWinner(state: GameState): Team | null {
+      if (GameFunc.util.isHammer(state)) {
+        return "spy";
+      }
+      const winner = GameFunc.util.getWinnerFromMissions(state);
+      if (winner === null || winner === "spy") {
+        return winner;
+      } else if (winner === "agent") {
+        if (!state.player.roles.includes("assasin")) return "agent";
+        if (state.assasinChoice === null) return null;
+        const assasinated = state.player.roles[state.assasinChoice];
+        if (assasinated === "captain") {
+          return "spy";
+        } else {
+          return "agent";
+        }
+      }
+      throw "up"; // How did you even get here
+    },
     // Returns whether or not the last 5 team proposals were failed
     isHammer(state: GameState): boolean {
       let mission = 0,
@@ -334,25 +354,49 @@ export const GameFunc = {
       }
       return false;
     },
-    // Returns the winner
+    // Returns the winner, based on missions only
     getWinnerFromMissions(state: GameState): Team | null {
       let fail = 0,
         success = 0;
       for (const mission of state.missions) {
-        const requiresTwo = MissionNeedDouble[mission.mission];
-        const failCount = mission.actions.reduce(
-          (a, v) => (v === "fail" ? a + 1 : a),
-          0
-        );
-        if (failCount >= 2 || (!requiresTwo && failCount >= 1)) {
-          fail++;
-        } else {
+        if (
+          GameFunc.util.missionResult(mission, state.player.names.length) ===
+          "success"
+        ) {
           success++;
+        } else {
+          fail++;
         }
       }
       if (fail === 3) return "spy";
       if (success === 3) return "agent";
       return null;
+    },
+    missionResult(mission: MissionHistory, numPlayers: number): MissionAction {
+      const requiresTwo = MissionNeedDouble[numPlayers][mission.mission - 1];
+      const failCount = mission.actions.reduce(
+        (a, v) => (v === "fail" ? a + 1 : a),
+        0
+      );
+      if (failCount >= 2 || (!requiresTwo && failCount >= 1)) {
+        return "fail";
+      } else {
+        return "success";
+      }
+    },
+    getProposalsRemaining(teams: TeamHistory[]) {
+      if (teams.length === 0) return 5;
+
+      let count = 0;
+      const mission = teams[teams.length - 1].mission;
+      for (let i = teams.length - 1; i >= 0; i--) {
+        if (teams[i].mission === mission) {
+          count++;
+        } else {
+          break;
+        }
+      }
+      return 5 - count;
     },
   },
   getKnownRoles(playerIndex: number, roleList: Role[]): Map<number, Role[]> {

@@ -1,7 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Layer, Stage } from "react-konva";
+import { Provider, useSelector } from "react-redux";
 import "../../../lib/util";
 import { equalSpaceEllipse, Vec2 } from "../../../lib/util";
+import { GameSelector, store } from "../../../store";
 import styles from "../../../styles/game/GameCanvas.module.scss";
 import { PlayerSprite } from "./PlayerSprite";
 
@@ -35,7 +37,7 @@ function getStageDim(numPlayers: number, dim: Vec2): StageInfo {
 
 export default function GameCanvas() {
   const [dim, setDim] = useState(getWindowDim);
-  const [numPlayers] = useState(6);
+  const numPlayers = useSelector(GameSelector.socketIDs).length;
 
   useEffect(() => {
     // Handle window resize
@@ -54,9 +56,12 @@ export default function GameCanvas() {
   return (
     <Stage width={dim[0]} height={dim[1]} className={styles.canvasWrapper}>
       <Layer>
-        {Array.from(Array(numPlayers)).map((_, i) => (
-          <PlayerSprite key={i} index={i} stageInfo={stageInfo} />
-        ))}
+        {/* Required for some reason */}
+        <Provider store={store}>
+          {Array.from(Array(numPlayers)).map((_, i) => (
+            <PlayerSprite key={i} index={i} stageInfo={stageInfo} />
+          ))}
+        </Provider>
       </Layer>
     </Stage>
   );

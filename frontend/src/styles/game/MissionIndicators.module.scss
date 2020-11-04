@@ -72,6 +72,14 @@
   }
 }
 
+@keyframes pulseRed {
+  0% {
+    color: $red;
+  }
+  100% {
+  }
+}
+
 .proposals {
   display: flex;
   flex-direction: column;
@@ -82,6 +90,9 @@
   }
   .label2 {
     font-size: 0.75rem;
+  }
+  &.hammer {
+    animation: pulseRed 1s linear 0s infinite alternate;
   }
 }
 

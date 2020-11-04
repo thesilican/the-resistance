@@ -143,6 +143,9 @@ export class Game {
     const tickAction = GameAction.tick();
     this.store.dispatch(tickAction);
     io.to(this.roomID).emit("action", actionFromServer(tickAction));
+    if (this.store.getState().game.phase === "finished") {
+      this.stop();
+    }
   }
   onAction(action: AnyAction, socket: Socket, io: Server) {
     this.store.dispatch(action);

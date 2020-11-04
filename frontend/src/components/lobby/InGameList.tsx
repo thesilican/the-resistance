@@ -6,11 +6,11 @@ import { GameSelector } from "../../store";
 
 export default function InGameList() {
   // TODO: Add ability to rejoin game
+  const numPlayers = useSelector(GameSelector.numPlayers);
   const gameNames = useSelector(GameSelector.names);
   const gameConnected = useSelector(GameSelector.socketIDs).map(
     (x) => x !== null
   );
-  const numPlayers = gameNames.length;
   return (
     <div className={styles.InGameList}>
       <span className={styles.title}>In Game ({numPlayers} players)</span>

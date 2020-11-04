@@ -8,12 +8,13 @@ import {
   passTeamBuilding,
   playerDisconnect,
   playerReconnect,
-  sendAssasinChoice,
+  updateAssasinChoice,
   sendMissionAction,
   sendProposalVote,
   tick,
   updateStatusMessage,
   updateTeamMembers,
+  finishAssasinChoice,
 } from "./actions";
 import { GameFunc } from "./funcs";
 import { GameState } from "./types";
@@ -34,6 +35,7 @@ const initialState: GameState = {
   teams: [],
   winner: null,
   chat: [],
+  assasinChoice: null,
 };
 
 export const GameReducer = createReducer(initialState, (builder) => {
@@ -84,8 +86,11 @@ export const GameReducer = createReducer(initialState, (builder) => {
         action.payload.action
       );
     })
-    .addCase(sendAssasinChoice, (state, action) => {
-      return GameFunc.sendAssasinChoice(state, action.payload.player);
+    .addCase(updateAssasinChoice, (state, action) => {
+      return GameFunc.updateAssasinChoice(state, action.payload.player);
+    })
+    .addCase(finishAssasinChoice, (state, action) => {
+      return GameFunc.finishAssasinChoice(state);
     })
     // Chat message
     .addCase(newPlayerChatMessage, (state, action) => {

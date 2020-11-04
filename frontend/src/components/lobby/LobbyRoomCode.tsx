@@ -14,6 +14,7 @@ export default function LobbyRoomCode() {
         size={3}
         onClick={(e) => (e.target as HTMLInputElement).select()}
         value={roomCode}
+        onChange={() => {}}
       />
     </div>
   );

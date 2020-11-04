@@ -6,9 +6,10 @@ import { GameSelector } from "../../store";
 import styles from "../../styles/game/TopInfoBar.module.scss";
 
 export default function TopInfoBar() {
-  const { mission, phase, phaseCountdown } = useSelector(
-    GameSelector.gamePhase
-  );
+  const mission = useSelector(GameSelector.missionNum);
+  const phase = useSelector(GameSelector.gamePhase);
+  const phaseCountdown = useSelector(GameSelector.gamePhaseCountdown);
+
   let text: string;
   const max = GamePhaseLengths[phase];
   switch (phase) {

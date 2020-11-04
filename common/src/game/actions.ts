@@ -44,9 +44,10 @@ export const sendMissionAction = createAction<{
 }>("game/send-mission-action");
 
 // Assasin
-export const sendAssasinChoice = createAction<{
+export const updateAssasinChoice = createAction<{
   player: number;
-}>("game/send-assasin-choice");
+}>("game/update-assasin-choice");
+export const finishAssasinChoice = createAction("game/finish-assasin-choice");
 
 // Chat
 export const newPlayerChatMessage = createAction<{

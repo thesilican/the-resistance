@@ -7,6 +7,7 @@ import styles from "../../styles/lobby/MembersList.module.scss";
 export default function MembersList() {
   const lobbyIndex = useSelector(LobbySelector.lobbyIndex);
   const names = useSelector(LobbySelector.lobbyNames);
+
   return (
     <div className={styles.MembersList}>
       <span className={styles.title}>

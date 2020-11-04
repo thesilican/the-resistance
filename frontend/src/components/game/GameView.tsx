@@ -1,33 +1,31 @@
-import React, { useEffect, useState } from "react";
+import cn from "classnames";
+import { GameFunc } from "common-modules";
+import React from "react";
+import { useSelector } from "react-redux";
+import { GameSelector } from "../../store";
 import styles from "../../styles/game/GameView.module.scss";
-import ChatHistoryTabs from "./ChatHistoryTabs";
 import GameCanvas from "./canvas/GameCanvas";
+import CenterControls from "./CenterControls";
+import ChatHistoryTabs from "./ChatHistoryTabs";
 import GameRoomCode from "./GameRoomCode";
 import MissionIndicators from "./MissionIndicators";
 import RoleInfoBox from "./RoleInfoBox";
 import StatusMessage from "./StatusMessage";
 import TopInfoBar from "./TopInfoBar";
-import cn from "classnames";
-import CenterControls from "./CenterControls";
 
 export default function GameView() {
-  const [dark, setDark] = useState(false);
-  const [flashFail, setFlashFail] = useState(false);
-  const [flashSuccess, setFlashSuccess] = useState(false);
-
-  useEffect(() => {
-    // const interval = setInterval(() => {
-    //   setDark(true);
-    //   setTimeout(() => {
-    //     setDark(false);
-    //     setFlashFail(true);
-    //     setTimeout(() => {
-    //       setFlashFail(false);
-    //     }, 2000);
-    //   }, 3000);
-    // }, 6000);
-    // return () => clearInterval(interval);
-  }, []);
+  const gamePhase = useSelector(GameSelector.gamePhase);
+  const numPlayers = useSelector(GameSelector.numPlayers);
+  const mission = useSelector(GameSelector.missions);
+  const lastMission = mission[mission.length - 1];
+  const lastMissionResult = lastMission
+    ? GameFunc.util.missionResult(lastMission, numPlayers)
+    : null;
+  const dark = gamePhase === "mission";
+  const flashFail =
+    gamePhase === "mission-review" && lastMissionResult === "fail";
+  const flashSuccess =
+    gamePhase === "mission-review" && lastMissionResult === "success";
 
   return (
     <div

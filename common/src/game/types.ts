@@ -87,6 +87,7 @@ export type GameState = {
     socketIDs: (string | null)[];
     roles: Role[];
   };
+  assasinChoice: number | null;
   winner: Team | null;
   game: {
     phase: GamePhase;

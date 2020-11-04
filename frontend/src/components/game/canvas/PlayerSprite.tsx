@@ -1,9 +1,17 @@
-import { Rect, Text } from "react-konva";
+import {
+  ColorOrder,
+  GameAction,
+  MissionPlayerCount,
+  ProposalVote,
+  Role,
+} from "common-modules";
 import React, { Fragment, useMemo, useState } from "react";
-import Texture from "./Texture";
-import { ColorOrder, ProposalVote, Role } from "common-modules";
+import { Rect, Text } from "react-konva";
+import { useDispatch, useSelector } from "react-redux";
 import { ColorValues } from "../../../lib/util";
+import { GameSelector } from "../../../store";
 import { StageInfo } from "./GameCanvas";
+import Texture from "./Texture";
 
 export type PlayerSpriteProps = {
   stageInfo: StageInfo;
@@ -13,23 +21,102 @@ export type PlayerSpriteProps = {
 export function PlayerSprite(props: PlayerSpriteProps) {
   const { index, stageInfo } = props;
   const [hover, setHover] = useState(false);
-  const [selected, setSelected] = useState(() => index % 3 === 0);
+  // TODO: Refactor maybe
+  const dispatch = useDispatch();
+  const roles = useSelector(GameSelector.roles);
+  const numPlayers = useSelector(GameSelector.numPlayers);
+  const names = useSelector(GameSelector.names);
+  const gamePhase = useSelector(GameSelector.gamePhase);
+  const playerIndex = useSelector(GameSelector.playerIndex);
+  const lastTeam = useSelector(GameSelector.lastTeam);
+  const curTeamMembers = lastTeam?.members;
+  const onTeam = lastTeam?.members.includes(index);
+  const isLeader = playerIndex === lastTeam?.leader;
+  const teamRequiredPlayers =
+    MissionPlayerCount[numPlayers][(lastTeam?.mission ?? 1) - 1];
 
-  // Positioning info
+  // Opacity & stuff
+  let hat = lastTeam?.leader === index;
+  let spriteOpacity = 1;
+  let selectionOpacity = 0;
 
-  const hat = index === 1;
-  const spriteOpacity = selected ? 1 : 0.25;
-  const selectionOpacity = selected ? 1 : hover ? 0.5 : 0.1;
+  switch (gamePhase) {
+    case "role-reveal":
+      break;
+    case "team-building":
+    case "team-building-review":
+    case "voting":
+    case "voting-review":
+      if (onTeam) {
+        selectionOpacity = 1;
+      } else if (gamePhase === "team-building" && isLeader) {
+        if (hover && curTeamMembers!.length < teamRequiredPlayers) {
+          selectionOpacity = 0.5;
+        } else {
+          selectionOpacity = 0.1;
+        }
+      }
+      break;
+    case "mission":
+    case "mission-review":
+      if (onTeam) {
+        selectionOpacity = 1;
+        spriteOpacity = 1;
+      } else {
+        spriteOpacity = 0.25;
+      }
+      break;
+    case "finished-assasinate":
+      // TODO: implement
+      break;
+    case "finished":
+      break;
+  }
+
+  const handleClick = () => {
+    if (gamePhase === "team-building" && isLeader) {
+      if (curTeamMembers?.includes(index)) {
+        dispatch(
+          GameAction.updateTeamMembers({
+            members: curTeamMembers.filter((x) => x !== index),
+          })
+        );
+      } else {
+        if (curTeamMembers!.length < teamRequiredPlayers) {
+          dispatch(
+            GameAction.updateTeamMembers({
+              members: [...curTeamMembers!, index],
+            })
+          );
+        }
+      }
+    }
+  };
+
+  // Votes
+  let vote: ProposalVote | null = null;
+  if (gamePhase === "voting") {
+    vote = lastTeam?.votes[index] === "none" ? null : "none";
+  } else if (gamePhase === "voting-review") {
+    vote = lastTeam?.votes[index] ?? null;
+  }
+
+  // Roles
+  let role: Role | null = null;
+  if (gamePhase === "finished") {
+    role = roles[index];
+  }
 
   return (
     <PlayerSpriteTexture
+      text={names[index]}
       index={index}
       hat={hat}
-      onMouseDown={() => setSelected((x) => !x)}
+      onMouseDown={handleClick}
       onMouseOver={() => setHover(true)}
       onMouseOut={() => setHover(false)}
-      role={null}
-      vote={null}
+      role={role}
+      vote={vote}
       stageInfo={stageInfo}
       spriteOpacity={spriteOpacity}
       selectionOpacity={selectionOpacity}
@@ -53,6 +140,7 @@ function getPosition(index: number, stageInfo: StageInfo) {
 }
 
 type PlayerSpriteTexturesProps = {
+  text: string;
   index: number;
   stageInfo: StageInfo;
   spriteOpacity?: number;
@@ -79,6 +167,7 @@ function PlayerSpriteTexture(props: PlayerSpriteTexturesProps) {
     onMouseOver,
     onMouseOut,
     onMouseDown,
+    text,
   } = props;
   const {
     x,
@@ -153,7 +242,7 @@ function PlayerSpriteTexture(props: PlayerSpriteTexturesProps) {
         fontSize={textHeight}
         fill={colorCode}
         align={"center"}
-        text={"Bobby"}
+        text={text}
         opacity={spriteOpacity ?? 1}
       />
       {/* Hitbox */}
