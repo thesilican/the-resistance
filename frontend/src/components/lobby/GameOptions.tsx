@@ -1,14 +1,70 @@
+import {
+  GameAgentRoles,
+  GameCustomRoleOptions,
+  GameFunc,
+  GameMaxPlayers,
+  GameMinPlayers,
+  LobbyAction,
+  Role,
+} from "common-modules";
 import React, { useState } from "react";
-import styles from "../../styles/lobby/GameOptions.module.scss";
-import Form from "react-bootstrap/esm/Form";
 import Button from "react-bootstrap/esm/Button";
-import TextTransformer from "../common/TextTransformer";
+import Form from "react-bootstrap/esm/Form";
+import { useDispatch, useSelector } from "react-redux";
+import { capital, plural } from "../../lib/util";
+import { LobbySelector } from "../../store";
+import styles from "../../styles/lobby/GameOptions.module.scss";
+import RolesIncludedList from "../common/RolesIncludedList";
 import RolesModal from "../common/RolesModal";
+import TextTransformer from "../common/TextTransformer";
 
 export default function GameOptions() {
-  const [gamemode, setGameMode] = useState("normal");
+  const dispatch = useDispatch();
+  const lobbyMembers = useSelector(LobbySelector.lobbyMembers);
+  const host = useSelector(LobbySelector.lobbyIsHost);
+  const gameOptions = useSelector(LobbySelector.lobbyGameOptions);
+  const gamemode = typeof gameOptions === "object" ? "custom" : gameOptions;
+  const gameRoleOptions = gameOptions as GameCustomRoleOptions;
+  const numPlayers = lobbyMembers.length;
+  const enoughPlayers =
+    numPlayers >= GameMinPlayers && numPlayers <= GameMaxPlayers;
   const [showHowToPlay, setShowHowToPlay] = useState(false);
-  const [host] = useState(true);
+
+  const rolesList = !enoughPlayers
+    ? null
+    : GameFunc.getRoleList(numPlayers, gameOptions);
+
+  const handleToggleGameOption = (gameOption: "captain" | "assasin") => {
+    dispatch(
+      LobbyAction.updateGameOptions({
+        options: {
+          ...gameRoleOptions,
+          [gameOption]: !gameRoleOptions[gameOption],
+        },
+      })
+    );
+  };
+
+  const handleSetGameMode = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const options =
+      e.target.value === "normal"
+        ? "normal"
+        : e.target.value === "assasins"
+        ? "assasins"
+        : {
+            captain: true,
+            deputy: false,
+            assasin: true,
+            imposter: false,
+            intern: false,
+            mole: false,
+          };
+    dispatch(LobbyAction.updateGameOptions({ options }));
+  };
+
+  const handleStartGame = () => {
+    dispatch(LobbyAction.clientStartGame());
+  };
 
   return (
     <div className={styles.GameOptions}>
@@ -25,7 +81,7 @@ export default function GameOptions() {
             as="select"
             value={gamemode}
             disabled={!host}
-            onChange={(e) => setGameMode(e.target.value)}
+            onChange={handleSetGameMode}
           >
             <option value="normal">Normal</option>
             <option value="assasins">Assasins</option>
@@ -37,37 +93,47 @@ export default function GameOptions() {
           <>
             <Form.Label>Select roles to use</Form.Label>
             <Form.Group className={styles.rolesBox}>
-              {["Captain", "Deputy"].map((x, i) => (
+              {/* Typescript needs a little encouragement */}
+              {(["captain", "deputy"] as "captain"[]).map((x: "captain", i) => (
                 <Form.Check
                   key={x}
                   type="checkbox"
                   id={`lobby-game-role-agent-${i}`}
                   label={
-                    <TextTransformer>{`{{success:${x}}}`}</TextTransformer>
+                    <TextTransformer>{`{{success:${capital(
+                      x
+                    )}}}`}</TextTransformer>
                   }
                   disabled={!host}
+                  checked={gameRoleOptions[x]}
+                  onChange={() => handleToggleGameOption(x)}
                 />
               ))}
-              {["Assasin", "Imposter", "Mole", "Intern"].map((x, i) => (
-                <Form.Check
-                  key={x}
-                  type="checkbox"
-                  id={`lobby-game-role-spy-${i}`}
-                  label={<TextTransformer>{`{{fail:${x}}}`}</TextTransformer>}
-                  disabled={!host}
-                />
-              ))}
+              {(["assasin", "imposter", "mole", "intern"] as "assasin"[]).map(
+                (x: "assasin", i) => (
+                  <Form.Check
+                    key={x}
+                    type="checkbox"
+                    id={`lobby-game-role-spy-${i}`}
+                    label={
+                      <TextTransformer>{`{{fail:${capital(
+                        x
+                      )}}}`}</TextTransformer>
+                    }
+                    disabled={!host}
+                    checked={gameRoleOptions[x]}
+                    onChange={() => handleToggleGameOption(x)}
+                  />
+                )
+              )}
             </Form.Group>
           </>
         )}
-        <span>
-          Roles:{" "}
-          <TextTransformer>
-            {`2 {{success:agent}} 1 {{success:captain}} ` +
-              `1 {{fail:spy}} 1 {{fail:assasin}} ` +
-              `1 {{fail:spy}} 1 {{fail:assasin}}`}
-          </TextTransformer>
-        </span>
+        {rolesList && (
+          <span>
+            <RolesIncludedList rolesList={rolesList} />
+          </span>
+        )}
         <Button
           className={styles.howToPlayButton}
           variant={"secondary"}
@@ -77,11 +143,15 @@ export default function GameOptions() {
           View Role List
         </Button>
       </div>
-      <Button className={styles.startButton} disabled={!host}>
+      <Button
+        className={styles.startButton}
+        disabled={!host || !enoughPlayers}
+        onClick={handleStartGame}
+      >
         Start Game
       </Button>
-      <span>Only the host can start the game</span>
-      <span>5-10 players can play The Resistance</span>
+      {!host && <span>Only the host can start the game</span>}
+      {!enoughPlayers && <span>5-10 players can play The Resistance</span>}
     </div>
   );
 }

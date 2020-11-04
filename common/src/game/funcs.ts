@@ -1,5 +1,6 @@
 import { shuffle } from "../util";
 import {
+  GameAgentRoles,
   GameMaxPlayers,
   GameMinPlayers,
   GamePhaseLengths,
@@ -21,6 +22,18 @@ import {
 } from "./types";
 
 export const GameFunc = {
+  getRoleList(
+    numPlayers: number,
+    options: "normal" | "assasins" | GameCustomRoleOptions
+  ) {
+    if (options === "normal") {
+      return TeamPoolsNormal[numPlayers].slice();
+    } else if (options === "assasins") {
+      return TeamPoolsAssasins[numPlayers].slice();
+    } else {
+      return this.getCustomRoleList(numPlayers, options);
+    }
+  },
   getCustomRoleList(numPlayers: number, roleOptions: GameCustomRoleOptions) {
     const pool = TeamPoolsNormal[numPlayers].slice();
     const numAgents = pool.reduce((a, v) => (v === "agent" ? a + 1 : a), 0);
@@ -70,14 +83,7 @@ export const GameFunc = {
     const names = mixed.map((x) => x[0]);
     const socketIDs = mixed.map((x) => x[1]);
 
-    const roles: Role[] = [];
-    if (options.gamemode === "normal") {
-      roles.push(...TeamPoolsNormal[numPlayers]);
-    } else if (options.gamemode === "assasins") {
-      roles.push(...TeamPoolsAssasins[numPlayers]);
-    } else {
-      roles.push(...this.getCustomRoleList(numPlayers, options.gamemode));
-    }
+    const roles: Role[] = GameFunc.getRoleList(numPlayers, options.gamemode);
     shuffle(roles, seed++);
 
     return {
@@ -100,7 +106,7 @@ export const GameFunc = {
     };
   },
   tick(state: GameState): GameState {
-    if (state.game.phaseCountdown > 1) {
+    if (state.game.phaseCountdown > 0) {
       if (state.game.phase !== "finished") {
         state.game.phaseCountdown--;
       }
@@ -111,7 +117,14 @@ export const GameFunc = {
       case "role-reveal":
         return GameFunc.beginTeamBuilding(state);
       case "team-building":
-        return GameFunc.beginTeamBuildingReview(state);
+        const team = state.teams[state.teams.length - 1];
+        const reqPlayers =
+          MissionPlayerCount[state.player.names.length][team.mission - 1];
+        if (team.members.length === reqPlayers) {
+          return GameFunc.beginTeamBuildingReview(state);
+        } else {
+          return GameFunc.passTeamBuilding(state);
+        }
       case "team-building-review":
         return GameFunc.beginVoting(state);
       case "voting":
@@ -341,5 +354,41 @@ export const GameFunc = {
       if (success === 3) return "agent";
       return null;
     },
+  },
+  getKnownRoles(playerIndex: number, roleList: Role[]): Map<number, Role[]> {
+    const playerRole = roleList[playerIndex];
+    let known = new Map<number, Role[]>();
+    known.set(playerIndex, [roleList[playerIndex]]);
+
+    if (playerRole === "captain") {
+      for (let i = 0; i < roleList.length; i++) {
+        if (i === playerIndex) continue;
+        if (!GameAgentRoles.includes(roleList[i]) && roleList[i] !== "mole") {
+          known.set(i, ["spy"]);
+        }
+      }
+    } else if (playerRole === "deputy") {
+      const roles: Role[] = [];
+      if (roleList.includes("captain")) {
+        roles.push("captain");
+      }
+      if (roleList.includes("imposter")) {
+        roles.push("imposter");
+      }
+      for (let i = 0; i < roleList.length; i++) {
+        if (i === playerIndex) continue;
+        if (roleList[i] === "captain" || roleList[i] === "imposter") {
+          known.set(i, roles.slice());
+        }
+      }
+    } else if (["spy", "assasin", "imposter", "mole"].includes(playerRole)) {
+      for (let i = 0; i < roleList.length; i++) {
+        if (i === playerIndex) continue;
+        if (!GameAgentRoles.includes(roleList[i]) && roleList[i] !== "intern") {
+          known.set(i, [roleList[i]]);
+        }
+      }
+    }
+    return known;
   },
 };

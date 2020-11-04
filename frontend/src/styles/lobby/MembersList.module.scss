@@ -13,8 +13,9 @@
 .list {
   border: 1px solid $light;
   border-radius: 1rem;
-  padding: 1rem;
-  margin-bottom: 1rem;
+  padding-top: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 
   display: flex;
   flex-direction: column;

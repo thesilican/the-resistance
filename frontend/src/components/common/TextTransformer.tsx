@@ -1,5 +1,7 @@
 import { ColorOrder } from "common-modules";
 import React, { Fragment, ReactNode } from "react";
+import { useSelector } from "react-redux";
+import { GameSelector } from "../../store";
 import styles from "../../styles/common/TextTransformer.module.scss";
 
 const pattern = /{{(fail:.+?|success:.+?|name:.+?)}}/;
@@ -12,18 +14,7 @@ export default React.memo(function TextTransformer(
   props: TextTransformerProps
 ) {
   const colors = ColorOrder;
-  const names = [
-    "Alice",
-    "Bob",
-    "Charlie",
-    "David",
-    "Edward",
-    "Freddy",
-    "George",
-    "Harvey",
-    "Ivan",
-    "James",
-  ];
+  const names = useSelector(GameSelector.names);
   const splits: ReactNode[] = props.children.split(pattern);
 
   for (let i = 1; i < splits.length; i += 2) {

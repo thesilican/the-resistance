@@ -100,3 +100,11 @@ export const ColorValues: { [c in Color]: string } = {
   purple: "#c45cff",
   pink: "#e617a0",
 };
+
+export function plural(num: number, text: string, pluralAppend = "s") {
+  return num === 1 ? num + " " + text : num + " " + text + pluralAppend;
+}
+
+export function capital(text: string) {
+  return text[0].toUpperCase() + text.slice(1);
+}

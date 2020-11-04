@@ -38,12 +38,19 @@ export class Lobby {
     socket.join(this.id);
     const hydrateAction = LobbyAction.hydrate(this.store.getState());
     socket.emit("action", actionFromServer(hydrateAction));
+
+    // Hydrate game too
+    if (this.game) {
+      const hydrateGameAction = GameAction.hydrate(this.game.store.getState());
+      socket.emit("action", actionFromServer(hydrateGameAction));
+    }
   }
   onAction(action: AnyAction, socket: Socket, io: Server) {
     const clientStartGame = LobbyAction.clientStartGame.type;
     const clientLeaveGame = LobbyAction.clientLeaveGame.type;
     const clientRejoinGame = LobbyAction.clientRejoinGame.type;
     if (action.type === clientStartGame) {
+      // TODO: Add verification for number of players
       // Create game
       const gameOptions: GameInitOptions = {
         socketIDs: this.store.getState().memberIDs,
@@ -96,6 +103,7 @@ export class Lobby {
       this.game.onLeave(socket.id, io);
       const socketIDs = this.game.store.getState().player.socketIDs;
       const count = socketIDs.reduce((a, v) => (v === null ? a : a + 1), 0);
+      console.log(count, socketIDs);
       if (count === 0) {
         this.game.stop();
         this.game = null;
@@ -147,7 +155,7 @@ export class Game {
   }
   onLeave(socketID: string, io: Server) {
     const playerDisconnectAction = GameAction.playerDisconnect({ socketID });
-    this.stop.bind(playerDisconnectAction);
+    this.store.dispatch(playerDisconnectAction);
     io.to(this.roomID).emit("action", actionFromServer(playerDisconnectAction));
   }
 }

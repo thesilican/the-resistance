@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { GameAction, GameReducer } from "..";
+import { GameAction, GameReducer, GamePhaseLengths } from "..";
 
 function getInitializedGame() {
   const store = configureStore({
@@ -17,9 +17,9 @@ function getInitializedGame() {
 }
 const initialState = {
   player: {
-    names: ["bob", "charlie", "edward", "david", "alice"],
-    socketIDs: ["b", "c", "e", "d", "a"],
-    roles: ["agent", "agent", "agent", "spy", "spy"],
+    names: ["bob", "alice", "charlie", "david", "edward"],
+    socketIDs: ["b", "a", "c", "d", "e"],
+    roles: ["agent", "agent", "spy", "spy", "agent"],
   },
   winner: null,
   game: { mission: 0, phase: "role-reveal", phaseCountdown: 10 },
@@ -51,7 +51,7 @@ describe("game", () => {
 
   it("should have the first person as the leader", () => {
     const store = getInitializedGame();
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 11; i++) {
       store.dispatch(GameAction.tick());
     }
     expect(store.getState().teams[0].leader).toEqual(0);
@@ -63,7 +63,7 @@ describe("game", () => {
       store.dispatch(GameAction.tick());
     store.dispatch(
       GameAction.updateTeamMembers({
-        members: [0, 1, 2],
+        members: [0, 1],
       })
     );
     store.dispatch(GameAction.finishTeamBuilding());
@@ -77,5 +77,20 @@ describe("game", () => {
         })
       );
     }
+    for (let i = 0; i < 20; i++) {
+      store.dispatch(GameAction.tick());
+    }
+    expect(store.getState().game.phase).toEqual("mission");
+  });
+
+  it("should pass after a number of ticks", () => {
+    const store = getInitializedGame();
+    while (store.getState().game.phase !== "team-building")
+      store.dispatch(GameAction.tick());
+    expect(store.getState().teams[0].leader).toEqual(0);
+    for (let i = 0; i < GamePhaseLengths["team-building"] + 10; i++) {
+      store.dispatch(GameAction.tick());
+    }
+    expect(store.getState().teams[0].leader).toEqual(1);
   });
 });

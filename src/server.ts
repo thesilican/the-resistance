@@ -2,7 +2,7 @@ import { AnyAction } from "@reduxjs/toolkit";
 import { LobbyAction } from "common-modules";
 import socketIO, { Socket } from "socket.io";
 import { Lobby } from "./lobby";
-import { generateUniqueID } from "./util";
+import { actionFromServer, generateUniqueID } from "./util";
 
 export class Server {
   io: socketIO.Server;
@@ -33,17 +33,31 @@ export class Server {
     }
   }
   onAction(socket: Socket, action: AnyAction) {
+    console.log(action);
     const clientCreateLobby = LobbyAction.clientCreateLobby.type;
     const clientJoinLobby = LobbyAction.clientJoinLobby.type;
     if (action.type === clientCreateLobby) {
+      // Protect against accidental double create
+      if (this.sockets.get(socket.id)) {
+        return;
+      }
       // Create a lobby
       const roomID = generateUniqueID();
       const room = new Lobby(roomID);
       this.rooms.set(roomID, room);
+      this.sockets.set(socket.id, room.id);
       room.onJoin(action.payload.name, socket, this.io);
     } else if (action.type === clientJoinLobby) {
+      // Protect against accidental double create
+      if (this.sockets.get(socket.id)) return;
       const room = this.rooms.get(action.payload.roomID);
-      if (!room) return;
+      if (!room) {
+        socket.emit(
+          "action",
+          actionFromServer({ type: "error", error: "Invalid room code" })
+        );
+        return;
+      }
       this.sockets.set(socket.id, room.id);
       room.onJoin(action.payload.name, socket, this.io);
     } else {

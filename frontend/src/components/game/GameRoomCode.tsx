@@ -1,9 +1,11 @@
 import cn from "classnames";
 import React from "react";
+import { useSelector } from "react-redux";
+import { LobbySelector } from "../../store";
 import styles from "../../styles/game/GameRoomCode.module.scss";
 
 export default function GameRoomCode() {
-  const gameCode = "ABCDEF";
+  const gameCode = useSelector(LobbySelector.lobbyID);
   return (
     <div className={styles.GameRoomCode}>
       <span className={styles.label}>Room Code: </span>

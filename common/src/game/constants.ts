@@ -88,8 +88,8 @@ export const TeamPoolsAssasins: { [n: number]: Role[] } = {
     "agent",
     "captain",
     "spy",
-    "intern",
     "assasin",
+    "intern",
   ],
   9: [
     "agent",
@@ -99,8 +99,8 @@ export const TeamPoolsAssasins: { [n: number]: Role[] } = {
     "agent",
     "captain",
     "spy",
-    "intern",
     "assasin",
+    "intern",
   ],
   10: [
     "agent",
@@ -111,10 +111,22 @@ export const TeamPoolsAssasins: { [n: number]: Role[] } = {
     "captain",
     "spy",
     "spy",
-    "intern",
     "assasin",
+    "intern",
   ],
 };
 
 export const GameMinPlayers = 5;
 export const GameMaxPlayers = 10;
+
+export const GameRolesOrder: Role[] = [
+  "agent",
+  "captain",
+  "deputy",
+  "spy",
+  "assasin",
+  "intern",
+  "imposter",
+  "mole",
+];
+export const GameAgentRoles: Role[] = ["agent", "captain", "deputy"];

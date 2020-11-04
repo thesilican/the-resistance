@@ -1,32 +1,17 @@
 import cn from "classnames";
-import { ChatMessage } from "common-modules";
+import { ChatMessage, GameAction } from "common-modules";
 import React, { useState } from "react";
 import Form from "react-bootstrap/esm/Form";
 import FormControl from "react-bootstrap/esm/FormControl";
+import { useDispatch, useSelector } from "react-redux";
+import { GameSelector } from "../../store";
 import styles from "../../styles/game/ChatBox.module.scss";
 import TextTransformer from "../common/TextTransformer";
 
-let messages: ChatMessage[] = [
-  {
-    type: "system",
-    content: "The mission {{fail:failed}} (1 spy detected)",
-  },
-  {
-    type: "system",
-    content: "The mission was {{success:successful}}",
-  },
-  {
-    type: "system",
-    content: "The mission {{fail:failed}}",
-  },
-  ...Array.from(Array(10)).map((_, i) => ({
-    type: "player" as "player",
-    player: i,
-    content: "What is up, my fellow gamerss!!",
-  })),
-];
-
 export default function ChatBox() {
+  const dispatch = useDispatch();
+  const playerIndex = useSelector(GameSelector.playerIndex);
+  const messages = useSelector(GameSelector.chatMessages);
   const [typingMessage, setTypingMessage] = useState("");
   const handleTypeCharacter = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length > 200) return;
@@ -34,7 +19,15 @@ export default function ChatBox() {
   };
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
-    setTypingMessage("");
+    if (typingMessage !== "") {
+      dispatch(
+        GameAction.newPlayerChatMessage({
+          player: playerIndex,
+          message: typingMessage,
+        })
+      );
+      setTypingMessage("");
+    }
   };
 
   // Add a global event listener to focus
