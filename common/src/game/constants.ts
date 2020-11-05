@@ -16,12 +16,17 @@ export const ColorOrder: Color[] = [
 export const GamePhaseLengths: { [p in GamePhase]: number } = {
   // TODO: return to 10
   "role-reveal": 5,
-  "team-building": 60 * 3,
-  "team-building-review": 3,
-  voting: 60,
-  "voting-review": 5,
+  // TODO: return to 180
+  "team-building": 30,
+  // TODO: return to 3
+  "team-building-review": 2,
+  // return to 60
+  voting: 30,
+  // return to 5
+  "voting-review": 2,
   mission: 20,
-  "mission-review": 5,
+  // return to 5
+  "mission-review": 2,
   "finished-assasinate": 60,
   finished: 1,
 };

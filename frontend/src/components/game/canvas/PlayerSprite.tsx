@@ -1,6 +1,7 @@
 import {
   ColorOrder,
   GameAction,
+  GameAgentRoles,
   MissionPlayerCount,
   ProposalVote,
   Role,
@@ -34,6 +35,9 @@ export function PlayerSprite(props: PlayerSpriteProps) {
   const isLeader = playerIndex === lastTeam?.leader;
   const teamRequiredPlayers =
     MissionPlayerCount[numPlayers][(lastTeam?.mission ?? 1) - 1];
+  const isAssasin = useSelector(GameSelector.playerRole) === "assasin";
+  const assasinChoice = useSelector(GameSelector.assasinChoice);
+  const canAssasinate = GameAgentRoles.includes(roles[index]);
 
   // Opacity & stuff
   let hat = lastTeam?.leader === index;
@@ -58,7 +62,6 @@ export function PlayerSprite(props: PlayerSpriteProps) {
       }
       break;
     case "mission":
-    case "mission-review":
       if (onTeam) {
         selectionOpacity = 1;
         spriteOpacity = 1;
@@ -66,8 +69,18 @@ export function PlayerSprite(props: PlayerSpriteProps) {
         spriteOpacity = 0.25;
       }
       break;
+    case "mission-review":
+      break;
     case "finished-assasinate":
-      // TODO: implement
+      if (index === assasinChoice) {
+        selectionOpacity = 1;
+      } else if (isAssasin && canAssasinate) {
+        if (hover) {
+          selectionOpacity = 0.5;
+        } else {
+          selectionOpacity = 0.1;
+        }
+      }
       break;
     case "finished":
       break;
@@ -90,6 +103,12 @@ export function PlayerSprite(props: PlayerSpriteProps) {
           );
         }
       }
+    } else if (
+      gamePhase === "finished-assasinate" &&
+      isAssasin &&
+      canAssasinate
+    ) {
+      dispatch(GameAction.updateAssasinChoice({ player: index }));
     }
   };
 
@@ -103,6 +122,13 @@ export function PlayerSprite(props: PlayerSpriteProps) {
 
   // Roles
   let role: Role | null = null;
+  if (gamePhase === "finished-assasinate") {
+    if (GameAgentRoles.includes(roles[index])) {
+      role = "agent";
+    } else {
+      role = roles[index];
+    }
+  }
   if (gamePhase === "finished") {
     role = roles[index];
   }

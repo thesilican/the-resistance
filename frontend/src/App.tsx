@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import GameView from "./components/game/GameView";
 import LobbyView from "./components/lobby/LobbyView";

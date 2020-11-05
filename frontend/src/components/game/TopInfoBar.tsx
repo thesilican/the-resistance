@@ -1,5 +1,5 @@
 import { GamePhaseLengths } from "common-modules";
-import React, { useMemo } from "react";
+import React from "react";
 import ProgressBar from "react-bootstrap/esm/ProgressBar";
 import { useSelector } from "react-redux";
 import { GameSelector } from "../../store";

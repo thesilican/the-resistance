@@ -1,17 +1,15 @@
 import {
-  GameAgentRoles,
   GameCustomRoleOptions,
   GameFunc,
   GameMaxPlayers,
   GameMinPlayers,
   LobbyAction,
-  Role,
 } from "common-modules";
 import React, { useState } from "react";
 import Button from "react-bootstrap/esm/Button";
 import Form from "react-bootstrap/esm/Form";
 import { useDispatch, useSelector } from "react-redux";
-import { capital, plural } from "../../lib/util";
+import { capital } from "../../lib/util";
 import { LobbySelector } from "../../store";
 import styles from "../../styles/lobby/GameOptions.module.scss";
 import RolesIncludedList from "../common/RolesIncludedList";

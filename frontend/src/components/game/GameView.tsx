@@ -21,7 +21,7 @@ export default function GameView() {
   const lastMissionResult = lastMission
     ? GameFunc.util.missionResult(lastMission, numPlayers)
     : null;
-  const dark = gamePhase === "mission";
+  const dark = gamePhase === "mission" || gamePhase === "finished-assasinate";
   const flashFail =
     gamePhase === "mission-review" && lastMissionResult === "fail";
   const flashSuccess =

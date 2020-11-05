@@ -17,8 +17,10 @@ import TF from "../common/TextTransformer";
 export default function MissionIndicators() {
   const missions = Array.from(Array(5)).map((_, i) => i);
   const teams = useSelector(GameSelector.teams);
+  const gamePhase = useSelector(GameSelector.gamePhase);
   const proposalsRemaining = GameFunc.util.getProposalsRemaining(teams);
   const isHammer = proposalsRemaining === 0;
+  const gameHammered = gamePhase === "finished" && isHammer;
 
   return (
     <div className={styles.MissionIndicators}>
@@ -32,7 +34,7 @@ export default function MissionIndicators() {
       ))}
       <div className={cn(styles.proposals, { [styles.hammer]: isHammer })}>
         <span className={styles.label1}>
-          {Math.min(5, proposalsRemaining + 1)}/5
+          {gameHammered ? 0 : Math.min(5, proposalsRemaining + 1)}/5
         </span>
         <span className={styles.label2}>
           proposals
@@ -123,6 +125,12 @@ function MissionIndicator(props: MissionIndicatorProps) {
             <span className={styles.title}>
               <TF>{`Mission ${index + 1}`}</TF>
             </span>
+            {active && (
+              <span>
+                {/* For N4 double only */}
+                <TF>{`Current mission`}</TF>
+              </span>
+            )}
             {double && (
               <span>
                 {/* For N4 double only */}

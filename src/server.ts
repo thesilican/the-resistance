@@ -33,7 +33,7 @@ export class Server {
     }
   }
   onAction(socket: Socket, action: AnyAction) {
-    console.log(action);
+    // console.log(action);
     const clientCreateLobby = LobbyAction.clientCreateLobby.type;
     const clientJoinLobby = LobbyAction.clientJoinLobby.type;
     if (action.type === clientCreateLobby) {

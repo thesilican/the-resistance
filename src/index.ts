@@ -23,5 +23,3 @@ const port = process.env.PORT ?? 8080;
 httpServer.listen(port, () => {
   console.log("Starting HTTP server on port " + port);
 });
-
-console.log(actionFromServer({ type: "me" }));

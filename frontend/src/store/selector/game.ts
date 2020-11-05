@@ -13,6 +13,7 @@ const missionNum = (state: RootState) => state.game.game.mission;
 const statusMessage = (state: RootState) => state.game.statusMessage;
 const teams = (state: RootState) => state.game.teams;
 const missions = (state: RootState) => state.game.missions;
+const assasinChoice = (state: RootState) => state.game.assasinChoice;
 
 const numPlayers = createSelector(socketIDs, (socketIDs) => socketIDs.length);
 const playerIndex = createSelector(
@@ -47,6 +48,7 @@ export const GameSelector = {
   gamePhaseCountdown,
   statusMessage,
   missions,
+  assasinChoice,
   teams,
   missionNum,
   lastTeam,

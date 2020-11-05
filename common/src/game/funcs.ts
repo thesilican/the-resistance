@@ -23,48 +23,6 @@ import {
 } from "./types";
 
 export const GameFunc = {
-  getRoleList(
-    numPlayers: number,
-    options: "normal" | "assasins" | GameCustomRoleOptions
-  ) {
-    if (options === "normal") {
-      return TeamPoolsNormal[numPlayers].slice();
-    } else if (options === "assasins") {
-      return TeamPoolsAssasins[numPlayers].slice();
-    } else {
-      return this.getCustomRoleList(numPlayers, options);
-    }
-  },
-  getCustomRoleList(numPlayers: number, roleOptions: GameCustomRoleOptions) {
-    const pool = TeamPoolsNormal[numPlayers].slice();
-    const numAgents = pool.reduce((a, v) => (v === "agent" ? a + 1 : a), 0);
-    const numSpies = pool.reduce((a, v) => (v === "spy" ? a + 1 : a), 0);
-
-    const roleList: Role[] = [];
-    // Agents
-    const agentRoles: Role[] = [];
-    const spyRoles: Role[] = [];
-    if (roleOptions.captain) agentRoles.push("captain");
-    if (roleOptions.deputy) agentRoles.push("deputy");
-    if (roleOptions.assasin) spyRoles.push("assasin");
-    if (roleOptions.imposter) spyRoles.push("imposter");
-    if (roleOptions.intern) spyRoles.push("intern");
-    if (roleOptions.mole) spyRoles.push("mole");
-    console.log(agentRoles, spyRoles);
-
-    for (let i = 0; i < numAgents; i++) {
-      const newRole = agentRoles.splice(0, 1)[0];
-      if (newRole) roleList.push(newRole);
-      else roleList.push("agent");
-    }
-    for (let i = 0; i < numSpies; i++) {
-      const newRole = spyRoles.splice(0, 1)[0];
-      if (newRole) roleList.push(newRole);
-      else roleList.push("spy");
-    }
-
-    return roleList;
-  },
   init(options: GameInitOptions): GameState | null {
     let seed = options.seed;
     const numPlayers = options.names.length;
@@ -151,10 +109,11 @@ export const GameFunc = {
       case "mission":
         return GameFunc.beginMissionReview(state);
       case "mission-review":
-        if (GameFunc.util.getWinnerFromMissions(state) === null) {
+        const winner = GameFunc.util.getWinnerFromMissions(state);
+        if (winner === null) {
           return GameFunc.beginTeamBuilding(state);
         } else {
-          if (state.player.roles.includes("assasin")) {
+          if (state.player.roles.includes("assasin") && winner === "agent") {
             return GameFunc.beginFinishedAssasinate(state);
           } else {
             return GameFunc.beginFinished(state);
@@ -167,13 +126,18 @@ export const GameFunc = {
         return state;
     }
   },
-  beginTeamBuilding(state: GameState, noIncrementMission = false): GameState {
+  //#region Phase beginnings
+  beginTeamBuilding(
+    state: GameState,
+    noMissionIncrement = false,
+    pass = false
+  ): GameState {
     // Begin new state
-    if (!noIncrementMission) {
-      state.game.mission += 1;
-    }
     state.game.phase = "team-building";
     state.game.phaseCountdown = GamePhaseLengths["team-building"];
+    if (!noMissionIncrement) {
+      state.game.mission += 1;
+    }
 
     // Begin new team
     const prev = state.teams[state.teams.length - 1];
@@ -189,6 +153,9 @@ export const GameFunc = {
       members: [],
       votes: [],
     };
+    if (pass) {
+      state.teams.pop();
+    }
     state.teams.push(team);
 
     return state;
@@ -243,6 +210,9 @@ export const GameFunc = {
     state.winner = GameFunc.util.getWinner(state);
     return state;
   },
+  //#endregion
+
+  //#region Actions
   updateTeamMembers(state: GameState, members: number[]): GameState {
     if (state.game.phase !== "team-building") {
       return state;
@@ -254,8 +224,8 @@ export const GameFunc = {
   finishTeamBuilding(state: GameState) {
     const team = state.teams[state.teams.length - 1];
     const reqPlayers =
-      MissionPlayerCount[state.player.names.length][team.mission - 1];
-    if (team.members.length !== reqPlayers) {
+      MissionPlayerCount[state.player.names.length][team?.mission - 1];
+    if (team?.members.length !== reqPlayers) {
       // This really should never happen, because the UI should prevent
       // people from submitting non-full teams
       return state;
@@ -264,7 +234,7 @@ export const GameFunc = {
     }
   },
   passTeamBuilding(state: GameState) {
-    return this.beginTeamBuilding(state, true);
+    return this.beginTeamBuilding(state, true, true);
   },
   sendProposalVote(state: GameState, player: number, vote: ProposalVote) {
     if (state.game.phase !== "voting") {
@@ -316,6 +286,8 @@ export const GameFunc = {
     state.statusMessage = message;
     return state;
   },
+  //#endregion
+
   util: {
     // Return the winner of a game
     getWinner(state: GameState): Team | null {
@@ -434,5 +406,46 @@ export const GameFunc = {
       }
     }
     return known;
+  },
+  getRoleList(
+    numPlayers: number,
+    options: "normal" | "assasins" | GameCustomRoleOptions
+  ) {
+    if (options === "normal") {
+      return TeamPoolsNormal[numPlayers].slice();
+    } else if (options === "assasins") {
+      return TeamPoolsAssasins[numPlayers].slice();
+    } else {
+      return this.getCustomRoleList(numPlayers, options);
+    }
+  },
+  getCustomRoleList(numPlayers: number, roleOptions: GameCustomRoleOptions) {
+    const pool = TeamPoolsNormal[numPlayers].slice();
+    const numAgents = pool.reduce((a, v) => (v === "agent" ? a + 1 : a), 0);
+    const numSpies = pool.reduce((a, v) => (v === "spy" ? a + 1 : a), 0);
+
+    const roleList: Role[] = [];
+    // Agents
+    const agentRoles: Role[] = [];
+    const spyRoles: Role[] = [];
+    if (roleOptions.captain) agentRoles.push("captain");
+    if (roleOptions.deputy) agentRoles.push("deputy");
+    if (roleOptions.assasin) spyRoles.push("assasin");
+    if (roleOptions.imposter) spyRoles.push("imposter");
+    if (roleOptions.intern) spyRoles.push("intern");
+    if (roleOptions.mole) spyRoles.push("mole");
+
+    for (let i = 0; i < numAgents; i++) {
+      const newRole = agentRoles.splice(0, 1)[0];
+      if (newRole) roleList.push(newRole);
+      else roleList.push("agent");
+    }
+    for (let i = 0; i < numSpies; i++) {
+      const newRole = spyRoles.splice(0, 1)[0];
+      if (newRole) roleList.push(newRole);
+      else roleList.push("spy");
+    }
+
+    return roleList;
   },
 };

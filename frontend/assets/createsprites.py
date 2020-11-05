@@ -28,8 +28,8 @@ def combineImages(images, dim, sheet_width):
 
 
 # ----- Make Sprites -----
-SPRITE_W = 400
-SPRITE_H = 600
+SPRITE_W = 320
+SPRITE_H = 480
 ICON_W = 100
 ICON_H = 100
 COLORS = {

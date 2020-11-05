@@ -6,8 +6,8 @@ import useImage from "use-image";
 export type TextureType = "select" | "hat" | "role" | "stickman" | "vote";
 
 const spritesheetUrl = `${process.env.PUBLIC_URL}/assets/spritesheet.png`;
-const SPRITE_W = 400;
-const SPRITE_H = 600;
+const SPRITE_W = 320;
+const SPRITE_H = 480;
 
 export const textureMap = {
   select: [1, 0],

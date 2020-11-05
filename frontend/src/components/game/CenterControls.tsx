@@ -1,5 +1,10 @@
 import cn from "classnames";
-import { GameAction, GameAgentRoles, MissionPlayerCount } from "common-modules";
+import {
+  GameAction,
+  GameAgentRoles,
+  LobbyAction,
+  MissionPlayerCount,
+} from "common-modules";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/esm/Button";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +16,7 @@ export default function CenterControls() {
   const playerIndex = useSelector(GameSelector.playerIndex);
   const lastTeam = useSelector(GameSelector.lastTeam);
   const lastMission = useSelector(GameSelector.lastMission);
+  const isAssasin = useSelector(GameSelector.playerRole) === "assasin";
   const isLeader = playerIndex === lastTeam?.leader;
   const voted = lastTeam?.votes[playerIndex] !== "none";
   const lastMissionPlayerIndex = lastMission?.members.indexOf(playerIndex) ?? 0;
@@ -21,13 +27,15 @@ export default function CenterControls() {
     gamePhase === "mission" &&
     lastMission?.members.includes(playerIndex) &&
     lastMission?.actions[lastMissionPlayerIndex] === null;
+  const assasinateButtons = isAssasin && gamePhase === "finished-assasinate";
+  const leaveGameButtons = gamePhase === "finished";
   return (
     <div className={styles.CenterControls}>
       {proposeButtons && <ProposeButtons />}
       {voteButtons && <VoteButtons />}
       {missionButtons && <MissionButtons />}
-      {false && <NukeButtons />}
-      {false && <LeaveGameButtons />}
+      {assasinateButtons && <AssasinateButtons />}
+      {leaveGameButtons && <LeaveGameButtons />}
     </div>
   );
 }
@@ -166,19 +174,36 @@ function ProposeButtons() {
   );
 }
 
-function NukeButtons() {
-  const disabled = true;
+function AssasinateButtons() {
+  const dispatch = useDispatch();
+  const isAssasin = useSelector(GameSelector.playerRole) === "assasin";
+  const assasinChoice = useSelector(GameSelector.assasinChoice);
+  const enabled = isAssasin && assasinChoice !== null;
+
+  const handleClick = () => {
+    if (assasinChoice !== null) {
+      dispatch(GameAction.finishAssasinChoice());
+    }
+  };
   return (
     <div className={styles.centerButtonBox}>
-      <Button disabled={disabled}>Nuke</Button>
+      <Button onClick={handleClick} disabled={!enabled}>
+        Assasinate
+      </Button>
     </div>
   );
 }
 
 function LeaveGameButtons() {
+  const dispatch = useDispatch();
+  const handleClick = () => {
+    dispatch(LobbyAction.clientLeaveGame());
+  };
   return (
     <div className={styles.centerButtonBox}>
-      <Button variant="outline-secondary">Return to Lobby</Button>
+      <Button onClick={handleClick} variant="outline-secondary">
+        Return to Lobby
+      </Button>
     </div>
   );
 }
