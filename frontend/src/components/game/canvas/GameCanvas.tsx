@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { Layer, Stage } from "react-konva";
 import { Provider, useSelector } from "react-redux";
 import "../../../lib/util";
@@ -13,10 +13,6 @@ export type StageInfo = {
   stagePos: Vec2;
   stageDim: Vec2;
 };
-
-function getWindowDim() {
-  return [window.innerWidth, window.innerHeight] as Vec2;
-}
 
 function getStageDim(numPlayers: number, dim: Vec2): StageInfo {
   // +20 to account for text height
@@ -35,18 +31,12 @@ function getStageDim(numPlayers: number, dim: Vec2): StageInfo {
   };
 }
 
-export default function GameCanvas() {
-  const [dim, setDim] = useState(getWindowDim);
-  const numPlayers = useSelector(GameSelector.socketIDs).length;
+type GameCanvasProps = {
+  dim: Vec2;
+};
 
-  useEffect(() => {
-    // Handle window resize
-    const handler = () => {
-      setDim(getWindowDim());
-    };
-    window.addEventListener("resize", handler);
-    return () => window.removeEventListener("resize", handler);
-  }, []);
+export default function GameCanvas({ dim }: GameCanvasProps) {
+  const numPlayers = useSelector(GameSelector.socketIDs).length;
 
   const stageInfo = useMemo(() => getStageDim(numPlayers, dim), [
     numPlayers,
@@ -54,7 +44,12 @@ export default function GameCanvas() {
   ]);
 
   return (
-    <Stage width={dim[0]} height={dim[1]} className={styles.canvasWrapper}>
+    <Stage
+      width={dim[0]}
+      height={dim[1]}
+      className={styles.canvasWrapper}
+      style={{ height: dim[1] }}
+    >
       <Layer>
         {/* Required for some reason */}
         <Provider store={store}>

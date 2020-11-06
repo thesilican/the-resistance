@@ -82,10 +82,11 @@ spritesheet.save("../public/assets/spritesheet.png")
 # Layers:
 # 0 - accept
 # 1 - reject
+# 2 - none
 os.system(
     f"magick icons.xcf -geometry {ICON_W}x{ICON_H} tmp/icon.png"
 )
-iconList += [f"tmp/icon-{x}.png" for x in range(2)]
+iconList += [f"tmp/icon-{x}.png" for x in range(3)]
 
 # Make iconsheet
 images = [Image.open(x) for x in iconList]

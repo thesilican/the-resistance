@@ -111,7 +111,7 @@ export class Lobby {
   handleUserLeaveGame(socket: Socket, io: Server) {
     if (this.game) {
       this.game.onLeave(socket.id, io);
-      const socketIDs = this.game.store.getState().player.socketIDs;
+      const socketIDs = this.game?.store.getState().player.socketIDs;
       const count = socketIDs.reduce((a, v) => (v === null ? a : a + 1), 0);
       if (count === 0) {
         this.game.stop();

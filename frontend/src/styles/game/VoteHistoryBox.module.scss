@@ -37,26 +37,41 @@
     position: sticky;
     background-color: $dark;
     left: 0;
+    white-space: nowrap;
+    overflow: hidden;
   }
   &.mission {
     padding: 0.25rem;
     padding-top: 0.5rem;
     justify-content: center;
     font-size: 1.5rem;
+    &.accepted {
+      color: $green;
+    }
+    &.rejected {
+      color: $red;
+    }
   }
   &.vote {
     box-sizing: border-box;
     width: 2.5rem;
     height: 2.5rem;
-    background-size: cover;
+    background-size: 200%;
+    background-position-x: left;
+    background-position-y: top;
     &.reject {
       background-position-x: right;
+      background-position-y: top;
+    }
+    &.none {
+      background-position-x: left;
+      background-position-y: bottom;
     }
     &.leader {
-      border: 2px solid $white;
+      border: 4px solid $white;
     }
     &.team {
-      background-color: scale-color($white, $lightness: -30%);
+      background-color: $gray-600;
     }
   }
 }

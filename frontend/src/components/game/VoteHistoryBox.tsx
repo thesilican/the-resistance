@@ -1,13 +1,31 @@
 import cn from "classnames";
+import { GameAction, GameFunc } from "common-modules";
 import React, { Fragment } from "react";
+import { useSelector } from "react-redux";
+import { GameSelector } from "../../store";
 import styles from "../../styles/game/VoteHistoryBox.module.scss";
 import TextTransformer from "../common/TextTransformer";
 
 const iconURL = `${process.env.PUBLIC_URL}/assets/iconsheet.png`;
 
 export default function VoteHistoryBox() {
-  const numPlayers = 10;
-  const numMissions = 10;
+  const gamePhase = useSelector(GameSelector.gamePhase);
+  const numPlayers = useSelector(GameSelector.numPlayers);
+  let teams = useSelector(GameSelector.teams);
+
+  // Remove the last team if is current team
+  if (
+    [
+      "team-building",
+      "team-building-review",
+      "voting",
+      "voting-review",
+    ].includes(gamePhase)
+  ) {
+    teams = teams.slice(0, -1);
+  }
+  const numMissions = teams.length;
+
   return (
     <div className={styles.VoteHistoryBox}>
       <div
@@ -21,9 +39,17 @@ export default function VoteHistoryBox() {
         <div className={cn(styles.cell, styles.empty)}>
           <span>Mission</span>
         </div>
-        {Array.from(Array(numMissions)).map((_, i) => (
-          <div key={i} className={cn(styles.cell, styles.mission)}>
-            <span>{i}</span>
+        {teams.map((t, i) => (
+          <div
+            key={i}
+            className={cn(styles.cell, styles.mission, {
+              [styles.accepted]:
+                GameFunc.util.getMissionVoteResult(t.votes) === "accept",
+              [styles.rejected]:
+                GameFunc.util.getMissionVoteResult(t.votes) === "reject",
+            })}
+          >
+            <span>{t.mission}</span>
           </div>
         ))}
         {/* People */}
@@ -34,13 +60,14 @@ export default function VoteHistoryBox() {
                 <TextTransformer>{`{{name:${p}}}`}</TextTransformer>
               </span>
             </div>
-            {Array.from(Array(numMissions)).map((_, m) => (
+            {teams.map((t, i) => (
               <div
-                key={m}
+                key={i}
                 className={cn(styles.cell, styles.vote, {
-                  [styles.leader]: m === p,
-                  [styles.team]: (m + p) % 4 === 2,
-                  [styles.reject]: m % p === 0,
+                  [styles.leader]: t.leader === p,
+                  [styles.team]: t.members.includes(p),
+                  [styles.none]: t.votes[p] === "none",
+                  [styles.reject]: t.votes[p] === "reject",
                 })}
                 style={{
                   backgroundImage: `url("${iconURL}")`,

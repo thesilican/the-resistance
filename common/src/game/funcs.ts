@@ -91,13 +91,8 @@ export const GameFunc = {
         return this.beginVotingReview(state);
       case "voting-review":
         const lastTeam = state.teams[state.teams.length - 1];
-        let accept = 0,
-          reject = 0;
-        for (const vote of lastTeam.votes) {
-          if (vote === "accept") accept++;
-          if (vote === "reject") reject++;
-        }
-        if (accept > reject) {
+        const res = GameFunc.util.getMissionVoteResult(lastTeam.votes);
+        if (res === "accept") {
           return GameFunc.beginMission(state);
         } else {
           if (GameFunc.util.isHammer(state)) {
@@ -369,6 +364,15 @@ export const GameFunc = {
         }
       }
       return 5 - count;
+    },
+    getMissionVoteResult(votes: ProposalVote[]): ProposalVote {
+      let accept = 0;
+      let reject = 0;
+      for (const vote of votes) {
+        if (vote === "accept") accept++;
+        if (vote === "reject") reject++;
+      }
+      return accept > reject ? "accept" : "reject";
     },
   },
   getKnownRoles(playerIndex: number, roleList: Role[]): Map<number, Role[]> {
