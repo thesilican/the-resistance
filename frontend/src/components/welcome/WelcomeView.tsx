@@ -1,9 +1,9 @@
 import React from "react";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import styles from "../../styles/welcome/WelcomeView.module.scss";
-import JoinLobbyBox from "./JoinLobbyBox";
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import HowToPlayView from "./HowToPlayView";
 import AboutView from "./AboutView";
+import HowToPlayView from "./HowToPlayView";
+import JoinLobbyBox from "./JoinLobbyBox";
 
 export default function WelcomeView() {
   return (

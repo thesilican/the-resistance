@@ -2,6 +2,8 @@ import { AnyAction, configureStore, EnhancedStore } from "@reduxjs/toolkit";
 import {
   GameAction,
   GameInitOptions,
+  GameMaxPlayers,
+  GameMinPlayers,
   GameReducer,
   GameState,
   LobbyAction,
@@ -50,7 +52,15 @@ export class Lobby {
     const clientLeaveGame = LobbyAction.clientLeaveGame.type;
     const clientRejoinGame = LobbyAction.clientRejoinGame.type;
     if (action.type === clientStartGame) {
-      // TODO: Add verification for number of players
+      // Safeguard
+      if (this.game !== null) {
+        return;
+      }
+      const numPlayers = this.store.getState().memberIDs.length;
+      if (numPlayers < GameMinPlayers || numPlayers > GameMaxPlayers) {
+        return;
+      }
+
       // Create game
       const gameOptions: GameInitOptions = {
         socketIDs: this.store.getState().memberIDs,
@@ -91,11 +101,11 @@ export class Lobby {
     }
   }
   onLeave(socket: Socket, io: Server) {
+    this.handleUserLeaveGame(socket, io);
+
     const memberLeaveAction = LobbyAction.memberLeave({ memberID: socket.id });
     this.store.dispatch(memberLeaveAction);
     io.to(this.id).emit("action", actionFromServer(memberLeaveAction));
-
-    this.handleUserLeaveGame(socket, io);
   }
   // Used twice
   handleUserLeaveGame(socket: Socket, io: Server) {
@@ -103,7 +113,6 @@ export class Lobby {
       this.game.onLeave(socket.id, io);
       const socketIDs = this.game.store.getState().player.socketIDs;
       const count = socketIDs.reduce((a, v) => (v === null ? a : a + 1), 0);
-      console.log(count, socketIDs);
       if (count === 0) {
         this.game.stop();
         this.game = null;

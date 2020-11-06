@@ -1,4 +1,4 @@
-import { GameAgentRoles, Role, GameRolesOrder } from "common-modules";
+import { GameAgentRoles, GameRolesOrder, Role } from "common-modules";
 import React from "react";
 import TextTransformer from "./TextTransformer";
 

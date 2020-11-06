@@ -1,9 +1,9 @@
+import { LobbyAction } from "common-modules";
 import React from "react";
-import styles from "../../styles/lobby/InGameList.module.scss";
 import Button from "react-bootstrap/esm/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { GameSelector } from "../../store";
-import { LobbyAction } from "common-modules";
+import styles from "../../styles/lobby/InGameList.module.scss";
 
 export default function InGameList() {
   const dispatch = useDispatch();

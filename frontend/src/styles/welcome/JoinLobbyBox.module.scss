@@ -11,6 +11,12 @@
 }
 
 .createJoinBox {
-  display: grid;
+  display: grid !important;
   grid-template-columns: 1fr 1fr;
+}
+
+.nameLabel {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }

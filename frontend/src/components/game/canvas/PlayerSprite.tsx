@@ -22,7 +22,6 @@ export type PlayerSpriteProps = {
 export function PlayerSprite(props: PlayerSpriteProps) {
   const { index, stageInfo } = props;
   const [hover, setHover] = useState(false);
-  // TODO: Refactor maybe
   const dispatch = useDispatch();
   const roles = useSelector(GameSelector.roles);
   const numPlayers = useSelector(GameSelector.numPlayers);

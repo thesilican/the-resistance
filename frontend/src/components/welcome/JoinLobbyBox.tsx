@@ -1,16 +1,17 @@
+import { LobbyAction } from "common-modules";
 import React, { useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/esm/Button";
-import Form from "react-bootstrap/esm/Form";
 import ButtonGroup from "react-bootstrap/esm/ButtonGroup";
-import styles from "../../styles/welcome/JoinLobbyBox.module.scss";
+import Form from "react-bootstrap/esm/Form";
 import { useDispatch } from "react-redux";
-import { LobbyAction } from "common-modules";
+import styles from "../../styles/welcome/JoinLobbyBox.module.scss";
+
+const MAX_NAME_LEN = 15;
 
 export default function JoinLobbyBox() {
   const dispatch = useDispatch();
   const [roomCode, setRoomCode] = useState("");
   const [name, setName] = useState("");
-  // TODO: Add some kind of name verification
   const [isJoin, setisJoin] = useState(true);
   const roomCodeInputRef = useRef(null as HTMLInputElement | null);
   const userNameInputRef = useRef(null as HTMLInputElement | null);
@@ -24,10 +25,17 @@ export default function JoinLobbyBox() {
   }, [isJoin]);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
+    const text = e.target.value;
+    if (text.length <= MAX_NAME_LEN) {
+      setName(text);
+    }
   };
   const handleRoomCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRoomCode(e.target.value);
+    // A-Z only
+    const formatted = e.target.value.toUpperCase().replace(/[^A-Z]/g, "");
+    if (formatted.length <= 4) {
+      setRoomCode(formatted);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -62,6 +70,7 @@ export default function JoinLobbyBox() {
           <Form.Label>Room Code</Form.Label>
           <Form.Control
             required
+            placeholder="AAAA"
             ref={roomCodeInputRef}
             value={roomCode}
             onChange={handleRoomCodeChange}
@@ -69,7 +78,9 @@ export default function JoinLobbyBox() {
         </Form.Group>
       )}
       <Form.Group controlId="welcome-username">
-        <Form.Label>Username</Form.Label>
+        <Form.Label className={styles.nameLabel}>
+          <span>Name</span> <span>{MAX_NAME_LEN - name.length}</span>
+        </Form.Label>
         <Form.Control
           required
           ref={userNameInputRef}

@@ -1,9 +1,9 @@
 import React from "react";
 import Tab from "react-bootstrap/esm/Tab";
 import Tabs from "react-bootstrap/esm/Tabs";
+import styles from "../../styles/game/ChatHistoryTabs.module.scss";
 import ChatBox from "./ChatBox";
 import VoteHistoryBox from "./VoteHistoryBox";
-import styles from "../../styles/game/ChatHistoryTabs.module.scss";
 
 export default function ChatHistoryTabs() {
   return (

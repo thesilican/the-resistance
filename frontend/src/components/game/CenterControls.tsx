@@ -10,6 +10,7 @@ import Button from "react-bootstrap/esm/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { GameSelector } from "../../store";
 import styles from "../../styles/game/CenterControls.module.scss";
+import TF from "../common/TextTransformer";
 
 export default function CenterControls() {
   const gamePhase = useSelector(GameSelector.gamePhase);
@@ -145,7 +146,6 @@ function VoteButtons() {
 
 function ProposeButtons() {
   const dispatch = useDispatch();
-  // TODO: Refactor maybe
   const numPlayers = useSelector(GameSelector.numPlayers);
   const lastTeam = useSelector(GameSelector.lastTeam);
   const curTeamRequiredPlayers =
@@ -196,11 +196,21 @@ function AssasinateButtons() {
 
 function LeaveGameButtons() {
   const dispatch = useDispatch();
+  const winner = useSelector(GameSelector.winner);
   const handleClick = () => {
     dispatch(LobbyAction.clientLeaveGame());
   };
   return (
     <div className={styles.centerButtonBox}>
+      {winner && (
+        <h3 className={"font-weight-bold"}>
+          <TF>
+            {winner === "agent"
+              ? "{{success: Agents Win!}}"
+              : "{{fail: Spies Win!}}"}
+          </TF>
+        </h3>
+      )}
       <Button onClick={handleClick} variant="outline-secondary">
         Return to Lobby
       </Button>

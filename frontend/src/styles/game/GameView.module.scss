@@ -11,9 +11,8 @@
 }
 @keyframes flash-fail {
   0% {
-    background-color: scale-color($red, $lightness: -20%);
   }
-  25% {
+  10% {
     background-color: scale-color($red, $lightness: -20%);
   }
   100% {

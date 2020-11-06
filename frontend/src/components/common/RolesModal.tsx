@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from "react-bootstrap/esm/Modal";
-import TF from "./TextTransformer";
 import styles from "../../styles/common/RolesModal.module.scss";
+import TF from "./TextTransformer";
 
 type RolesModalProps = {
   show: boolean;
