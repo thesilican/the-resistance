@@ -31,6 +31,7 @@ export class Server {
     if (!room) return;
     room.onLeave(socket, this.io);
     if (room.store.getState().memberIDs.length === 0) {
+      console.log("Lobby closed:", roomID);
       this.rooms.delete(roomID);
       this.idManager.releaseCode(roomID);
     }
@@ -47,6 +48,8 @@ export class Server {
       // Create a lobby
       const roomID = this.idManager.generateCode();
       const room = new Lobby(roomID);
+      console.log("Lobby created:", roomID);
+
       this.rooms.set(roomID, room);
       this.sockets.set(socket.id, room.id);
       room.onJoin(action.payload.name, socket, this.io);

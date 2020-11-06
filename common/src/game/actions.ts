@@ -55,10 +55,10 @@ export const newPlayerChatMessage = createAction<{
   message: string;
 }>("game/new-player-chat-message");
 
-export const newSystemChatMessage = createAction<{
-  message: string;
-}>("game/new-system-chat-message");
+// export const newSystemChatMessage = createAction<{
+//   message: string;
+// }>("game/new-system-chat-message");
 
-export const updateStatusMessage = createAction<{
-  message: string | null;
-}>("game/update-status-message");
+// export const updateStatusMessage = createAction<{
+//   message: string | null;
+// }>("game/update-status-message");

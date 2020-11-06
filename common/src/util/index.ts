@@ -85,3 +85,22 @@ export function shuffle<T>(arr: T[], seed: number) {
     [arr[i], arr[s]] = [arr[s], arr[i]];
   }
 }
+
+export function nameStr(num: number) {
+  return `{{name:${num}}}`;
+}
+
+export function count<T>(arr: T[], val: T) {
+  return arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
+}
+
+export function plural(num: number, text: string, pluralStr?: string) {
+  if (!pluralStr) {
+    pluralStr = text + "s";
+  }
+  return num + " " + (num === 1 ? text : pluralStr);
+}
+
+export function last<T>(arr: T[]): T {
+  return arr[arr.length - 1];
+}

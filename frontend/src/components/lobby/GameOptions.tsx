@@ -30,7 +30,7 @@ export default function GameOptions() {
 
   const rolesList = !enoughPlayers
     ? null
-    : GameFunc.getRoleList(numPlayers, gameOptions);
+    : GameFunc.util.getRoleList(numPlayers, gameOptions);
 
   const handleToggleGameOption = (gameOption: "captain" | "assasin") => {
     dispatch(

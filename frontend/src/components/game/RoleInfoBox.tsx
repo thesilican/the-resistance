@@ -9,13 +9,11 @@ import RolesIncludedList from "../common/RolesIncludedList";
 import RolesModal from "../common/RolesModal";
 import TextTransformer from "../common/TextTransformer";
 
-type RoleInfoBoxProps = {};
-
-export default function RoleInfoBox(props: RoleInfoBoxProps) {
+export default function RoleInfoBox() {
   const index = useSelector(GameSelector.playerIndex);
   const roleList = useSelector(GameSelector.roles);
   const [showHowToPlay, setShowHowToPlay] = useState(false);
-  const knownRolesMap = GameFunc.getKnownRoles(index, roleList);
+  const knownRolesMap = GameFunc.util.getKnownRoles(index, roleList);
   const knownRoles = Array.from(knownRolesMap.entries());
 
   return (

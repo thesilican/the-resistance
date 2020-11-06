@@ -27,6 +27,11 @@
 
 .chatMessage {
   margin-bottom: 0.25rem;
+  &.system {
+    font-size: smaller;
+    text-align: center;
+    font-family: "Raleway", $font-family-sans-serif;
+  }
 }
 
 .form {

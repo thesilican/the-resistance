@@ -1,20 +1,18 @@
 import { createReducer } from "@reduxjs/toolkit";
 import {
+  finishAssasinChoice,
   finishTeamBuilding,
   hydrate,
   initialize,
   newPlayerChatMessage,
-  newSystemChatMessage,
   passTeamBuilding,
   playerDisconnect,
   playerReconnect,
-  updateAssasinChoice,
   sendMissionAction,
   sendProposalVote,
   tick,
-  updateStatusMessage,
+  updateAssasinChoice,
   updateTeamMembers,
-  finishAssasinChoice,
 } from "./actions";
 import { GameFunc } from "./funcs";
 import { GameState } from "./types";
@@ -99,14 +97,14 @@ export const GameReducer = createReducer(initialState, (builder) => {
         player: action.payload.player,
         content: action.payload.message,
       });
-    })
-    .addCase(newSystemChatMessage, (state, action) => {
-      GameFunc.newChatMessage(state, {
-        type: "system",
-        content: action.payload.message,
-      });
-    })
-    .addCase(updateStatusMessage, (state, action) => {
-      GameFunc.setStatusMessage(state, action.payload.message);
     });
+  // .addCase(newSystemChatMessage, (state, action) => {
+  //   GameFunc.newChatMessage(state, {
+  //     type: "system",
+  //     content: action.payload.message,
+  //   });
+  // })
+  // .addCase(updateStatusMessage, (state, action) => {
+  //   GameFunc.setStatusMessage(state, action.payload.message);
+  // });
 });

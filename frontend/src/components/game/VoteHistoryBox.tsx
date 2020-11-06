@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { GameAction, GameFunc } from "common-modules";
+import { GameFunc } from "common-modules";
 import React, { Fragment } from "react";
 import { useSelector } from "react-redux";
 import { GameSelector } from "../../store";
@@ -44,9 +44,9 @@ export default function VoteHistoryBox() {
             key={i}
             className={cn(styles.cell, styles.mission, {
               [styles.accepted]:
-                GameFunc.util.getMissionVoteResult(t.votes) === "accept",
+                GameFunc.util.getProposalVoteResult(t.votes) === "accept",
               [styles.rejected]:
-                GameFunc.util.getMissionVoteResult(t.votes) === "reject",
+                GameFunc.util.getProposalVoteResult(t.votes) === "reject",
             })}
           >
             <span>{t.mission}</span>

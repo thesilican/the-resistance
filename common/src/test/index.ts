@@ -14,7 +14,7 @@ const roleList: Role[] = [
 ];
 
 for (let i = 0; i < roleList.length; i++) {
-  console.log(roleList[i], GameFunc.getKnownRoles(i, roleList));
+  console.log(roleList[i], GameFunc.util.getKnownRoles(i, roleList));
 }
 
 // const store = configureStore({

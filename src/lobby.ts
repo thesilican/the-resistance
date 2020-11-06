@@ -84,6 +84,7 @@ export class Lobby {
       io.to(this.id).emit("action", actionFromServer(updateGameStateAction));
 
       // Start game
+      console.log("Game start:", this.id);
       this.game.start(io);
     } else if (action.type === clientLeaveGame) {
       this.handleUserLeaveGame(socket, io);
@@ -109,19 +110,23 @@ export class Lobby {
   }
   // Used twice
   handleUserLeaveGame(socket: Socket, io: Server) {
-    if (this.game) {
-      this.game.onLeave(socket.id, io);
-      const socketIDs = this.game?.store.getState().player.socketIDs;
-      const count = socketIDs.reduce((a, v) => (v === null ? a : a + 1), 0);
-      if (count === 0) {
-        this.game.stop();
-        this.game = null;
-        const updateGameStateAction = LobbyAction.updateGameState({
-          inGame: false,
-        });
-        this.store.dispatch(updateGameStateAction);
-        io.to(this.id).emit("action", actionFromServer(updateGameStateAction));
-      }
+    if (this.game === null) return;
+    this.game.onLeave(socket.id, io);
+
+    // Delete the game if necessary
+    if (this.game === null) return;
+    const socketIDs = this.game?.store.getState().player.socketIDs;
+    const count = socketIDs?.reduce((a, v) => (v === null ? a : a + 1), 0);
+    if (count === 0) {
+      // Start game
+      console.log("Game end:", this.id);
+      this.game.stop();
+      this.game = null;
+      const updateGameStateAction = LobbyAction.updateGameState({
+        inGame: false,
+      });
+      this.store.dispatch(updateGameStateAction);
+      io.to(this.id).emit("action", actionFromServer(updateGameStateAction));
     }
   }
 }
@@ -141,7 +146,9 @@ export class Game {
     this.timeout = null;
   }
   start(io: Server) {
-    setInterval(() => this.tick(io), 1000);
+    if (!this.timeout) {
+      this.timeout = setInterval(() => this.tick(io), 1000);
+    }
   }
   stop() {
     if (this.timeout) {

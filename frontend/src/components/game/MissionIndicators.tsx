@@ -68,7 +68,7 @@ function MissionIndicator(props: MissionIndicatorProps) {
   ].includes(gamePhase);
   const active = isCurrentMission && !isFinishedPhase;
   const missionResult =
-    curMission && GameFunc.util.missionResult(curMission, numPlayers);
+    curMission && GameFunc.util.getMissionResult(curMission, numPlayers);
   const success =
     (!isCurrentMission || isFinishedPhase) && missionResult === "success";
   const fail =

@@ -1,6 +1,6 @@
 import cn from "classnames";
 import { GameFunc } from "common-modules";
-import React, { useEffect, useReducer, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Vec2 } from "../../lib/util";
 import { GameSelector } from "../../store";
@@ -24,7 +24,7 @@ export default function GameView() {
   const mission = useSelector(GameSelector.missions);
   const lastMission = mission[mission.length - 1];
   const lastMissionResult = lastMission
-    ? GameFunc.util.missionResult(lastMission, numPlayers)
+    ? GameFunc.util.getMissionResult(lastMission, numPlayers)
     : null;
   const dark = gamePhase === "mission" || gamePhase === "finished-assasinate";
   const flashFail =
