@@ -54,23 +54,24 @@ except FileExistsError as err:
 # Create sprites
 # Layers:
 # 0     - background
-# 1     - selection
-# 2     - player
-# 3     - hat
-# 4-6   - vote
-# 7-14  - roles
+# 1     - disconnected
+# 2     - selection
+# 3     - player
+# 4     - hat
+# 5-7   - vote
+# 8-15  - roles
 os.system(
     f"magick sprites.xcf -geometry {SPRITE_W}x{SPRITE_H} tmp/sprite.png"
 )
-spriteList += [f"tmp/sprite-{x}.png" for x in range(0, 15)]
+spriteList += [f"tmp/sprite-{x}.png" for x in range(1, 16)]
 
 # Recolor player sprites
 for color in COLORS.values():
     os.system(
-        f'magick convert tmp/sprite-2.png ' +
-        f'xc:"{color}" -channel RGB -clut tmp/sprite-2-{color}.png')
-    spriteList.append(f"tmp/sprite-2-{color}.png")
-spriteList.remove("tmp/sprite-2.png")
+        f'magick convert tmp/sprite-3.png ' +
+        f'xc:"{color}" -channel RGB -clut tmp/sprite-3-{color}.png')
+    spriteList.append(f"tmp/sprite-3-{color}.png")
+spriteList.remove("tmp/sprite-3.png")
 
 # Make spritesheet
 images = [Image.open(x) for x in spriteList]

@@ -1,6 +1,6 @@
 import cn from "classnames";
 import { ChatMessage, GameAction } from "common-modules";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Form from "react-bootstrap/esm/Form";
 import FormControl from "react-bootstrap/esm/FormControl";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +13,10 @@ export default function ChatBox() {
   const playerIndex = useSelector(GameSelector.playerIndex);
   const messages = useSelector(GameSelector.chatMessages);
   const [typingMessage, setTypingMessage] = useState("");
+  const [hasFocus, setHasFocus] = useState(false);
+  const chatDivRef = useRef<HTMLDivElement | null>(null);
+  const chatInputRef = useRef<HTMLInputElement | null>(null);
+
   const handleTypeCharacter = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length > 200) return;
     setTypingMessage(e.target.value);
@@ -30,21 +34,51 @@ export default function ChatBox() {
     }
   };
 
-  // Add a global event listener to focus
+  useEffect(() => {
+    // Stick to bottom
+    const div = chatDivRef.current;
+    if (!div) return;
+    if (
+      div.scrollHeight - div.scrollTop - div.clientHeight <
+      div.clientHeight
+    ) {
+      div.scrollTo(0, div.scrollHeight);
+    }
+  }, [messages]);
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      // Ignore keyboard shortcuts
+      console.log(e);
+      if (e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) return;
+      if (e.key === "Tab") {
+        chatInputRef.current?.focus();
+        e.preventDefault();
+      }
+      if (e.key === "Escape") {
+        chatInputRef.current?.blur();
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
 
   return (
     <div className={styles.ChatBox}>
-      <div className={styles.chatWrapper}>
+      <div className={styles.chatWrapper} ref={chatDivRef}>
         <div className={styles.chat}>
           <ChatMessageList messages={messages} />
         </div>
       </div>
       <Form inline className={styles.form} onSubmit={handleSendMessage}>
         <FormControl
+          ref={chatInputRef}
           className={styles.input}
           value={typingMessage}
           onChange={handleTypeCharacter}
-          placeholder="Send a message"
+          onFocus={() => setHasFocus(true)}
+          onBlur={() => setHasFocus(false)}
+          placeholder={hasFocus ? "Send a message" : "Press Tab to focus"}
         />
       </Form>
     </div>

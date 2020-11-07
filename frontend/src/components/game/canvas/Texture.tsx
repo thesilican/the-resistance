@@ -3,13 +3,20 @@ import React, { Fragment } from "react";
 import { Image } from "react-konva";
 import useImage from "use-image";
 
-export type TextureType = "select" | "hat" | "role" | "stickman" | "vote";
+export type TextureType =
+  | "select"
+  | "hat"
+  | "role"
+  | "stickman"
+  | "vote"
+  | "disconnect";
 
 const spritesheetUrl = `${process.env.PUBLIC_URL}/assets/spritesheet.png`;
 const SPRITE_W = 320;
 const SPRITE_H = 480;
 
 export const textureMap = {
+  disconnect: [0, 0],
   select: [1, 0],
   hat: [2, 0],
   role: {

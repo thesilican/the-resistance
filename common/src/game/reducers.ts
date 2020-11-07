@@ -56,6 +56,7 @@ export const GameReducer = createReducer(initialState, (builder) => {
     })
     .addCase(playerReconnect, (state, action) => {
       state.player.socketIDs[action.payload.index] = action.payload.socketID;
+      state.player.names[action.payload.index] = action.payload.name;
       return state;
     })
     .addCase(tick, (state) => {

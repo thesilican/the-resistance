@@ -29,6 +29,8 @@ export function PlayerSprite(props: PlayerSpriteProps) {
   const gamePhase = useSelector(GameSelector.gamePhase);
   const playerIndex = useSelector(GameSelector.playerIndex);
   const lastTeam = useSelector(GameSelector.lastTeam);
+  const socketIDs = useSelector(GameSelector.socketIDs);
+  const disconnected = socketIDs[index] === null;
   const curTeamMembers = lastTeam?.members;
   const onTeam = lastTeam?.members.includes(index);
   const isLeader = playerIndex === lastTeam?.leader;
@@ -145,6 +147,7 @@ export function PlayerSprite(props: PlayerSpriteProps) {
       stageInfo={stageInfo}
       spriteOpacity={spriteOpacity}
       selectionOpacity={selectionOpacity}
+      disconnected={disconnected}
     />
   );
 }
@@ -173,6 +176,7 @@ type PlayerSpriteTexturesProps = {
   hat: boolean;
   vote: ProposalVote | null;
   role: Role | null;
+  disconnected: boolean;
   onMouseOver: () => void;
   onMouseOut: () => void;
   onMouseDown: () => void;
@@ -192,6 +196,7 @@ function PlayerSpriteTexture(props: PlayerSpriteTexturesProps) {
     onMouseOver,
     onMouseOut,
     onMouseDown,
+    disconnected,
     text,
   } = props;
   const {
@@ -218,6 +223,17 @@ function PlayerSpriteTexture(props: PlayerSpriteTexturesProps) {
         flipped={flipped}
         opacity={selectionOpacity ?? spriteOpacity ?? 1}
       />
+      {disconnected && (
+        <Texture
+          type={"disconnect"}
+          x={x}
+          y={y}
+          width={width}
+          height={spriteHeight}
+          flipped={flipped}
+          opacity={spriteOpacity ?? 1}
+        />
+      )}
       <Texture
         type={"stickman"}
         stickmanColor={color}

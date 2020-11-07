@@ -4,9 +4,9 @@
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.4.0",
-    "@types/node": "^12.19.0",
-    "@types/react": "^16.9.53",
-    "@types/react-dom": "^16.9.8",
+    "@types/node": "^12.19.3",
+    "@types/react": "^16.9.56",
+    "@types/react-dom": "^16.9.9",
     "@types/react-redux": "^7.1.11",
     "@types/react-router-dom": "^5.1.6",
     "@types/socket.io-client": "^1.4.34",
@@ -23,7 +23,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.4",
     "socket.io-client": "^2.3.1",
-    "typescript": "^3.7.5",
+    "typescript": "^3.9.7",
     "use-image": "^1.0.6"
   },
   "scripts": {
@@ -47,5 +47,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8080"
+  "proxy": "http://localhost:8080",
+  "devDependencies": {
+    "source-map-explorer": "^2.5.0"
+  }
 }

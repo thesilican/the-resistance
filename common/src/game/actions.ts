@@ -17,6 +17,7 @@ export const playerDisconnect = createAction<{
 
 export const playerReconnect = createAction<{
   index: number;
+  name: string;
   socketID: string;
 }>("game/player-reconnect");
 

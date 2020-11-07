@@ -1,5 +1,5 @@
 import { LobbyAction } from "common-modules";
-import React from "react";
+import React, { Fragment } from "react";
 import Button from "react-bootstrap/esm/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { GameSelector } from "../../store";
@@ -24,7 +24,7 @@ export default function InGameList() {
         {gameNames.map((name, i) => {
           const connected = gameConnected[i];
           return (
-            <>
+            <Fragment key={i}>
               <span className={styles.name}>
                 {name}{" "}
                 {!connected && (
@@ -38,7 +38,7 @@ export default function InGameList() {
                   Rejoin
                 </Button>
               )}
-            </>
+            </Fragment>
           );
         })}
       </div>

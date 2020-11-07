@@ -9,6 +9,7 @@
 
 .chatWrapper {
   position: relative;
+  overflow-x: hidden;
   overflow-y: scroll;
   background-color: $nav-tabs-link-active-bg;
   border-left: $nav-tabs-border-width solid $nav-tabs-border-color;
@@ -27,6 +28,7 @@
 
 .chatMessage {
   margin-bottom: 0.25rem;
+  word-wrap: break-word;
   &.system {
     font-size: smaller;
     text-align: center;

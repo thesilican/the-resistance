@@ -90,7 +90,10 @@ export class Lobby {
       this.handleUserLeaveGame(socket, io);
     } else if (action.type === clientRejoinGame) {
       if (this.game) {
-        this.game.onRejoin(socket.id, action.payload.index, io);
+        const state = this.store.getState();
+        const index = state.memberIDs.indexOf(socket.id);
+        const name = state.names[index];
+        this.game.onRejoin(socket.id, name, action.payload.index, io);
       }
     } else if ((action.type as string).startsWith("lobby/")) {
       this.store.dispatch(action);
@@ -167,8 +170,12 @@ export class Game {
     this.store.dispatch(action);
     io.to(this.roomID).emit("action", actionFromServer(action));
   }
-  onRejoin(socketID: string, index: number, io: Server) {
-    const playerRejoinAction = GameAction.playerReconnect({ index, socketID });
+  onRejoin(socketID: string, name: string, index: number, io: Server) {
+    const playerRejoinAction = GameAction.playerReconnect({
+      index,
+      socketID,
+      name,
+    });
     this.store.dispatch(playerRejoinAction);
     io.to(this.roomID).emit("action", actionFromServer(playerRejoinAction));
   }
