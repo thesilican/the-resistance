@@ -1,4 +1,3 @@
-import compression from "compression";
 import express from "express";
 import http from "http";
 import path from "path";
@@ -7,11 +6,6 @@ import socketIO from "socket.io";
 import { Server } from "./server";
 
 const app = express();
-app.use(compression());
-app.use(express.static(path.join(__dirname, "../frontend/build")));
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
-});
 
 const httpServer = http.createServer(app);
 
@@ -21,4 +15,22 @@ const server = new Server(io);
 const port = process.env.PORT ?? 8080;
 httpServer.listen(port, () => {
   console.log("Starting HTTP server on port " + port);
+});
+
+app.get("/api/statistics", (req, res) => {
+  const players = server.sockets.size;
+  const lobbies = server.rooms.size;
+  const games = Array.from(server.rooms.values()).map((x) => x.game !== null)
+    .length;
+  return res.json({
+    players,
+    lobbies,
+    games,
+  });
+});
+
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
 });

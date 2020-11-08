@@ -1,0 +1,40 @@
+@import "../common";
+
+.AboutView {
+  padding-top: 2rem;
+}
+.body {
+  h1 {
+    text-align: center;
+  }
+  a {
+    color: $cyan;
+    @include hover() {
+      color: darken($cyan, 15%);
+    }
+  }
+}
+
+.backToWelcome {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  color: $gray-500;
+  @include hover() {
+    color: darken($gray-500, 15%);
+  }
+}
+
+.img {
+  display: block;
+  border: 4px solid white;
+  border-radius: 4px;
+  max-width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1rem;
+}
+
+.light {
+  color: $gray-500;
+}

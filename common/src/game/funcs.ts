@@ -167,6 +167,9 @@ export const GameFunc = {
     const lastTeam = last(state.teams);
     const leader = lastTeam.leader;
     const members = lastTeam.members;
+    state.statusMessage = `{{name:${leader}}} has proposed ${members
+      .map(nameStr)
+      .join(", ")}`;
     state.chat.push({
       type: "system",
       content: `{{name:${leader}}} has proposed ${members
@@ -278,10 +281,10 @@ export const GameFunc = {
     }
     if (state.assasinChoice !== null) {
       const choice = state.assasinChoice;
-      const wasCaptain = state.player.roles[choice] === "assasin";
+      const wasCaptain = state.player.roles[choice] === "captain";
       msg += `${nameStr(choice)} was ${
-        wasCaptain ? "not " : ""
-      }the {{success:Captain}} `;
+        wasCaptain ? "" : "not "
+      }the {{success:Captain}}. `;
     }
     const winners = state.player.roles
       .map((x, i) => i)
@@ -314,7 +317,7 @@ export const GameFunc = {
     if (members.length === 0) {
       state.statusMessage = `{{name:${leader}}} is proposing a team`;
     } else {
-      state.statusMessage = `{{name:${leader}}} has proposed ${members
+      state.statusMessage = `{{name:${leader}}} is proposing ${members
         .map(nameStr)
         .join(", ")}`;
     }

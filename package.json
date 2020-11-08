@@ -25,11 +25,9 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.4.0",
-    "@types/compression": "^1.7.0",
     "@types/express": "^4.17.8",
     "@types/socket.io": "^2.1.11",
     "common-modules": "file:common",
-    "compression": "^1.7.4",
     "express": "^4.17.1",
     "socket.io": "^2.3.0"
   }

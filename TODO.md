@@ -6,8 +6,8 @@
 
 ## Website
 
-- [ ] Add About and How to play pages
-- [ ] Add api to poll how many live players there are
+- [x] Add About and How to play pages
+- [x] Add api to poll how many live players there are
 
 ## Game
 
