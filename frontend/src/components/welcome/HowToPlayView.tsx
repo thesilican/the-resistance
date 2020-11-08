@@ -1,13 +1,17 @@
-import React from "react";
-import { Figure } from "react-bootstrap";
+import React, { useState } from "react";
+import Button from "react-bootstrap/esm/Button";
 import Col from "react-bootstrap/esm/Col";
 import Container from "react-bootstrap/esm/Container";
+import Figure from "react-bootstrap/esm/Figure";
 import Row from "react-bootstrap/esm/Row";
 import styles from "../../styles/welcome/HowToPlayView.module.scss";
+import RolesModal from "../common/RolesModal";
 
 export default function HowToPlayView() {
+  const [rolesShown, setRolesShown] = useState(false);
   return (
     <div className={styles.HowToPlayView}>
+      <RolesModal show={rolesShown} onClose={() => setRolesShown(false)} />
       <Container>
         <Row>
           <Col xs={0} lg={1} />
@@ -151,11 +155,87 @@ export default function HowToPlayView() {
               board game.
             </p>
             <iframe
+              title="Explaination video"
               className={styles.video}
               width="560"
               height="315"
               src="https://www.youtube.com/embed/DUENzjE9Jwg"
             ></iframe>
+            <h2>Assasins mode</h2>
+            <div className={styles.centerButton}>
+              <Button
+                size="sm"
+                variant="info"
+                onClick={() => setRolesShown(true)}
+              >
+                View a list of all new roles
+              </Button>
+            </div>
+            <p>
+              A new gamemode called <Fail>Assasins mode</Fail> was recently
+              added. Based on the{" "}
+              <a
+                rel="noopener noreferrer"
+                target="_blank"
+                href="https://en.wikipedia.org/wiki/The_Resistance_(game)#Avalon_variant"
+              >
+                Avalon
+              </a>{" "}
+              variation of The Resistance card game, the Assasins gamemode adds
+              the following new roles and rules:
+            </p>
+            <ul>
+              <li>
+                There is a <Success>Captain</Success> on the agent team, who
+                knows who all the spies are. With his powerful knowedge, he can
+                help lead the agent team to victory
+              </li>
+              <li>
+                However, the <Success>Captain</Success> cannot make himself too
+                obvious, for the spy team has <Fail>Assasin</Fail> who can
+                strike him down
+              </li>
+              <li>
+                At the end of the game, if the agents win, the{" "}
+                <Fail>Assasin</Fail> may choose an agent to assasinate. If that
+                player is the <Success>Captain</Success>, then the spies win
+                instead!
+              </li>
+              <li>
+                In games with 7 or more people, the spies will have the{" "}
+                <Fail>Intern</Fail> on the team. New to the spy collective, the
+                identity of the <Fail>Intern</Fail> is not known to other spies,
+                nor does the <Fail>Intern</Fail> know who the other spies are.
+                However knowledgeable <Success>Captain</Success> still knows
+                that the <Fail>Intern</Fail> is part of the spy team.
+                <br />
+                As an <Fail>Intern</Fail>, work hard to fail as many missions as
+                possible without stepping on the toes of fellow spies.
+              </li>
+            </ul>
+            <Figure>
+              <Figure.Image
+                src={`${process.env.PUBLIC_URL}/doc/how-to-play-5.png`}
+                alt="Game finished"
+              ></Figure.Image>
+              <Figure.Caption>
+                As the captain, Black Hat knows that Megan, Ponytail, and Sarah
+                are the spies. However, Ponytail is the Intern and so does not
+                know that Megan and Sarah are also spies, nor do they know that
+                Ponytail is an Intern.
+              </Figure.Caption>
+            </Figure>
+            <Figure>
+              <Figure.Image
+                src={`${process.env.PUBLIC_URL}/doc/how-to-play-6.png`}
+                alt="Game finished"
+              ></Figure.Image>
+              <Figure.Caption>
+                The agents have successfully completed 3 missions. Megan the
+                assasin has one chance to assasinate an agent. If she picks
+                Black Hat (the Captain), the spies will win instead!
+              </Figure.Caption>
+            </Figure>
           </Col>
           <Col xs={0} lg={1} />
         </Row>
@@ -170,10 +250,6 @@ const Success = ({ children }: { children: React.ReactNode }) => (
 
 const Fail = ({ children }: { children: React.ReactNode }) => (
   <span className={styles.fail}>{children}</span>
-);
-
-const Bold = ({ children }: { children: React.ReactNode }) => (
-  <span className={styles.bold}>{children}</span>
 );
 
 const Italics = ({ children }: { children: React.ReactNode }) => (

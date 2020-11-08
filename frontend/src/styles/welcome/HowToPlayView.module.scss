@@ -2,6 +2,7 @@
 
 .HowToPlayView {
   padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 .body {
   h1,
@@ -23,6 +24,12 @@
       color: $gray-400;
     }
   }
+  a {
+    color: $cyan;
+    @include hover() {
+      color: darken($cyan, 15%);
+    }
+  }
 }
 .success {
   color: $green;
@@ -41,4 +48,9 @@
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 2rem;
+}
+.centerButton {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.5rem;
 }
