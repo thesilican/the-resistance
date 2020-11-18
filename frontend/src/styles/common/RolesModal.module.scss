@@ -1,14 +1,13 @@
 @import "../common";
 
-// .roleBox {
-// }
-
 .role {
+  margin: 0;
   font-size: 1.25rem;
 }
 
 .flavorText {
-  text-align: center;
-  font-style: italic;
-  font-size: small;
+  // For now
+  display: none;
+  font-size: 0.75rem;
+  margin: 0;
 }

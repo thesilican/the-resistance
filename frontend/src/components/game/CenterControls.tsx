@@ -5,7 +5,7 @@ import {
   LobbyAction,
   MissionPlayerCount,
 } from "common-modules";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { Fragment, useState } from "react";
 import Button from "react-bootstrap/esm/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { GameSelector } from "../../store";
@@ -30,6 +30,7 @@ export default function CenterControls() {
     mission?.actions[lastMissionPlayerIndex] === null;
   const assasinateButtons = isAssasin && gamePhase === "finished-assasinate";
   const leaveGameButtons = gamePhase === "finished";
+
   return (
     <div className={styles.CenterControls}>
       {proposeButtons && <ProposeButtons />}
@@ -47,35 +48,29 @@ function MissionButtons() {
   const player = useSelector(GameSelector.playerIndex);
   const missionNum = useSelector(GameSelector.missionNum);
   const failDisabled = GameAgentRoles.includes(role);
-  const [successDown, setSuccessDown] = useState(false);
-  const [failDown, setFailDown] = useState(false);
-  const colorBackgroundRef = useRef(null as HTMLDivElement | null);
+  const [selected, setSelected] = useState(false);
 
-  const onMissionSelected = useCallback(() => {
-    dispatch(
-      GameAction.sendMissionAction({
-        player,
-        action: successDown ? "success" : "fail",
-      })
-    );
-  }, [dispatch, player, successDown]);
+  const onMissionSelected = (success: boolean) => {
+    if (selected) return;
+    setSelected(true);
+    setTimeout(() => {
+      dispatch(
+        GameAction.sendMissionAction({
+          player,
+          action: success ? "success" : "fail",
+        })
+      );
+    }, 1000);
+  };
 
-  useEffect(() => {
-    const handler = () => onMissionSelected();
-
-    const div = colorBackgroundRef.current;
-    if (!div) return;
-    div.addEventListener("animationend", handler);
-    return () => div.removeEventListener("animationend", handler);
-  }, [onMissionSelected]);
-
-  return (
-    <div className={cn(styles.doubleButtonBox, styles.mission)}>
+  return selected ? (
+    <Fragment />
+  ) : (
+    <div className={styles.missionButtonBox}>
       <span className={styles.title}>Mission {missionNum}</span>
       <button
         className={cn(styles.missionButton, styles.success)}
-        onPointerDown={() => setSuccessDown(true)}
-        onPointerUp={() => setSuccessDown(false)}
+        onClick={() => onMissionSelected(true)}
       >
         Success
       </button>
@@ -83,19 +78,12 @@ function MissionButtons() {
         className={cn(styles.missionButton, styles.fail, {
           [styles.disabled]: failDisabled,
         })}
-        onPointerDown={() => !failDisabled && setFailDown(true)}
-        onPointerUp={() => !failDisabled && setFailDown(false)}
+        disabled={failDisabled}
+        onClick={() => onMissionSelected(false)}
       >
         Fail
       </button>
       <div className={styles.background} />
-      <div
-        ref={colorBackgroundRef}
-        className={cn(styles.missionColorBackground, {
-          [styles.fail]: failDown,
-          [styles.success]: successDown,
-        })}
-      />
     </div>
   );
 }
@@ -121,7 +109,7 @@ function VoteButtons() {
   };
 
   return (
-    <div className={cn(styles.doubleButtonBox, styles.vote)}>
+    <div className={styles.voteButtonBox}>
       <span className={styles.title}>Mission 1 Proposal</span>
       <Button
         variant="success"
@@ -139,7 +127,6 @@ function VoteButtons() {
       >
         Reject
       </Button>
-      <div className={styles.background} />
     </div>
   );
 }

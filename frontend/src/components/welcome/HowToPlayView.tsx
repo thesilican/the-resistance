@@ -11,7 +11,11 @@ export default function HowToPlayView() {
   const [rolesShown, setRolesShown] = useState(false);
   return (
     <div className={styles.HowToPlayView}>
-      <RolesModal show={rolesShown} onClose={() => setRolesShown(false)} />
+      <RolesModal
+        show={rolesShown}
+        onClose={() => setRolesShown(false)}
+        hideFullRulesLink
+      />
       <Container>
         <Row>
           <Col xs={0} lg={1} />

@@ -4,6 +4,7 @@ import styles from "../../styles/common/RolesModal.module.scss";
 import TF from "./TextTransformer";
 
 type RolesModalProps = {
+  hideFullRulesLink?: boolean;
   show: boolean;
   onClose: () => void;
 };
@@ -15,18 +16,27 @@ export default function RolesModal(props: RolesModalProps) {
         <Modal.Title>The Resistance Roles</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        {!props.hideFullRulesLink && (
+          <p>
+            (See full game rules{" "}
+            <a href="/how-to-play" target="_blank">
+              here
+            </a>
+            )
+          </p>
+        )}
         <h3>Classic Mode</h3>
         <div className={styles.roleBox}>
-          <span className={styles.role}>
+          <p className={styles.role}>
             <TF>{`{{success:Agent}}`}</TF>
-          </span>
-          <br />
-          <span className={styles.flavorText}>
+          </p>
+
+          <p className={styles.flavorText}>
             <TF>
               {`The steadfast {{success:agents}} of the resistance collective must embark on missions to destroy ` +
                 `the evil government empire and restore order to the world`}
             </TF>
-          </span>
+          </p>
           <ul>
             <li>
               <TF>{`{{success:Agents}} do not know the role of any other players`}</TF>
@@ -40,16 +50,16 @@ export default function RolesModal(props: RolesModalProps) {
           </ul>
         </div>
         <div className={styles.roleBox}>
-          <span className={styles.role}>
+          <p className={styles.role}>
             <TF>{`{{fail:Spy}}`}</TF>
-          </span>
-          <br />
-          <span className={styles.flavorText}>
+          </p>
+
+          <p className={styles.flavorText}>
             <TF>
               {`The government {{fail:spies}} have infiltrated the resistance collective and work ` +
                 `secretly to sabotage the agents' missions`}
             </TF>
-          </span>
+          </p>
           <ul>
             <li>
               <TF>{`{{fail:Spies}} know who all the other spies are`}</TF>
@@ -65,16 +75,16 @@ export default function RolesModal(props: RolesModalProps) {
 
         <h3>Assasins Mode</h3>
         <div className={styles.roleBox}>
-          <span className={styles.role}>
+          <p className={styles.role}>
             <TF>{`{{success:Captain}}`}</TF>
-          </span>
-          <br />
-          <span className={styles.flavorText}>
+          </p>
+
+          <p className={styles.flavorText}>
             <TF>
               {`Although the resistance {{success:Captain}} has access to the spy master list, he must keep ` +
                 `his identity secret, lest he gets assasinated`}
             </TF>
-          </span>
+          </p>
           <ul>
             <li>
               <TF>{`The {{success:Captain}} knows who all the spies are`}</TF>
@@ -88,16 +98,16 @@ export default function RolesModal(props: RolesModalProps) {
           </ul>
         </div>
         <div className={styles.roleBox}>
-          <span className={styles.role}>
+          <p className={styles.role}>
             <TF>{`{{fail:Assasin}}`}</TF>
-          </span>
-          <br />
-          <span className={styles.flavorText}>
+          </p>
+
+          <p className={styles.flavorText}>
             <TF>
               {`Sharpening his switch-knife blade, the {{fail:Assasin}} lurks in the shadows, ` +
                 `waiting for the perfect moment to strike`}
             </TF>
-          </span>
+          </p>
           <ul>
             <li>
               <TF>
@@ -113,16 +123,16 @@ export default function RolesModal(props: RolesModalProps) {
           </ul>
         </div>
         <div className={styles.roleBox}>
-          <span className={styles.role}>
+          <p className={styles.role}>
             <TF>{`{{fail:Intern}}`}</TF>
-          </span>
-          <br />
-          <span className={styles.flavorText}>
+          </p>
+
+          <p className={styles.flavorText}>
             <TF>
               {`The foolish {{fail:Intern}} forgot his identification card at last week's spy meeting ` +
                 `and now no longer knows who his teammates are`}
             </TF>
-          </span>
+          </p>
           <ul>
             <li>
               <TF>
@@ -145,16 +155,16 @@ export default function RolesModal(props: RolesModalProps) {
 
         <h3>Custom Mode</h3>
         <div className={styles.roleBox}>
-          <span className={styles.role}>
+          <p className={styles.role}>
             <TF>{`{{success:Deputy}}`}</TF>
-          </span>
-          <br />
-          <span className={styles.flavorText}>
+          </p>
+
+          <p className={styles.flavorText}>
             <TF>
               {`As the {{success:Captain}}'s most loyal assistant, the {{success:Deputy}} must assist with leading ` +
                 `the resistance collective to victory`}
             </TF>
-          </span>
+          </p>
           <ul>
             <li>
               <TF>
@@ -169,16 +179,16 @@ export default function RolesModal(props: RolesModalProps) {
           </ul>
         </div>
         <div className={styles.roleBox}>
-          <span className={styles.role}>
+          <p className={styles.role}>
             <TF>{`{{fail:Imposter}}`}</TF>
-          </span>
-          <br />
-          <span className={styles.flavorText}>
+          </p>
+
+          <p className={styles.flavorText}>
             <TF>
               {`Apparently a military peaked cap and dollar-store moustache was enough to disguise the ` +
                 `{{fail:Imposter}} as the {{success:Captain}}`}
             </TF>
-          </span>
+          </p>
           <ul>
             <li>
               <TF>
@@ -188,16 +198,16 @@ export default function RolesModal(props: RolesModalProps) {
           </ul>
         </div>
         <div className={styles.roleBox}>
-          <span className={styles.role}>
+          <p className={styles.role}>
             <TF>{`{{fail:Mole}}`}</TF>
-          </span>
-          <br />
-          <span className={styles.flavorText}>
+          </p>
+
+          <p className={styles.flavorText}>
             <TF>
               {`Hidden deep within the spy network lies the {{fail:Mole}}, constantly on guard to keep their ` +
                 `existence unknown`}
             </TF>
-          </span>
+          </p>
           <ul>
             <li>
               <TF>
