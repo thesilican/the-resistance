@@ -134,7 +134,7 @@ export const GameFunc = {
       const prev = last(state.teamHistory);
       let nextLeader: number;
       if (pass) {
-        nextLeader = (state.team!.leader + 1) & state.player.names.length;
+        nextLeader = (state.team!.leader + 1) % state.player.names.length;
       } else if (prev === null) {
         nextLeader = 0;
       } else {
@@ -539,7 +539,7 @@ export const GameFunc = {
         return winner;
       } else if (winner === "agent") {
         if (!state.player.roles.includes("assasin")) return "agent";
-        if (state.assasinChoice === null) return null;
+        if (state.assasinChoice === null) return "agent";
         const assasinated = state.player.roles[state.assasinChoice];
         if (assasinated === "captain") {
           return "spy";

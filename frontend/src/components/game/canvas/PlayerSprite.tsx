@@ -61,7 +61,6 @@ export function PlayerSprite(props: PlayerSpriteProps) {
     case "team-building":
     case "team-building-review":
     case "voting":
-    case "voting-review":
       if (onTeam) {
         selectionOpacity = 1;
       } else if (gamePhase === "team-building" && isLeader) {
@@ -70,6 +69,11 @@ export function PlayerSprite(props: PlayerSpriteProps) {
         } else {
           selectionOpacity = 0.1;
         }
+      }
+      break;
+    case "voting-review":
+      if (last(teamHistory)?.members.includes(index)) {
+        selectionOpacity = 1;
       }
       break;
     case "mission":
