@@ -1,6 +1,6 @@
 import { Color, GameMode, GamePhase, Role } from "./types";
 
-export const ColorOrder: Color[] = [
+export const ColorOrderDefault: Color[] = [
   "red",
   "yellow",
   "blue",

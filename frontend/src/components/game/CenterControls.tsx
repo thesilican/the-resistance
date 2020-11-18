@@ -15,19 +15,19 @@ import TF from "../common/TextTransformer";
 export default function CenterControls() {
   const gamePhase = useSelector(GameSelector.gamePhase);
   const playerIndex = useSelector(GameSelector.playerIndex);
-  const lastTeam = useSelector(GameSelector.lastTeam);
-  const lastMission = useSelector(GameSelector.lastMission);
+  const team = useSelector(GameSelector.team);
+  const mission = useSelector(GameSelector.mission);
   const isAssasin = useSelector(GameSelector.playerRole) === "assasin";
-  const isLeader = playerIndex === lastTeam?.leader;
-  const voted = lastTeam?.votes[playerIndex] !== "none";
-  const lastMissionPlayerIndex = lastMission?.members.indexOf(playerIndex) ?? 0;
+  const isLeader = playerIndex === team?.leader;
+  const voted = team?.votes[playerIndex] !== "none";
+  const lastMissionPlayerIndex = mission?.members.indexOf(playerIndex) ?? 0;
 
   const proposeButtons = gamePhase === "team-building" && isLeader;
   const voteButtons = gamePhase === "voting" && !voted;
   const missionButtons =
     gamePhase === "mission" &&
-    lastMission?.members.includes(playerIndex) &&
-    lastMission?.actions[lastMissionPlayerIndex] === null;
+    mission?.members.includes(playerIndex) &&
+    mission?.actions[lastMissionPlayerIndex] === null;
   const assasinateButtons = isAssasin && gamePhase === "finished-assasinate";
   const leaveGameButtons = gamePhase === "finished";
   return (
@@ -147,10 +147,10 @@ function VoteButtons() {
 function ProposeButtons() {
   const dispatch = useDispatch();
   const numPlayers = useSelector(GameSelector.numPlayers);
-  const lastTeam = useSelector(GameSelector.lastTeam);
+  const team = useSelector(GameSelector.team);
   const curTeamRequiredPlayers =
-    MissionPlayerCount[numPlayers][(lastTeam?.mission ?? 1) - 1];
-  const enabled = lastTeam?.members?.length === curTeamRequiredPlayers;
+    MissionPlayerCount[numPlayers][(team?.mission ?? 1) - 1];
+  const enabled = team?.members?.length === curTeamRequiredPlayers;
 
   const handlePropose = () => {
     if (enabled) {
@@ -211,7 +211,7 @@ function LeaveGameButtons() {
           </TF>
         </h3>
       )}
-      <Button onClick={handleClick} variant="outline-secondary">
+      <Button onClick={handleClick} variant="outline-primary">
         Return to Lobby
       </Button>
     </div>

@@ -9,22 +9,8 @@ import TextTransformer from "../common/TextTransformer";
 const iconURL = `${process.env.PUBLIC_URL}/assets/iconsheet.png`;
 
 export default function VoteHistoryBox() {
-  const gamePhase = useSelector(GameSelector.gamePhase);
   const numPlayers = useSelector(GameSelector.numPlayers);
-  let teams = useSelector(GameSelector.teams);
-
-  // Remove the last team if is current team
-  if (
-    [
-      "team-building",
-      "team-building-review",
-      "voting",
-      "voting-review",
-    ].includes(gamePhase)
-  ) {
-    teams = teams.slice(0, -1);
-  }
-  const numMissions = teams.length;
+  const teamHistory = useSelector(GameSelector.teamHistory);
 
   return (
     <div className={styles.VoteHistoryBox}>
@@ -32,14 +18,14 @@ export default function VoteHistoryBox() {
         className={styles.grid}
         style={{
           gridTemplateRows: `repeat(${numPlayers + 1}, min-content)`,
-          gridTemplateColumns: `repeat(${numMissions + 1}, min-content)`,
+          gridTemplateColumns: `repeat(${teamHistory.length + 1}, min-content)`,
         }}
       >
         {/* Header */}
         <div className={cn(styles.cell, styles.empty)}>
           <span>Mission</span>
         </div>
-        {teams.map((t, i) => (
+        {teamHistory.map((t, i) => (
           <div
             key={i}
             className={cn(styles.cell, styles.mission, {
@@ -60,17 +46,17 @@ export default function VoteHistoryBox() {
                 <TextTransformer>{`{{name:${p}}}`}</TextTransformer>
               </span>
             </div>
-            {teams.map((t, i) => (
+            {teamHistory.map((t, i) => (
               <div
                 key={i}
                 className={cn(styles.cell, styles.vote, {
                   [styles.leader]: t.leader === p,
                   [styles.team]: t.members.includes(p),
-                  [styles.none]: t.votes[p] === "none",
                   [styles.reject]: t.votes[p] === "reject",
                 })}
                 style={{
-                  backgroundImage: `url("${iconURL}")`,
+                  backgroundImage:
+                    t.votes[p] === "none" ? undefined : `url("${iconURL}")`,
                 }}
               />
             ))}

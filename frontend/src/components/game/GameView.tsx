@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { GameFunc } from "common-modules";
+import { GameFunc, last } from "common-modules";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Vec2 } from "../../lib/util";
@@ -21,8 +21,7 @@ function getWindowDim(div: HTMLDivElement | null): Vec2 {
 export default function GameView() {
   const gamePhase = useSelector(GameSelector.gamePhase);
   const numPlayers = useSelector(GameSelector.numPlayers);
-  const mission = useSelector(GameSelector.missions);
-  const lastMission = mission[mission.length - 1];
+  const lastMission = last(useSelector(GameSelector.missionHistory));
   const lastMissionResult = lastMission
     ? GameFunc.util.getMissionResult(lastMission, numPlayers)
     : null;

@@ -1,96 +1,355 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { GameAction, GameReducer, GamePhaseLengths } from "..";
+import { GameAction, GameReducer } from "..";
+import { finishTeamBuilding, tick } from "../game/actions";
+import {
+  addTeamMembers,
+  getInitializedGame,
+  missionAll,
+  SampleIDs,
+  SampleNames,
+  tickUntil,
+  voteAll,
+} from "./util";
 
-function getInitializedGame() {
-  const store = configureStore({
-    reducer: GameReducer,
-  });
-  store.dispatch(
-    GameAction.initialize({
-      gamemode: "normal",
-      names: ["alice", "bob", "charlie", "david", "edward"],
-      seed: 0,
-      socketIDs: ["a", "b", "c", "d", "e"],
-    })
-  );
-  return store;
-}
-const initialState = {
-  player: {
-    names: ["bob", "alice", "charlie", "david", "edward"],
-    socketIDs: ["b", "a", "c", "d", "e"],
-    roles: ["agent", "agent", "spy", "spy", "agent"],
-  },
-  winner: null,
-  game: { mission: 0, phase: "role-reveal", phaseCountdown: 10 },
-  missions: [],
-  teams: [],
-  chat: [],
-  statusMessage: null,
-};
+describe("game initialization", () => {
+  describe("game initialization", () => {
+    it("should initialize (normal 5 players)", () => {
+      const store = configureStore({
+        reducer: GameReducer,
+      });
+      store.dispatch(
+        GameAction.initialize({
+          gamemode: "normal",
+          names: SampleNames.slice(0, 5),
+          seed: 0,
+          socketIDs: SampleIDs.slice(0, 5),
+        })
+      );
 
-describe("game", () => {
-  it("should initialize", () => {
-    const store = getInitializedGame();
+      expect(store.getState()).toEqual({
+        assasinChoice: null,
+        chat: [],
+        game: {
+          mission: 0,
+          phase: "role-reveal",
+          phaseCountdown: 10,
+        },
+        mission: null,
+        missionHistory: [],
+        player: {
+          names: ["bob", "alice", "charlie", "david", "edward"],
+          roles: ["agent", "agent", "spy", "spy", "agent"],
+          socketIDs: ["1", "0", "2", "3", "4"],
+        },
+        statusMessage: "Welcome to the Resistance",
+        team: null,
+        teamHistory: [],
+        winner: null,
+      });
+    });
+    it("should initialize (assasins 5 players)", () => {
+      const store = configureStore({
+        reducer: GameReducer,
+      });
+      store.dispatch(
+        GameAction.initialize({
+          gamemode: "assasins",
+          names: SampleNames.slice(0, 5),
+          seed: 0,
+          socketIDs: SampleIDs.slice(0, 5),
+        })
+      );
 
-    expect(store.getState()).toEqual(initialState);
+      expect(store.getState()).toEqual({
+        assasinChoice: null,
+        chat: [],
+        game: {
+          mission: 0,
+          phase: "role-reveal",
+          phaseCountdown: 10,
+        },
+        mission: null,
+        missionHistory: [],
+        player: {
+          names: ["bob", "alice", "charlie", "david", "edward"],
+          roles: ["agent", "captain", "assasin", "spy", "agent"],
+          socketIDs: ["1", "0", "2", "3", "4"],
+        },
+        statusMessage: "Welcome to the Resistance",
+        team: null,
+        teamHistory: [],
+        winner: null,
+      });
+    });
+    it("should initialize (custom 5 players)", () => {
+      const store = configureStore({
+        reducer: GameReducer,
+      });
+      store.dispatch(
+        GameAction.initialize({
+          gamemode: {
+            assasin: true,
+            captain: true,
+            deputy: true,
+            imposter: true,
+            intern: true,
+            mole: true,
+          },
+          names: SampleNames.slice(0, 5),
+          seed: 0,
+          socketIDs: SampleIDs.slice(0, 5),
+        })
+      );
+
+      expect(store.getState()).toEqual({
+        assasinChoice: null,
+        chat: [],
+        game: {
+          mission: 0,
+          phase: "role-reveal",
+          phaseCountdown: 10,
+        },
+        mission: null,
+        missionHistory: [],
+        player: {
+          names: ["bob", "alice", "charlie", "david", "edward"],
+          roles: ["deputy", "agent", "imposter", "assasin", "captain"],
+          socketIDs: ["1", "0", "2", "3", "4"],
+        },
+        statusMessage: "Welcome to the Resistance",
+        team: null,
+        teamHistory: [],
+        winner: null,
+      });
+    });
+    it("should initialize (normal 8 players)", () => {
+      const store = configureStore({
+        reducer: GameReducer,
+      });
+      store.dispatch(
+        GameAction.initialize({
+          gamemode: "normal",
+          names: SampleNames.slice(0, 8),
+          seed: 0,
+          socketIDs: SampleIDs.slice(0, 8),
+        })
+      );
+
+      expect(store.getState()).toEqual({
+        assasinChoice: null,
+        chat: [],
+        game: {
+          mission: 0,
+          phase: "role-reveal",
+          phaseCountdown: 10,
+        },
+        mission: null,
+        missionHistory: [],
+        player: {
+          names: [
+            "charlie",
+            "bob",
+            "harry",
+            "george",
+            "alice",
+            "fred",
+            "david",
+            "edward",
+          ],
+          roles: [
+            "spy",
+            "agent",
+            "agent",
+            "agent",
+            "spy",
+            "agent",
+            "agent",
+            "spy",
+          ],
+          socketIDs: ["2", "1", "7", "6", "0", "5", "3", "4"],
+        },
+        statusMessage: "Welcome to the Resistance",
+        team: null,
+        teamHistory: [],
+        winner: null,
+      });
+    });
+    it("should initialize (assasins 8 players)", () => {
+      const store = configureStore({
+        reducer: GameReducer,
+      });
+      store.dispatch(
+        GameAction.initialize({
+          gamemode: "normal",
+          names: SampleNames.slice(0, 8),
+          seed: 0,
+          socketIDs: SampleIDs.slice(0, 8),
+        })
+      );
+
+      expect(store.getState()).toEqual({
+        assasinChoice: null,
+        chat: [],
+        game: {
+          mission: 0,
+          phase: "role-reveal",
+          phaseCountdown: 10,
+        },
+        mission: null,
+        missionHistory: [],
+        player: {
+          names: [
+            "charlie",
+            "bob",
+            "harry",
+            "george",
+            "alice",
+            "fred",
+            "david",
+            "edward",
+          ],
+          roles: [
+            "spy",
+            "agent",
+            "agent",
+            "agent",
+            "spy",
+            "agent",
+            "agent",
+            "spy",
+          ],
+          socketIDs: ["2", "1", "7", "6", "0", "5", "3", "4"],
+        },
+        statusMessage: "Welcome to the Resistance",
+        team: null,
+        teamHistory: [],
+        winner: null,
+      });
+    });
+    it("should initialize (custom 8 players)", () => {
+      const store = configureStore({
+        reducer: GameReducer,
+      });
+      store.dispatch(
+        GameAction.initialize({
+          gamemode: {
+            assasin: true,
+            captain: true,
+            deputy: true,
+            imposter: true,
+            intern: true,
+            mole: true,
+          },
+          names: SampleNames.slice(0, 8),
+          seed: 0,
+          socketIDs: SampleIDs.slice(0, 8),
+        })
+      );
+
+      expect(store.getState()).toEqual({
+        assasinChoice: null,
+        chat: [],
+        game: {
+          mission: 0,
+          phase: "role-reveal",
+          phaseCountdown: 10,
+        },
+        mission: null,
+        missionHistory: [],
+        player: {
+          names: [
+            "charlie",
+            "bob",
+            "harry",
+            "george",
+            "alice",
+            "fred",
+            "david",
+            "edward",
+          ],
+          roles: [
+            "intern",
+            "agent",
+            "deputy",
+            "agent",
+            "imposter",
+            "captain",
+            "agent",
+            "assasin",
+          ],
+          socketIDs: ["2", "1", "7", "6", "0", "5", "3", "4"],
+        },
+        statusMessage: "Welcome to the Resistance",
+        team: null,
+        teamHistory: [],
+        winner: null,
+      });
+    });
   });
 
   it("should be able to tick", () => {
-    const store = getInitializedGame();
+    const store = getInitializedGame("normal");
     store.dispatch(GameAction.tick());
-    const newState = {
-      ...initialState,
-      game: {
-        ...initialState.game,
-        phaseCountdown: 9,
-      },
-    };
-    expect(store.getState()).toEqual(newState);
+    expect(store.getState().game.phaseCountdown).toEqual(9);
   });
 
   it("should have the first person as the leader", () => {
-    const store = getInitializedGame();
+    const store = getInitializedGame("normal");
     for (let i = 0; i < 11; i++) {
       store.dispatch(GameAction.tick());
     }
-    expect(store.getState().teams[0].leader).toEqual(0);
+    expect(store.getState().team!.leader).toEqual(0);
   });
+});
 
-  it("should play a full game", () => {
-    const store = getInitializedGame();
-    while (store.getState().game.phase !== "team-building")
-      store.dispatch(GameAction.tick());
-    store.dispatch(
-      GameAction.updateTeamMembers({
-        members: [0, 1],
-      })
-    );
+describe("basic game cases", () => {
+  it("should fail missions", () => {
+    const store = getInitializedGame("normal");
+    for (let i = 0; i < 3; i++) {
+      tickUntil(store, "team-building");
+      addTeamMembers(store, true);
+      store.dispatch(GameAction.finishTeamBuilding());
+      tickUntil(store, "voting");
+      voteAll(store, "accept");
+      tickUntil(store, "mission");
+      missionAll(store, "fail");
+    }
+    tickUntil(store, "finished");
+    expect(store.getState().missionHistory.length).toEqual(3);
+    expect(store.getState().winner).toEqual("spy");
+  });
+  it("should succeed missions", () => {
+    const store = getInitializedGame("normal");
+    for (let i = 0; i < 3; i++) {
+      tickUntil(store, "team-building");
+      addTeamMembers(store, false);
+      store.dispatch(GameAction.finishTeamBuilding());
+      tickUntil(store, "voting");
+      voteAll(store, "accept");
+      tickUntil(store, "mission");
+      missionAll(store, "success");
+    }
+    tickUntil(store, "finished");
+    expect(store.getState().missionHistory.length).toEqual(3);
+    expect(store.getState().winner).toEqual("agent");
+  });
+});
+
+describe("advanced game cases", () => {
+  it("should reject vote on ties", () => {
+    const store = getInitializedGame("normal", 6);
+    tickUntil(store, "team-building");
+    addTeamMembers(store);
     store.dispatch(GameAction.finishTeamBuilding());
-    while (store.getState().game.phase !== "voting")
-      store.dispatch(GameAction.tick());
-    for (let i = 0; i < 5; i++) {
-      store.dispatch(
-        GameAction.sendProposalVote({
-          player: i,
-          vote: "accept",
-        })
-      );
-    }
-    for (let i = 0; i < 20; i++) {
-      store.dispatch(GameAction.tick());
-    }
-    expect(store.getState().game.phase).toEqual("mission");
   });
-
-  it("should pass after a number of ticks", () => {
-    const store = getInitializedGame();
-    while (store.getState().game.phase !== "team-building")
-      store.dispatch(GameAction.tick());
-    expect(store.getState().teams[0].leader).toEqual(0);
-    for (let i = 0; i < GamePhaseLengths["team-building"] + 10; i++) {
-      store.dispatch(GameAction.tick());
+  it("should fail on hammer", () => {
+    const store = getInitializedGame("normal");
+    for (let i = 0; i < 5; i++) {
+      tickUntil(store, "team-building");
+      addTeamMembers(store);
+      store.dispatch(GameAction.finishTeamBuilding());
     }
-    expect(store.getState().teams[0].leader).toEqual(1);
+    tickUntil(store, "finished");
+    expect(store.getState().winner).toEqual("spy");
   });
 });

@@ -1,5 +1,6 @@
 import { shuffle, nameStr, count, plural, last } from "../util";
 import {
+  ColorOrderDefault,
   GameAgentRoles,
   GameMaxPlayers,
   GameMinPlayers,
@@ -17,9 +18,10 @@ import {
   MissionAction,
   ProposalVote,
   Role,
+  Alligance,
   Team,
-  TeamHistory,
-  MissionHistory,
+  Mission,
+  Color,
 } from "./types";
 
 export const GameFunc = {
@@ -42,10 +44,8 @@ export const GameFunc = {
     const names = mixed.map((x) => x[0]);
     const socketIDs = mixed.map((x) => x[1]);
 
-    const roles: Role[] = GameFunc.util.getRoleList(
-      numPlayers,
-      options.gamemode
-    );
+    const roles = GameFunc.util.getRoleList(numPlayers, options.gamemode);
+    if (roles === null) return null;
     shuffle(roles, seed++);
 
     return {
@@ -60,8 +60,10 @@ export const GameFunc = {
         phase: "role-reveal",
         phaseCountdown: GamePhaseLengths["role-reveal"],
       },
-      missions: [],
-      teams: [],
+      mission: null,
+      missionHistory: [],
+      team: null,
+      teamHistory: [],
       chat: [],
       statusMessage: "Welcome to the Resistance",
       assasinChoice: null,
@@ -77,334 +79,335 @@ export const GameFunc = {
     // Go to next phase
     switch (state.game.phase) {
       case "role-reveal":
-        return GameFunc.beginTeamBuilding(state);
+        return GameFunc.begin.teamBuilding(state);
       case "team-building":
-        const team = last(state.teams);
-        const reqPlayers =
-          MissionPlayerCount[state.player.names.length][team.mission - 1];
-        if (team.members.length === reqPlayers) {
-          return GameFunc.beginTeamBuildingReview(state);
-        } else {
-          return GameFunc.passTeamBuilding(state);
-        }
+        // Inactivity
+        return GameFunc.action.passTeamBuilding(state);
       case "team-building-review":
-        return GameFunc.beginVoting(state);
+        return GameFunc.begin.voting(state);
       case "voting":
-        return this.beginVotingReview(state);
+        return this.begin.votingReview(state);
       case "voting-review":
-        const lastTeam = last(state.teams);
-        const res = GameFunc.util.getProposalVoteResult(lastTeam.votes);
+        const team = last(state.teamHistory)!;
+        const res = GameFunc.util.getProposalVoteResult(team.votes);
         if (res === "accept") {
-          return GameFunc.beginMission(state);
+          return GameFunc.begin.mission(state);
         } else {
           if (GameFunc.util.getIsHammer(state)) {
-            return GameFunc.beginFinished(state);
+            return GameFunc.begin.finished(state);
           } else {
-            return this.beginTeamBuilding(state, true);
+            return this.begin.teamBuilding(state, true);
           }
         }
       case "mission":
-        return GameFunc.beginMissionReview(state);
+        return GameFunc.begin.missionReview(state);
       case "mission-review":
         const winner = GameFunc.util.getWinnerFromMissions(state);
         if (winner === null) {
-          return GameFunc.beginTeamBuilding(state);
+          return GameFunc.begin.teamBuilding(state);
         } else {
           if (state.player.roles.includes("assasin") && winner === "agent") {
-            return GameFunc.beginFinishedAssasinate(state);
+            return GameFunc.begin.finishedAssasinate(state);
           } else {
-            return GameFunc.beginFinished(state);
+            return GameFunc.begin.finished(state);
           }
         }
       case "finished-assasinate":
-        return GameFunc.beginFinished(state);
+        return GameFunc.begin.finished(state);
       case "finished":
-        // Don't do anything
+        // Should never happen
         return state;
     }
   },
-  //#region Phase beginnings
-  beginTeamBuilding(
-    state: GameState,
-    noMissionIncrement = false,
-    pass = false
-  ): GameState {
-    // Begin new state
-    state.game.phase = "team-building";
-    state.game.phaseCountdown = GamePhaseLengths["team-building"];
-    if (!noMissionIncrement) {
-      state.game.mission += 1;
-    }
+  begin: {
+    teamBuilding(
+      state: GameState,
+      noMissionIncrement = false,
+      pass = false
+    ): GameState {
+      state.game.phase = "team-building";
+      state.game.phaseCountdown = GamePhaseLengths["team-building"];
+      if (!noMissionIncrement) {
+        state.game.mission += 1;
+      }
 
-    // Begin new team
-    const prev = last(state.teams);
-    let nextLeader: number;
-    if (prev === undefined) {
-      nextLeader = 0;
-    } else {
-      nextLeader = (prev.leader + 1) % state.player.names.length;
-    }
-    const team: TeamHistory = {
-      mission: state.game.mission,
-      leader: nextLeader,
-      members: [],
-      votes: [],
-    };
-    if (pass) {
-      state.teams.pop();
-    }
-    state.teams.push(team);
+      const prev = last(state.teamHistory);
+      let nextLeader: number;
+      if (pass) {
+        nextLeader = (state.team!.leader + 1) & state.player.names.length;
+      } else if (prev === null) {
+        nextLeader = 0;
+      } else {
+        nextLeader = (prev.leader + 1) % state.player.names.length;
+      }
+      state.team = {
+        mission: state.game.mission,
+        leader: nextLeader,
+        members: [],
+        votes: [],
+      };
 
-    // Status
-    state.statusMessage = `{{name:${nextLeader}}} is proposing a team`;
-    return state;
-  },
-  beginTeamBuildingReview(state: GameState): GameState {
-    state.game.phase = "team-building-review";
-    state.game.phaseCountdown = GamePhaseLengths["team-building-review"];
-
-    // Chat
-    const lastTeam = last(state.teams);
-    const leader = lastTeam.leader;
-    const members = lastTeam.members;
-    state.statusMessage = `{{name:${leader}}} has proposed ${members
-      .map(nameStr)
-      .join(", ")}`;
-    state.chat.push({
-      type: "system",
-      content: `{{name:${leader}}} has proposed ${members
-        .map(nameStr)
-        .join(", ")}`,
-    });
-    return state;
-  },
-  beginVoting(state: GameState): GameState {
-    // Just in case
-    const team = last(state.teams);
-    team.votes = state.player.names.map((_) => "none");
-
-    state.game.phase = "voting";
-    state.game.phaseCountdown = GamePhaseLengths["voting"];
-    return state;
-  },
-  beginVotingReview(state: GameState): GameState {
-    state.game.phase = "voting-review";
-    state.game.phaseCountdown = GamePhaseLengths["voting-review"];
-
-    // Chat/status
-    let msg = "";
-    const lastTeam = last(state.teams);
-    const res = GameFunc.util.getProposalVoteResult(lastTeam.votes);
-    if (res === "accept") {
-      msg += "The proposal was {{success:ACCEPTED}}";
-    } else if (res === "reject") {
-      msg += "The proposal was {{fail:REJECTED}}";
-    }
-    state.chat.push({
-      type: "system",
-      content: msg,
-    });
-    state.statusMessage = msg;
-
-    return state;
-  },
-  beginMission(state: GameState): GameState {
-    state.game.phase = "mission";
-    state.game.phaseCountdown = GamePhaseLengths["mission"];
-
-    // Create new mission
-    const prevTeam = last(state.teams);
-    const members = prevTeam.members.sort((a, b) => a - b);
-    const actions = members.map((_) => null);
-    const mission = { mission: state.game.mission, members, actions };
-    state.missions.push(mission);
-
-    // Status
-    const membersStr = members.map(nameStr);
-    state.statusMessage = `${membersStr.join(", ")} are going on a mission`;
-
-    return state;
-  },
-  beginMissionReview(state: GameState): GameState {
-    state.game.phase = "mission-review";
-    state.game.phaseCountdown = GamePhaseLengths["mission-review"];
-
-    const lastMission = last(state.missions);
-
-    // Chat/status
-    let msg = "";
-    const res = GameFunc.util.getMissionResult(
-      lastMission,
-      state.player.socketIDs.length
-    );
-    if (res === "success") {
-      msg += `Mission ${lastMission.mission} {{success:SUCCESSFUL}} `;
-    } else if (res === "fail") {
-      msg += `Mission ${lastMission.mission} {{fail:FAILED}} `;
-    }
-    const numFails = count(lastMission.actions, "fail");
-    msg += `(${plural(numFails, "fail")} detected)`;
-    state.statusMessage = msg;
-    state.chat.push({
-      type: "system",
-      content: msg,
-    });
-
-    return state;
-  },
-  beginFinishedAssasinate(state: GameState): GameState {
-    state.game.phase = "finished-assasinate";
-    state.game.phaseCountdown = GamePhaseLengths["finished-assasinate"];
-
-    // Chat/status
-    const assasin = state.player.roles.indexOf("assasin");
-    let msg = `${nameStr(assasin)} is picking a player to assasinate`;
-    state.statusMessage = msg;
-    state.chat.push({
-      type: "system",
-      content: msg,
-    });
-
-    return state;
-  },
-  beginFinished(state: GameState): GameState {
-    state.game.phase = "finished";
-    state.game.phaseCountdown = GamePhaseLengths["finished"];
-
-    // Set the winner
-    state.winner = GameFunc.util.getWinner(state);
-
-    // Chat/status
-    let msg = "";
-    if (GameFunc.util.getIsHammer(state)) {
-      msg += "The agents have ran out of proposals. ";
-    }
-    if (state.assasinChoice !== null) {
-      const choice = state.assasinChoice;
-      const wasCaptain = state.player.roles[choice] === "captain";
-      msg += `${nameStr(choice)} was ${
-        wasCaptain ? "" : "not "
-      }the {{success:Captain}}. `;
-    }
-    const winners = state.player.roles
-      .map((x, i) => i)
-      .filter((x) =>
-        state.winner === "agent"
-          ? GameAgentRoles.includes(state.player.roles[x])
-          : !GameAgentRoles.includes(state.player.roles[x])
-      )
-      .map(nameStr);
-    msg += `${winners.join(", ")} have won!`;
-    state.statusMessage = msg;
-    state.chat.push({
-      type: "system",
-      content: `${winners.join(", ")} have won.`,
-    });
-    return state;
-  },
-  //#endregion
-
-  //#region Actions
-  updateTeamMembers(state: GameState, members: number[]): GameState {
-    if (state.game.phase !== "team-building") {
+      // Status
+      state.statusMessage = `{{name:${nextLeader}}} is proposing a team`;
       return state;
-    }
-    const team = last(state.teams);
-    team.members = members;
+    },
+    teamBuildingReview(state: GameState): GameState {
+      state.game.phase = "team-building-review";
+      state.game.phaseCountdown = GamePhaseLengths["team-building-review"];
 
-    // Status
-    const leader = team.leader;
-    if (members.length === 0) {
-      state.statusMessage = `{{name:${leader}}} is proposing a team`;
-    } else {
-      state.statusMessage = `{{name:${leader}}} is proposing ${members
+      // Chat
+      const leader = state.team!.leader;
+      const members = state.team!.members;
+      state.statusMessage = `{{name:${leader}}} has proposed ${members
         .map(nameStr)
         .join(", ")}`;
-    }
-    return state;
-  },
-  finishTeamBuilding(state: GameState) {
-    const team = last(state.teams);
-    const reqPlayers =
-      MissionPlayerCount[state.player.names.length][team?.mission - 1];
-    if (team?.members.length !== reqPlayers) {
-      // This really should never happen, because the UI should prevent
-      // people from submitting non-full teams
+      state.chat.push({
+        type: "system",
+        content: `{{name:${leader}}} has proposed ${members
+          .map(nameStr)
+          .join(", ")}`,
+      });
       return state;
-    } else {
-      return GameFunc.beginTeamBuildingReview(state);
-    }
-  },
-  passTeamBuilding(state: GameState) {
-    // Chat
-    const leader = last(state.teams).leader;
-    state.chat.push({
-      type: "system",
-      content: `${nameStr(leader)} passed the proposal`,
-    });
+    },
+    voting(state: GameState): GameState {
+      state.game.phase = "voting";
+      state.game.phaseCountdown = GamePhaseLengths["voting"];
 
-    return this.beginTeamBuilding(state, true, true);
-  },
-  sendProposalVote(state: GameState, player: number, vote: ProposalVote) {
-    if (state.game.phase !== "voting") {
+      state.team!.votes = state.player.names.map(() => "none");
       return state;
-    }
-    const team = last(state.teams);
-    team.votes[player] = vote;
-    if (team.votes.includes("none")) {
-      return state;
-    } else {
-      // Once everyone's decided, move to next phase
-      return GameFunc.beginVotingReview(state);
-    }
-  },
-  sendMissionAction(state: GameState, player: number, action: MissionAction) {
-    if (state.game.phase !== "mission") {
-      return state;
-    }
-    const mission = last(state.missions);
-    const index = mission.members.indexOf(player);
-    if (index === -1) {
-      return state;
-    }
-    mission.actions[index] = action;
+    },
+    votingReview(state: GameState): GameState {
+      state.game.phase = "voting-review";
+      state.game.phaseCountdown = GamePhaseLengths["voting-review"];
 
-    for (const action of mission.actions) {
-      if (action === null) {
+      // Archive team
+      const team = state.team!;
+      state.teamHistory.push(team);
+      state.team = null;
+
+      // Chat/status
+      let msg = "";
+      const res = GameFunc.util.getProposalVoteResult(team.votes);
+      if (res === "accept") {
+        msg += "The proposal was {{success:ACCEPTED}}";
+      } else if (res === "reject") {
+        msg += "The proposal was {{fail:REJECTED}}";
+      }
+      state.chat.push({
+        type: "system",
+        content: msg,
+      });
+      state.statusMessage = msg;
+
+      return state;
+    },
+    mission(state: GameState): GameState {
+      state.game.phase = "mission";
+      state.game.phaseCountdown = GamePhaseLengths["mission"];
+
+      // Archive team
+      const team = last(state.teamHistory)!;
+
+      const members = team.members.sort((a, b) => a - b);
+      const actions = members.map(() => null);
+      const mission = {
+        mission: state.game.mission,
+        members,
+        actions,
+      };
+      state.mission = mission;
+
+      // Status
+      const membersStr = members.map(nameStr);
+      state.statusMessage = `${membersStr.join(", ")} are going on a mission`;
+
+      return state;
+    },
+    missionReview(state: GameState): GameState {
+      state.game.phase = "mission-review";
+      state.game.phaseCountdown = GamePhaseLengths["mission-review"];
+      // Archive mission
+      const mission = state.mission!;
+      state.missionHistory.push(mission);
+      state.mission = null;
+
+      // Chat/status
+      let msg = "";
+      const res = GameFunc.util.getMissionResult(
+        mission,
+        state.player.socketIDs.length
+      );
+      if (res === "success") {
+        msg += `Mission ${mission.mission} {{success:SUCCESSFUL}} `;
+      } else if (res === "fail") {
+        msg += `Mission ${mission.mission} {{fail:FAILED}} `;
+      }
+      const numFails = count(mission.actions, "fail");
+      msg += `(${plural(numFails, "fail")} detected)`;
+      state.statusMessage = msg;
+      state.chat.push({
+        type: "system",
+        content: msg,
+      });
+
+      return state;
+    },
+    finishedAssasinate(state: GameState): GameState {
+      state.game.phase = "finished-assasinate";
+      state.game.phaseCountdown = GamePhaseLengths["finished-assasinate"];
+
+      const assasin = state.player.roles.indexOf("assasin");
+      let msg = `${nameStr(assasin)} is picking a player to assasinate`;
+      state.statusMessage = msg;
+      state.chat.push({
+        type: "system",
+        content: msg,
+      });
+
+      return state;
+    },
+    finished(state: GameState): GameState {
+      state.game.phase = "finished";
+      state.game.phaseCountdown = GamePhaseLengths["finished"];
+
+      state.winner = GameFunc.util.getWinner(state);
+
+      // Chat/status
+      let msg = "";
+      if (GameFunc.util.getIsHammer(state)) {
+        msg += "The agents have ran out of proposals. ";
+      }
+      if (state.assasinChoice !== null) {
+        const choice = state.assasinChoice;
+        const wasCaptain = state.player.roles[choice] === "captain";
+        msg += `${nameStr(choice)} was ${
+          wasCaptain ? "" : "not "
+        }the {{success:Captain}}. `;
+      }
+      const winners = state.player.roles
+        .map((x, i) => i)
+        .filter((x) =>
+          state.winner === "agent"
+            ? GameAgentRoles.includes(state.player.roles[x])
+            : !GameAgentRoles.includes(state.player.roles[x])
+        )
+        .map(nameStr);
+      msg += `${winners.join(", ")} have won!`;
+      state.statusMessage = msg;
+      state.chat.push({
+        type: "system",
+        content: `${winners.join(", ")} have won.`,
+      });
+      return state;
+    },
+  },
+  action: {
+    updateTeamMembers(state: GameState, members: number[]): GameState {
+      if (state.game.phase !== "team-building") {
         return state;
       }
-    }
-    // If all actions are sent
-    return GameFunc.beginMissionReview(state);
-  },
-  updateAssasinChoice(state: GameState, player: number) {
-    state.assasinChoice = player;
+      const team = state.team!;
+      team.members = members;
 
-    return state;
-  },
-  finishAssasinChoice(state: GameState) {
-    if (state.game.phase !== "finished-assasinate") {
+      // Status
+      const leader = team.leader;
+      if (members.length === 0) {
+        state.statusMessage = `{{name:${leader}}} is proposing a team`;
+      } else {
+        state.statusMessage = `{{name:${leader}}} is proposing ${members
+          .map(nameStr)
+          .join(", ")}`;
+      }
       return state;
-    }
+    },
+    finishTeamBuilding(state: GameState): GameState {
+      if (state.game.phase !== "team-building") {
+        return state;
+      }
+      const team = state.team!;
+      const reqPlayers =
+        MissionPlayerCount[state.player.names.length][team?.mission - 1];
+      if (team?.members.length !== reqPlayers) {
+        // This really should never happen, because the UI should prevent
+        // people from submitting non-full teams
+        return state;
+      } else {
+        return GameFunc.begin.teamBuildingReview(state);
+      }
+    },
+    passTeamBuilding(state: GameState): GameState {
+      if (state.game.phase !== "team-building") {
+        return state;
+      }
+      // Chat
+      const leader = state.team!.leader;
+      state.chat.push({
+        type: "system",
+        content: `${nameStr(leader)} passed the proposal`,
+      });
 
-    return GameFunc.beginFinished(state);
-  },
-  newChatMessage(state: GameState, message: ChatMessage) {
-    state.chat.push(message);
-    return state;
-  },
-  setStatusMessage(state: GameState, message: string | null) {
-    state.statusMessage = message;
-    return state;
-  },
-  //#endregion
+      return GameFunc.begin.teamBuilding(state, true, true);
+    },
+    sendProposalVote(
+      state: GameState,
+      player: number,
+      vote: ProposalVote
+    ): GameState {
+      if (state.game.phase !== "voting") {
+        return state;
+      }
+      const team = state.team!;
+      team.votes[player] = vote;
+      if (team.votes.includes("none")) {
+        return state;
+      } else {
+        return GameFunc.begin.votingReview(state);
+      }
+    },
+    sendMissionAction(
+      state: GameState,
+      player: number,
+      action: MissionAction
+    ): GameState {
+      if (state.game.phase !== "mission") {
+        return state;
+      }
+      const mission = state.mission!;
+      const index = mission.members.indexOf(player);
+      if (index === -1) {
+        return state;
+      }
+      mission.actions[index] = action;
 
+      if (mission.actions.indexOf(null) !== -1) {
+        return state;
+      }
+      return GameFunc.begin.missionReview(state);
+    },
+    updateAssasinChoice(state: GameState, player: number): GameState {
+      if (state.game.phase !== "finished-assasinate") {
+        return state;
+      }
+      state.assasinChoice = player;
+      return state;
+    },
+    finishAssasinChoice(state: GameState): GameState {
+      if (state.game.phase !== "finished-assasinate") {
+        return state;
+      }
+      return GameFunc.begin.finished(state);
+    },
+    newChatMessage(state: GameState, message: ChatMessage): GameState {
+      state.chat.push(message);
+      return state;
+    },
+  },
   util: {
     // Return the result of a role list
     getRoleList(
       numPlayers: number,
       options: "normal" | "assasins" | GameCustomRoleOptions
-    ) {
+    ): Role[] | null {
       if (options === "normal") {
         return TeamPoolsNormal[numPlayers].slice();
       } else if (options === "assasins") {
@@ -415,7 +418,12 @@ export const GameFunc = {
     },
 
     // Return the result of a custom role list
-    getCustomRoleList(numPlayers: number, roleOptions: GameCustomRoleOptions) {
+    getCustomRoleList(
+      numPlayers: number,
+      roleOptions: GameCustomRoleOptions
+    ): Role[] | null {
+      if (numPlayers < GameMinPlayers || numPlayers > GameMaxPlayers)
+        return null;
       const pool = TeamPoolsNormal[numPlayers].slice();
       const numAgents = pool.reduce((a, v) => (v === "agent" ? a + 1 : a), 0);
       const numSpies = pool.reduce((a, v) => (v === "spy" ? a + 1 : a), 0);
@@ -487,11 +495,8 @@ export const GameFunc = {
     },
 
     // Get the number of team proposals remaining
-    getProposalsRemaining(teams: TeamHistory[]) {
-      if (teams.length === 0) return 5;
-
+    getProposalsRemaining(teams: Team[], mission: number) {
       let count = 0;
-      const mission = last(teams).mission;
       for (let i = teams.length - 1; i >= 0; i--) {
         if (teams[i].mission === mission) {
           count++;
@@ -514,15 +519,9 @@ export const GameFunc = {
     },
 
     // Get the result of a mission (success/fail)
-    getMissionResult(
-      mission: MissionHistory,
-      numPlayers: number
-    ): MissionAction {
+    getMissionResult(mission: Mission, numPlayers: number): MissionAction {
       const requiresTwo = MissionNeedDouble[numPlayers][mission.mission - 1];
-      const failCount = mission.actions.reduce(
-        (a, v) => (v === "fail" ? a + 1 : a),
-        0
-      );
+      const failCount = count(mission.actions, "fail");
       if (failCount >= 2 || (!requiresTwo && failCount >= 1)) {
         return "fail";
       } else {
@@ -531,7 +530,7 @@ export const GameFunc = {
     },
     // Return the winner of a game,
     // Based on winner, hammer, and assasin result
-    getWinner(state: GameState): Team | null {
+    getWinner(state: GameState): Alligance | null {
       if (GameFunc.util.getIsHammer(state)) {
         return "spy";
       }
@@ -552,26 +551,18 @@ export const GameFunc = {
     },
     // Returns whether or not the last 5 team proposals were failed
     getIsHammer(state: GameState): boolean {
-      let mission = 0,
-        count = 0;
-      for (const team of state.teams) {
-        if (mission !== team.mission) {
-          mission = team.mission;
-          count = 1;
-        } else {
-          count++;
-          if (count === 5) {
-            return true;
-          }
-        }
-      }
-      return false;
+      return (
+        GameFunc.util.getProposalsRemaining(
+          state.teamHistory,
+          state.game.mission
+        ) === 0
+      );
     },
     // Returns the winner, based on missions only
-    getWinnerFromMissions(state: GameState): Team | null {
+    getWinnerFromMissions(state: GameState): Alligance | null {
       let fail = 0,
         success = 0;
-      for (const mission of state.missions) {
+      for (const mission of state.missionHistory) {
         if (
           GameFunc.util.getMissionResult(mission, state.player.names.length) ===
           "success"
@@ -584,6 +575,18 @@ export const GameFunc = {
       if (fail === 3) return "spy";
       if (success === 3) return "agent";
       return null;
+    },
+    getColorOrder(names: string[]): Color[] {
+      if (names.length > GameMaxPlayers) {
+        return ColorOrderDefault;
+      }
+      // Basically makes it so that
+      // colors are assigned alphabetically
+      const mixed = names
+        .map((x, i) => [x, ColorOrderDefault[i]] as [string, Color])
+        .sort((a, b) => a[0].localeCompare(b[0]))
+        .map((x) => x[1]);
+      return mixed;
     },
   },
 };

@@ -1,5 +1,5 @@
 import { Color, ProposalVote, Role } from "common-modules";
-import React, { Fragment } from "react";
+import React, { Fragment, useMemo } from "react";
 import { Image } from "react-konva";
 import useImage from "use-image";
 
@@ -63,9 +63,6 @@ type TextureProps = {
 
 export default function Texture(props: TextureProps) {
   const [image, state] = useImage(spritesheetUrl);
-  if (state !== "loaded") {
-    return <Fragment />;
-  }
 
   let map: number[];
   if (props.type === "stickman") {
@@ -77,6 +74,20 @@ export default function Texture(props: TextureProps) {
   } else {
     map = textureMap[props.type];
   }
+  const [mapX, mapY] = map;
+  const crop = useMemo(
+    () => ({
+      x: mapX * SPRITE_W,
+      y: mapY * SPRITE_H,
+      width: SPRITE_W,
+      height: SPRITE_H,
+    }),
+    [mapX, mapY]
+  );
+
+  if (state !== "loaded") {
+    return <Fragment />;
+  }
 
   return (
     <Image
@@ -85,12 +96,7 @@ export default function Texture(props: TextureProps) {
       y={props.y}
       width={props.width}
       height={props.height}
-      crop={{
-        x: map[0] * SPRITE_W,
-        y: map[1] * SPRITE_H,
-        width: SPRITE_W,
-        height: SPRITE_H,
-      }}
+      crop={crop}
       scaleX={props.flipped ? -1 : 1}
       opacity={props.opacity}
     ></Image>

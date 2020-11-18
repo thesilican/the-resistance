@@ -18,3 +18,13 @@
 - [x] Make chat stick to bottom
 - [x] Press Tab to focus chat
 - [ ] ~~Add name highlighting in chat~~
+
+## Bugs / UI
+
+- [ ] Make return to lobby more prominant
+- [ ] Make hold for mission more prominant
+- [x] Make people shuffling around less confusing
+- [x] Pass proposal if time ran out even if enough people
+- [x] game breaking bug? reproduce:
+      go to hammer n3
+      reject following mission

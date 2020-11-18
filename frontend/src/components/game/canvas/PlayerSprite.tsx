@@ -1,7 +1,9 @@
 import {
-  ColorOrder,
+  Color,
   GameAction,
   GameAgentRoles,
+  GameFunc,
+  last,
   MissionPlayerCount,
   ProposalVote,
   Role,
@@ -28,20 +30,28 @@ export function PlayerSprite(props: PlayerSpriteProps) {
   const names = useSelector(GameSelector.names);
   const gamePhase = useSelector(GameSelector.gamePhase);
   const playerIndex = useSelector(GameSelector.playerIndex);
-  const lastTeam = useSelector(GameSelector.lastTeam);
-  const socketIDs = useSelector(GameSelector.socketIDs);
-  const disconnected = socketIDs[index] === null;
-  const curTeamMembers = lastTeam?.members;
-  const onTeam = lastTeam?.members.includes(index);
-  const isLeader = playerIndex === lastTeam?.leader;
+  console.log(names, GameFunc.util.getColorOrder(names));
+  const color = GameFunc.util.getColorOrder(names)[index];
+
+  const team = useSelector(GameSelector.team);
+  const teamHistory = useSelector(GameSelector.teamHistory);
+  const isLeader = playerIndex === team?.leader;
+  const onTeam = team?.members.includes(index);
   const teamRequiredPlayers =
-    MissionPlayerCount[numPlayers][(lastTeam?.mission ?? 1) - 1];
+    MissionPlayerCount[numPlayers][(team?.mission ?? 1) - 1];
+
+  const mission = useSelector(GameSelector.mission);
+  const onMission = mission?.members.includes(index);
+
   const isAssasin = useSelector(GameSelector.playerRole) === "assasin";
   const assasinChoice = useSelector(GameSelector.assasinChoice);
   const canAssasinate = GameAgentRoles.includes(roles[index]);
 
+  const socketIDs = useSelector(GameSelector.socketIDs);
+  const disconnected = socketIDs[index] === null;
+
   // Opacity & stuff
-  let hat = lastTeam?.leader === index;
+  let hat = team?.leader === index;
   let spriteOpacity = 1;
   let selectionOpacity = 0;
 
@@ -55,7 +65,7 @@ export function PlayerSprite(props: PlayerSpriteProps) {
       if (onTeam) {
         selectionOpacity = 1;
       } else if (gamePhase === "team-building" && isLeader) {
-        if (hover && curTeamMembers!.length < teamRequiredPlayers) {
+        if (hover && team!.members.length < teamRequiredPlayers) {
           selectionOpacity = 0.5;
         } else {
           selectionOpacity = 0.1;
@@ -63,7 +73,7 @@ export function PlayerSprite(props: PlayerSpriteProps) {
       }
       break;
     case "mission":
-      if (onTeam) {
+      if (onMission) {
         selectionOpacity = 1;
         spriteOpacity = 1;
       } else {
@@ -89,17 +99,17 @@ export function PlayerSprite(props: PlayerSpriteProps) {
 
   const handleClick = () => {
     if (gamePhase === "team-building" && isLeader) {
-      if (curTeamMembers?.includes(index)) {
+      if (team!.members.includes(index)) {
         dispatch(
           GameAction.updateTeamMembers({
-            members: curTeamMembers.filter((x) => x !== index),
+            members: team!.members.filter((x) => x !== index),
           })
         );
       } else {
-        if (curTeamMembers!.length < teamRequiredPlayers) {
+        if (team!.members.length < teamRequiredPlayers) {
           dispatch(
             GameAction.updateTeamMembers({
-              members: [...curTeamMembers!, index],
+              members: [...team!.members, index],
             })
           );
         }
@@ -116,9 +126,10 @@ export function PlayerSprite(props: PlayerSpriteProps) {
   // Votes
   let vote: ProposalVote | null = null;
   if (gamePhase === "voting") {
-    vote = lastTeam?.votes[index] === "none" ? null : "none";
+    vote = team!.votes[index] === "none" ? null : "none";
   } else if (gamePhase === "voting-review") {
-    vote = lastTeam?.votes[index] ?? null;
+    vote = last(teamHistory)?.votes[index] ?? null;
+    if (vote === "none") vote = null;
   }
 
   // Roles
@@ -129,8 +140,7 @@ export function PlayerSprite(props: PlayerSpriteProps) {
     } else {
       role = roles[index];
     }
-  }
-  if (gamePhase === "finished") {
+  } else if (gamePhase === "finished") {
     role = roles[index];
   }
 
@@ -144,6 +154,7 @@ export function PlayerSprite(props: PlayerSpriteProps) {
       onMouseOut={() => setHover(false)}
       role={role}
       vote={vote}
+      color={color}
       stageInfo={stageInfo}
       spriteOpacity={spriteOpacity}
       selectionOpacity={selectionOpacity}
@@ -173,6 +184,7 @@ type PlayerSpriteTexturesProps = {
   stageInfo: StageInfo;
   spriteOpacity?: number;
   selectionOpacity?: number;
+  color: Color;
   hat: boolean;
   vote: ProposalVote | null;
   role: Role | null;
@@ -193,6 +205,7 @@ function PlayerSpriteTexture(props: PlayerSpriteTexturesProps) {
     role,
     spriteOpacity,
     selectionOpacity,
+    color,
     onMouseOver,
     onMouseOut,
     onMouseDown,
@@ -209,7 +222,6 @@ function PlayerSpriteTexture(props: PlayerSpriteTexturesProps) {
     textHeight,
   } = useMemo(() => getPosition(index, stageInfo), [index, stageInfo]);
 
-  const color = ColorOrder[index] ?? ColorOrder[0];
   const colorCode = ColorValues[color];
 
   return (

@@ -49,18 +49,18 @@ export type SystemChatMessage = {
 
 export type ProposalVote = "accept" | "reject" | "none";
 export type MissionAction = "success" | "fail";
-export type TeamHistory = {
+export type Team = {
   mission: number;
   leader: number;
   members: number[];
   votes: ProposalVote[];
 };
-export type MissionHistory = {
+export type Mission = {
   mission: number;
   members: number[];
   actions: (MissionAction | null)[];
 };
-export type Team = "agent" | "spy";
+export type Alligance = "agent" | "spy";
 export type Role =
   | "agent"
   | "captain"
@@ -88,14 +88,18 @@ export type GameState = {
     roles: Role[];
   };
   assasinChoice: number | null;
-  winner: Team | null;
+  winner: Alligance | null;
   game: {
     phase: GamePhase;
     mission: number;
     phaseCountdown: number;
   };
-  teams: TeamHistory[];
-  missions: MissionHistory[];
+  // Team only exists during team building and voting phases
+  team: Team | null;
+  teamHistory: Team[];
+  // Mission only exists during mission phases
+  mission: Mission | null;
+  missionHistory: Mission[];
   chat: ChatMessage[];
   statusMessage: string | null;
 };

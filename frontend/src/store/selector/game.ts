@@ -11,8 +11,10 @@ const gamePhase = (state: RootState) => state.game.game.phase;
 const gamePhaseCountdown = (state: RootState) => state.game.game.phaseCountdown;
 const missionNum = (state: RootState) => state.game.game.mission;
 const statusMessage = (state: RootState) => state.game.statusMessage;
-const teams = (state: RootState) => state.game.teams;
-const missions = (state: RootState) => state.game.missions;
+const team = (state: RootState) => state.game.team;
+const teamHistory = (state: RootState) => state.game.teamHistory;
+const mission = (state: RootState) => state.game.mission;
+const missionHistory = (state: RootState) => state.game.missionHistory;
 const assasinChoice = (state: RootState) => state.game.assasinChoice;
 const winner = (state: RootState) => state.game.winner;
 
@@ -26,12 +28,6 @@ const youInGame = createSelector(
   playerIndex,
   (playerIndex) => playerIndex !== -1
 );
-const lastTeam = createSelector(teams, (teams) =>
-  teams.length === 0 ? null : teams[teams.length - 1]
-);
-const lastMission = createSelector(missions, (missions) =>
-  missions.length === 0 ? null : missions[missions.length - 1]
-);
 const playerRole = createSelector(
   playerIndex,
   roles,
@@ -39,22 +35,22 @@ const playerRole = createSelector(
 );
 
 export const GameSelector = {
-  names,
-  socketIDs,
-  roles,
-  youInGame,
+  assasinChoice,
   chatMessages,
-  playerIndex,
   gamePhase,
   gamePhaseCountdown,
-  statusMessage,
-  missions,
-  assasinChoice,
-  teams,
+  mission,
+  missionHistory,
   missionNum,
-  lastTeam,
-  lastMission,
-  playerRole,
+  names,
   numPlayers,
+  playerIndex,
+  playerRole,
+  roles,
+  socketIDs,
+  statusMessage,
+  team,
+  teamHistory,
   winner,
+  youInGame,
 };

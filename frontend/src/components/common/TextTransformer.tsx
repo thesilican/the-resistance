@@ -1,4 +1,4 @@
-import { ColorOrder } from "common-modules";
+import { GameFunc } from "common-modules";
 import React, { Fragment, ReactNode } from "react";
 import { useSelector } from "react-redux";
 import { GameSelector } from "../../store";
@@ -10,11 +10,9 @@ type TextTransformerProps = {
   children: string;
 };
 
-export default React.memo(function TextTransformer(
-  props: TextTransformerProps
-) {
-  const colors = ColorOrder;
+export default function TextTransformer(props: TextTransformerProps) {
   const names = useSelector(GameSelector.names);
+  const colors = GameFunc.util.getColorOrder(names);
   const splits: ReactNode[] = props.children.split(pattern);
 
   for (let i = 1; i < splits.length; i += 2) {
@@ -51,4 +49,4 @@ export default React.memo(function TextTransformer(
   }
 
   return <Fragment>{splits}</Fragment>;
-});
+}

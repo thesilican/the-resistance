@@ -1,9 +1,11 @@
 import cn from "classnames";
 import {
+  count,
   GameFunc,
-  MissionHistory,
+  Mission,
   MissionNeedDouble,
   MissionPlayerCount,
+  range,
 } from "common-modules";
 import React from "react";
 import OverlayTrigger from "react-bootstrap/esm/OverlayTrigger";
@@ -15,12 +17,13 @@ import styles from "../../styles/game/MissionIndicators.module.scss";
 import TF from "../common/TextTransformer";
 
 export default function MissionIndicators() {
-  const missions = Array.from(Array(5)).map((_, i) => i);
-  const teams = useSelector(GameSelector.teams);
-  const gamePhase = useSelector(GameSelector.gamePhase);
-  const proposalsRemaining = GameFunc.util.getProposalsRemaining(teams);
-  const isHammer = proposalsRemaining === 0;
-  const gameHammered = gamePhase === "finished" && isHammer;
+  const missionNum = useSelector(GameSelector.missionNum);
+  const teamHistory = useSelector(GameSelector.teamHistory);
+  const proposalsRemaining = GameFunc.util.getProposalsRemaining(
+    teamHistory,
+    missionNum
+  );
+  const isHammer = proposalsRemaining === 1;
 
   return (
     <div className={styles.MissionIndicators}>
@@ -29,13 +32,11 @@ export default function MissionIndicators() {
         <br />
         Progress
       </span>
-      {missions.map((_, i) => (
+      {range(5).map((_, i) => (
         <MissionIndicator key={i} index={i} />
       ))}
       <div className={cn(styles.proposals, { [styles.hammer]: isHammer })}>
-        <span className={styles.label1}>
-          {gameHammered ? 0 : Math.min(5, proposalsRemaining + 1)}/5
-        </span>
+        <span className={styles.label1}>{proposalsRemaining}/5</span>
         <span className={styles.label2}>
           proposals
           <br />
@@ -52,39 +53,35 @@ type MissionIndicatorProps = {
 
 function MissionIndicator(props: MissionIndicatorProps) {
   const { index } = props;
-  const teams = useSelector(GameSelector.teams);
-  const numPlayers = useSelector(GameSelector.socketIDs).length;
-  const lastTeam = useSelector(GameSelector.lastTeam);
-  const mission = useSelector(GameSelector.missions);
-  const curMission = mission[index] as MissionHistory | undefined;
-  const lastTeamMission = lastTeam?.mission;
-  const gamePhase = useSelector(GameSelector.gamePhase);
+  // const teams = useSelector(GameSelector.teams);
+  // const numPlayers = useSelector(GameSelector.socketIDs).length;
+  // const lastTeam = useSelector(GameSelector.lastTeam);
+  // const mission = useSelector(GameSelector.missions);
+  // const curMission = mission[index] as MissionHistory | undefined;
+  // const lastTeamMission = lastTeam?.mission;
+  // const gamePhase = useSelector(GameSelector.gamePhase);
+  const teamHistory = useSelector(GameSelector.teamHistory);
+  const numPlayers = useSelector(GameSelector.numPlayers);
+  const missionHistory = useSelector(GameSelector.missionHistory);
+  const missionNum = useSelector(GameSelector.missionNum);
+  const mission = missionHistory[index] as Mission | undefined;
 
-  const isCurrentMission = index + 1 === lastTeamMission;
-  const isFinishedPhase = [
-    "mission-review",
-    "finished-assasinate",
-    "finished",
-  ].includes(gamePhase);
-  const active = isCurrentMission && !isFinishedPhase;
   const missionResult =
-    curMission && GameFunc.util.getMissionResult(curMission, numPlayers);
-  const success =
-    (!isCurrentMission || isFinishedPhase) && missionResult === "success";
-  const fail =
-    (!isCurrentMission || isFinishedPhase) && missionResult === "fail";
-
+    mission && GameFunc.util.getMissionResult(mission, numPlayers);
+  const active = missionNum === index + 1 && !missionResult;
+  const success = missionResult === "success";
+  const fail = missionResult === "fail";
   const double = MissionNeedDouble[numPlayers][index];
-  const playersRequired = MissionPlayerCount[numPlayers][index];
-  const numFails =
-    curMission?.actions.reduce((a, v) => (v === "fail" ? a + 1 : a), 0) ?? 0;
 
-  let missionMembers: number[] = [];
-  let missionLeader: number = -1;
-  for (let i = teams.length - 1; i >= 0; i--) {
-    if (teams[i].mission === index + 1) {
-      missionMembers = teams[i].members;
-      missionLeader = teams[i].leader;
+  const playersRequired = MissionPlayerCount[numPlayers][index];
+  const numFails = mission && count(mission.actions, "fail");
+
+  let teamLeader: number = -1;
+  let teamMembers: number[] = [];
+  for (let i = teamHistory.length - 1; i >= 0; i--) {
+    if (teamHistory[i].mission === index + 1) {
+      teamMembers = teamHistory[i].members;
+      teamLeader = teamHistory[i].leader;
       break;
     }
   }
@@ -92,32 +89,20 @@ function MissionIndicator(props: MissionIndicatorProps) {
   const popover = (
     <Tooltip id="mission-indicator-tooltip">
       <div className={styles.tooltip}>
-        {fail ? (
+        {fail || success ? (
           <>
             <span className={styles.title}>
-              <TF>{`{{fail:Mission ${index + 1} Failed}}`}</TF>
+              <TF>{`{{${fail ? "fail" : "success"}:Mission ${index + 1} ${
+                fail ? "Failed" : "Success"
+              }}}`}</TF>
             </span>
             <span>
-              <TF>{plural(numFails, "fail") + " detected"}</TF>
+              <TF>{plural(numFails ?? 0, "fail") + " detected"}</TF>
             </span>
             <span>
-              <TF>{`${missionMembers
+              <TF>{`${teamMembers
                 .map((x) => `{{name:${x}}}`)
-                .join(", ")} by {{name:${missionLeader}}}`}</TF>
-            </span>
-          </>
-        ) : success ? (
-          <>
-            <span className={styles.title}>
-              <TF>{`{{success:Mission ${index + 1} Success}}`}</TF>
-            </span>
-            <span>
-              <TF>{plural(numFails, "fail") + " detected"}</TF>
-            </span>
-            <span>
-              <TF>{`${missionMembers
-                .map((x) => `{{name:${x}}}`)
-                .join(", ")} by {{name:${missionLeader}}}`}</TF>
+                .join(", ")} by {{name:${teamLeader}}}`}</TF>
             </span>
           </>
         ) : (
@@ -127,7 +112,6 @@ function MissionIndicator(props: MissionIndicatorProps) {
             </span>
             {active && (
               <span>
-                {/* For N4 double only */}
                 <TF>{`Current mission`}</TF>
               </span>
             )}

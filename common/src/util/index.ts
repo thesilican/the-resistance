@@ -101,6 +101,14 @@ export function plural(num: number, text: string, pluralStr?: string) {
   return num + " " + (num === 1 ? text : pluralStr);
 }
 
-export function last<T>(arr: T[]): T {
-  return arr[arr.length - 1];
+export function last<T>(arr: T[]): T | null {
+  return arr[arr.length - 1] ?? null;
+}
+
+export function range(min: number, max?: number) {
+  if (!max) {
+    max = min;
+    min = 0;
+  }
+  return Array.from(Array(max - min)).map((_, i) => i + min);
 }

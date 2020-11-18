@@ -30,6 +30,7 @@
   margin-bottom: 0.25rem;
   word-wrap: break-word;
   &.system {
+    opacity: 0.8;
     font-size: smaller;
     text-align: center;
     font-family: "Raleway", $font-family-sans-serif;
