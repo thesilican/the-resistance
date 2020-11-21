@@ -46,7 +46,6 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(socketIOMiddleware),
-  devTools: !production,
 });
 
 export type RootState = ReturnType<typeof store.getState>;
