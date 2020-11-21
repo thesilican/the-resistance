@@ -9,7 +9,7 @@ const socketIOMiddleware: Middleware = ({ dispatch }) => (next) => {
     reconnection: false,
   });
   socket.on("connect", () => {
-    console.log("Connection", socket.id);
+    if (!production) console.log("Connection", socket.id);
     dispatch(ClientAction.setSocketID(socket.id));
   });
   socket.on("disconnect", () => {

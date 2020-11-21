@@ -29,3 +29,5 @@
 - [x] game breaking bug? reproduce:
       go to hammer n3
       reject following mission
+- [ ] "Assassin not assasin"
+- [ ] Make the return to lobby even more prominant

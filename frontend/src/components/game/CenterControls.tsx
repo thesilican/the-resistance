@@ -198,7 +198,7 @@ function LeaveGameButtons() {
           </TF>
         </h3>
       )}
-      <Button onClick={handleClick} variant="outline-primary">
+      <Button onClick={handleClick} variant="primary">
         Return to Lobby
       </Button>
     </div>
