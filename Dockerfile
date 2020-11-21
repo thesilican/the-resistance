@@ -1,4 +1,4 @@
-FROM node:lts as common
+FROM node:lts-alpine as common
 
 # Build common modules first
 WORKDIR /app/common
@@ -8,7 +8,7 @@ COPY ./common ./
 RUN npm run build
 
 # Copy common from frontend
-FROM node:lts as frontend
+FROM node:lts-alpine as frontend
 WORKDIR /app
 COPY --from=common /app/common/package*.json ./common/
 COPY --from=common /app/common/dist ./common/dist/

@@ -21,8 +21,9 @@
 
 ## Bugs / UI
 
-- [ ] Make return to lobby more prominant
-- [ ] Make hold for mission more prominant
+- [x] Make return to lobby more prominant
+- [x] Make hold for mission more prominant
+  - [x] (Or do click instead)
 - [x] Make people shuffling around less confusing
 - [x] Pass proposal if time ran out even if enough people
 - [x] game breaking bug? reproduce:

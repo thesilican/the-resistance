@@ -27,9 +27,9 @@ Much of the inspiration for the user interface came from a free-to-play steam ga
 
 The Resistance was build with the following technologies
 
-- Frontend: [React][react], [React Router][react-router], [Bootstrap][bootstrap], [Konva][konva], [SASS][sass], [Typescript][typescript], [Create React App][cra]
-- Backend: [Node.js][nodejs], [Express][express], [Socket.IO][socketio], [Typescript][typescript], [Docker][docker]
-- Common: [Redux Toolkit][redux-toolkit]
+- Frontend: [React][react], [React Router][react-router], [Bootstrap][bootstrap], [Konva][konva], [Sass][sass], [Create React App][cra]
+- Backend: [Node.js][nodejs], [Express][express], [Docker][docker]
+- Common: [Redux Toolkit][redux-toolkit], [Socket.IO][socketio], [Typescript][typescript]
 
 ## Installation
 
@@ -50,28 +50,28 @@ If you would like to manually build a container from source, first download the 
 ```
 $ git clone https://github.com/thesilican/the-resistance.git
 $ cd the-resistance
-$ docker build . -t <image_name>
-$ docker run -d -p 8080:8080 --name <container_name> <image_name>
+$ docker build . -t the-resistance
+$ docker run -d -p 8080:8080 --name the-resistance the-resistance
 ```
 
 Then you can access the game at `http://localhost:8080`
 
 ### Node.js/Javascript
 
-If you really want to, you can run the project using [node.js][nodejs]. It is recommended that you use version `>=12`.
+If you really want to, you can run the project using [node.js][nodejs] only. It is recommended that you use version `>=12`.
 
 This project has the following directory structure:
 
 ```
 the-resistance
 ├─ common
-│  └─ src (Common code shared among frontend and backend)
+│  └─ src (Redux reducers shared among frontend & backend)
 └─ frontend
-│  ├─ assets (Images)
-│  ├─ public (For index.html)
+│  ├─ assets (GIMP image asset files)
+│  ├─ public (index.html and generated spritesheets)
 │  └─ src (Frontend code)
 │     ├─ components (React Components)
-│     └─ store (Redux components)
+│     └─ store (Redux store/selectors)
 └─ src (Backend code)
 ```
 
