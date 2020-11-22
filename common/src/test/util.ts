@@ -53,7 +53,7 @@ export function getInitializedGame(
     teamHistory: [],
     chat: [],
     statusMessage: "Welcome to the Resistance",
-    assasinChoice: null,
+    assassinChoice: null,
   };
   const store = configureStore({
     reducer: GameReducer,

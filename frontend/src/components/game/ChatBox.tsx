@@ -30,18 +30,17 @@ export default function ChatBox() {
           message: typingMessage,
         })
       );
+      // Scroll to the bottom on message
+      const div = chatDivRef.current!;
+      div.scrollTo(0, div.scrollHeight);
       setTypingMessage("");
     }
   };
 
   useEffect(() => {
     // Stick to bottom
-    const div = chatDivRef.current;
-    if (!div) return;
-    if (
-      div.scrollHeight - div.scrollTop - div.clientHeight <
-      div.clientHeight
-    ) {
+    const div = chatDivRef.current!;
+    if (div.scrollHeight - div.scrollTop - div.clientHeight < 100) {
       div.scrollTo(0, div.scrollHeight);
     }
   }, [messages]);
@@ -49,7 +48,6 @@ export default function ChatBox() {
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       // Ignore keyboard shortcuts
-      console.log(e);
       if (e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) return;
       if (e.key === "Tab") {
         chatInputRef.current?.focus();

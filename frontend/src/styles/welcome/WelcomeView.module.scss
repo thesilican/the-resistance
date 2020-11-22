@@ -13,5 +13,8 @@
   font-size: 1.25rem;
   a {
     color: $gray-400;
+    @include hover() {
+      color: darken($gray-400, 15%);
+    }
   }
 }

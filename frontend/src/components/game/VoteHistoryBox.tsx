@@ -1,6 +1,6 @@
 import cn from "classnames";
 import { GameFunc } from "common-modules";
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { GameSelector } from "../../store";
 import styles from "../../styles/game/VoteHistoryBox.module.scss";
@@ -9,12 +9,28 @@ import TextTransformer from "../common/TextTransformer";
 const iconURL = `${process.env.PUBLIC_URL}/assets/iconsheet.png`;
 
 export default function VoteHistoryBox() {
+  const scrollDivRef = useRef<HTMLDivElement | null>(null);
   const numPlayers = useSelector(GameSelector.numPlayers);
   const teamHistory = useSelector(GameSelector.teamHistory);
+
+  useEffect(() => {
+    const scrollDiv = scrollDivRef.current!;
+    const handler = (e: WheelEvent) => {
+      e.preventDefault();
+      // Assume 1rem is 16px
+      const left = scrollDiv.scrollLeft + Math.sign(e.deltaY) * (2 * 16);
+      scrollDiv.scrollTo({
+        left,
+      });
+    };
+    scrollDiv.addEventListener("wheel", handler);
+    return () => scrollDiv.removeEventListener("wheel", handler);
+  }, []);
 
   return (
     <div className={styles.VoteHistoryBox}>
       <div
+        ref={scrollDivRef}
         className={styles.grid}
         style={{
           gridTemplateRows: `repeat(${numPlayers + 1}, min-content)`,

@@ -27,7 +27,8 @@
 }
 
 .chatMessage {
-  margin-bottom: 0.25rem;
+  margin: 0;
+  padding-bottom: 0.25rem;
   word-wrap: break-word;
   &.system {
     opacity: 0.8;

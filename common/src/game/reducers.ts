@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import {
-  finishAssasinChoice,
+  finishAssassinChoice,
   finishTeamBuilding,
   hydrate,
   initialize,
@@ -11,7 +11,7 @@ import {
   sendMissionAction,
   sendProposalVote,
   tick,
-  updateAssasinChoice,
+  updateAssassinChoice,
   updateTeamMembers,
 } from "./actions";
 import { GameFunc } from "./funcs";
@@ -35,7 +35,7 @@ const initialState: GameState = {
   missionHistory: [],
   winner: null,
   chat: [],
-  assasinChoice: null,
+  assassinChoice: null,
 };
 
 export const GameReducer = createReducer(initialState, (builder) => {
@@ -86,11 +86,11 @@ export const GameReducer = createReducer(initialState, (builder) => {
         action.payload.action
       );
     })
-    .addCase(updateAssasinChoice, (state, action) => {
-      return GameFunc.action.updateAssasinChoice(state, action.payload.player);
+    .addCase(updateAssassinChoice, (state, action) => {
+      return GameFunc.action.updateAssassinChoice(state, action.payload.player);
     })
-    .addCase(finishAssasinChoice, (state, action) => {
-      return GameFunc.action.finishAssasinChoice(state);
+    .addCase(finishAssassinChoice, (state, action) => {
+      return GameFunc.action.finishAssassinChoice(state);
     })
     .addCase(newPlayerChatMessage, (state, action) => {
       GameFunc.action.newChatMessage(state, {

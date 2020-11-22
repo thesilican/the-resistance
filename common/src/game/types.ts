@@ -7,7 +7,7 @@ export type GameInitOptions = {
 export type GameCustomRoleOptions = {
   captain: boolean;
   deputy: boolean;
-  assasin: boolean;
+  assassin: boolean;
   imposter: boolean;
   intern: boolean;
   mole: boolean;
@@ -24,7 +24,7 @@ export type Color =
   | "purple"
   | "pink";
 
-export type GameMode = "normal" | "assasins";
+export type GameMode = "normal" | "assassins";
 export type GamePhase =
   | "role-reveal"
   | "team-building"
@@ -33,7 +33,7 @@ export type GamePhase =
   | "voting-review"
   | "mission"
   | "mission-review"
-  | "finished-assasinate"
+  | "finished-assassinate"
   | "finished";
 
 export type ChatMessage = PlayerChatMessage | SystemChatMessage;
@@ -66,7 +66,7 @@ export type Role =
   | "captain"
   | "deputy"
   | "spy"
-  | "assasin"
+  | "assassin"
   | "imposter"
   | "mole"
   | "intern";
@@ -76,7 +76,7 @@ export type Role =
 // Deputy knows captain and impostor but doesn't know who's who
 // --- Team Spies ---
 // Spies know fellow spies (except intern)
-// Assasin knows fellow spies (except intern), can kill one person at end of game
+// Assassin knows fellow spies (except intern), can kill one person at end of game
 // Imposter knows fellow spies, appears as Captain to Deputy
 // Mole is unknown to Captain
 // Intern is unknown to other spies
@@ -87,7 +87,7 @@ export type GameState = {
     socketIDs: (string | null)[];
     roles: Role[];
   };
-  assasinChoice: number | null;
+  assassinChoice: number | null;
   winner: Alligance | null;
   game: {
     phase: GamePhase;

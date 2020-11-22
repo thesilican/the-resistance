@@ -7,7 +7,7 @@ import {
   GamePhaseLengths,
   MissionNeedDouble,
   MissionPlayerCount,
-  TeamPoolsAssasins,
+  TeamPoolsAssassins,
   TeamPoolsNormal,
 } from "./constants";
 import {
@@ -66,7 +66,7 @@ export const GameFunc = {
       teamHistory: [],
       chat: [],
       statusMessage: "Welcome to the Resistance",
-      assasinChoice: null,
+      assassinChoice: null,
     };
   },
   tick(state: GameState): GameState {
@@ -106,13 +106,13 @@ export const GameFunc = {
         if (winner === null) {
           return GameFunc.begin.teamBuilding(state);
         } else {
-          if (state.player.roles.includes("assasin") && winner === "agent") {
-            return GameFunc.begin.finishedAssasinate(state);
+          if (state.player.roles.includes("assassin") && winner === "agent") {
+            return GameFunc.begin.finishedAssassinate(state);
           } else {
             return GameFunc.begin.finished(state);
           }
         }
-      case "finished-assasinate":
+      case "finished-assassinate":
         return GameFunc.begin.finished(state);
       case "finished":
         // Should never happen
@@ -252,12 +252,12 @@ export const GameFunc = {
 
       return state;
     },
-    finishedAssasinate(state: GameState): GameState {
-      state.game.phase = "finished-assasinate";
-      state.game.phaseCountdown = GamePhaseLengths["finished-assasinate"];
+    finishedAssassinate(state: GameState): GameState {
+      state.game.phase = "finished-assassinate";
+      state.game.phaseCountdown = GamePhaseLengths["finished-assassinate"];
 
-      const assasin = state.player.roles.indexOf("assasin");
-      let msg = `${nameStr(assasin)} is picking a player to assasinate`;
+      const assassin = state.player.roles.indexOf("assassin");
+      let msg = `${nameStr(assassin)} is picking a player to assassinate`;
       state.statusMessage = msg;
       state.chat.push({
         type: "system",
@@ -277,8 +277,8 @@ export const GameFunc = {
       if (GameFunc.util.getIsHammer(state)) {
         msg += "The agents have ran out of proposals. ";
       }
-      if (state.assasinChoice !== null) {
-        const choice = state.assasinChoice;
+      if (state.assassinChoice !== null) {
+        const choice = state.assassinChoice;
         const wasCaptain = state.player.roles[choice] === "captain";
         msg += `${nameStr(choice)} was ${
           wasCaptain ? "" : "not "
@@ -384,15 +384,15 @@ export const GameFunc = {
       }
       return GameFunc.begin.missionReview(state);
     },
-    updateAssasinChoice(state: GameState, player: number): GameState {
-      if (state.game.phase !== "finished-assasinate") {
+    updateAssassinChoice(state: GameState, player: number): GameState {
+      if (state.game.phase !== "finished-assassinate") {
         return state;
       }
-      state.assasinChoice = player;
+      state.assassinChoice = player;
       return state;
     },
-    finishAssasinChoice(state: GameState): GameState {
-      if (state.game.phase !== "finished-assasinate") {
+    finishAssassinChoice(state: GameState): GameState {
+      if (state.game.phase !== "finished-assassinate") {
         return state;
       }
       return GameFunc.begin.finished(state);
@@ -406,12 +406,12 @@ export const GameFunc = {
     // Return the result of a role list
     getRoleList(
       numPlayers: number,
-      options: "normal" | "assasins" | GameCustomRoleOptions
+      options: "normal" | "assassins" | GameCustomRoleOptions
     ): Role[] | null {
       if (options === "normal") {
         return TeamPoolsNormal[numPlayers].slice();
-      } else if (options === "assasins") {
-        return TeamPoolsAssasins[numPlayers].slice();
+      } else if (options === "assassins") {
+        return TeamPoolsAssassins[numPlayers].slice();
       } else {
         return this.getCustomRoleList(numPlayers, options);
       }
@@ -434,7 +434,7 @@ export const GameFunc = {
       const spyRoles: Role[] = [];
       if (roleOptions.captain) agentRoles.push("captain");
       if (roleOptions.deputy) agentRoles.push("deputy");
-      if (roleOptions.assasin) spyRoles.push("assasin");
+      if (roleOptions.assassin) spyRoles.push("assassin");
       if (roleOptions.imposter) spyRoles.push("imposter");
       if (roleOptions.intern) spyRoles.push("intern");
       if (roleOptions.mole) spyRoles.push("mole");
@@ -480,7 +480,7 @@ export const GameFunc = {
             known.set(i, roles.slice());
           }
         }
-      } else if (["spy", "assasin", "imposter", "mole"].includes(playerRole)) {
+      } else if (["spy", "assassin", "imposter", "mole"].includes(playerRole)) {
         for (let i = 0; i < roleList.length; i++) {
           if (i === playerIndex) continue;
           if (
@@ -529,7 +529,7 @@ export const GameFunc = {
       }
     },
     // Return the winner of a game,
-    // Based on winner, hammer, and assasin result
+    // Based on winner, hammer, and assassin result
     getWinner(state: GameState): Alligance | null {
       if (GameFunc.util.getIsHammer(state)) {
         return "spy";
@@ -538,10 +538,10 @@ export const GameFunc = {
       if (winner === null || winner === "spy") {
         return winner;
       } else if (winner === "agent") {
-        if (!state.player.roles.includes("assasin")) return "agent";
-        if (state.assasinChoice === null) return "agent";
-        const assasinated = state.player.roles[state.assasinChoice];
-        if (assasinated === "captain") {
+        if (!state.player.roles.includes("assassin")) return "agent";
+        if (state.assassinChoice === null) return "agent";
+        const assassinated = state.player.roles[state.assassinChoice];
+        if (assassinated === "captain") {
           return "spy";
         } else {
           return "agent";

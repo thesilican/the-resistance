@@ -30,7 +30,6 @@ export function PlayerSprite(props: PlayerSpriteProps) {
   const names = useSelector(GameSelector.names);
   const gamePhase = useSelector(GameSelector.gamePhase);
   const playerIndex = useSelector(GameSelector.playerIndex);
-  console.log(names, GameFunc.util.getColorOrder(names));
   const color = GameFunc.util.getColorOrder(names)[index];
 
   const team = useSelector(GameSelector.team);
@@ -43,9 +42,9 @@ export function PlayerSprite(props: PlayerSpriteProps) {
   const mission = useSelector(GameSelector.mission);
   const onMission = mission?.members.includes(index);
 
-  const isAssasin = useSelector(GameSelector.playerRole) === "assasin";
-  const assasinChoice = useSelector(GameSelector.assasinChoice);
-  const canAssasinate = GameAgentRoles.includes(roles[index]);
+  const isAssassin = useSelector(GameSelector.playerRole) === "assassin";
+  const assassinChoice = useSelector(GameSelector.assassinChoice);
+  const canAssassinate = GameAgentRoles.includes(roles[index]);
 
   const socketIDs = useSelector(GameSelector.socketIDs);
   const disconnected = socketIDs[index] === null;
@@ -86,10 +85,10 @@ export function PlayerSprite(props: PlayerSpriteProps) {
       break;
     case "mission-review":
       break;
-    case "finished-assasinate":
-      if (index === assasinChoice) {
+    case "finished-assassinate":
+      if (index === assassinChoice) {
         selectionOpacity = 1;
-      } else if (isAssasin && canAssasinate) {
+      } else if (isAssassin && canAssassinate) {
         if (hover) {
           selectionOpacity = 0.5;
         } else {
@@ -119,11 +118,11 @@ export function PlayerSprite(props: PlayerSpriteProps) {
         }
       }
     } else if (
-      gamePhase === "finished-assasinate" &&
-      isAssasin &&
-      canAssasinate
+      gamePhase === "finished-assassinate" &&
+      isAssassin &&
+      canAssassinate
     ) {
-      dispatch(GameAction.updateAssasinChoice({ player: index }));
+      dispatch(GameAction.updateAssassinChoice({ player: index }));
     }
   };
 
@@ -138,7 +137,7 @@ export function PlayerSprite(props: PlayerSpriteProps) {
 
   // Roles
   let role: Role | null = null;
-  if (gamePhase === "finished-assasinate") {
+  if (gamePhase === "finished-assassinate") {
     if (GameAgentRoles.includes(roles[index])) {
       role = "agent";
     } else {

@@ -21,7 +21,7 @@ export const GamePhaseLengths: { [p in GamePhase]: number } = {
   "voting-review": 5,
   mission: 20,
   "mission-review": 5,
-  "finished-assasinate": 60,
+  "finished-assassinate": 60,
   finished: 1,
 };
 
@@ -77,10 +77,10 @@ export const TeamPoolsNormal: { [n: number]: Role[] } = {
   ],
 };
 
-export const TeamPoolsAssasins: { [n: number]: Role[] } = {
-  5: ["agent", "agent", "captain", "spy", "assasin"],
-  6: ["agent", "agent", "agent", "captain", "spy", "assasin"],
-  7: ["agent", "agent", "agent", "captain", "spy", "intern", "assasin"],
+export const TeamPoolsAssassins: { [n: number]: Role[] } = {
+  5: ["agent", "agent", "captain", "spy", "assassin"],
+  6: ["agent", "agent", "agent", "captain", "spy", "assassin"],
+  7: ["agent", "agent", "agent", "captain", "spy", "intern", "assassin"],
   8: [
     "agent",
     "agent",
@@ -88,7 +88,7 @@ export const TeamPoolsAssasins: { [n: number]: Role[] } = {
     "agent",
     "captain",
     "spy",
-    "assasin",
+    "assassin",
     "intern",
   ],
   9: [
@@ -99,7 +99,7 @@ export const TeamPoolsAssasins: { [n: number]: Role[] } = {
     "agent",
     "captain",
     "spy",
-    "assasin",
+    "assassin",
     "intern",
   ],
   10: [
@@ -111,7 +111,7 @@ export const TeamPoolsAssasins: { [n: number]: Role[] } = {
     "captain",
     "spy",
     "spy",
-    "assasin",
+    "assassin",
     "intern",
   ],
 };
@@ -124,7 +124,7 @@ export const GameRolesOrder: Role[] = [
   "captain",
   "deputy",
   "spy",
-  "assasin",
+  "assassin",
   "intern",
   "imposter",
   "mole",

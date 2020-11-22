@@ -27,7 +27,7 @@ describe("game initialization", () => {
       );
 
       expect(store.getState()).toEqual({
-        assasinChoice: null,
+        assassinChoice: null,
         chat: [],
         game: {
           mission: 0,
@@ -47,13 +47,13 @@ describe("game initialization", () => {
         winner: null,
       });
     });
-    it("should initialize (assasins 5 players)", () => {
+    it("should initialize (assassins 5 players)", () => {
       const store = configureStore({
         reducer: GameReducer,
       });
       store.dispatch(
         GameAction.initialize({
-          gamemode: "assasins",
+          gamemode: "assassins",
           names: SampleNames.slice(0, 5),
           seed: 0,
           socketIDs: SampleIDs.slice(0, 5),
@@ -61,7 +61,7 @@ describe("game initialization", () => {
       );
 
       expect(store.getState()).toEqual({
-        assasinChoice: null,
+        assassinChoice: null,
         chat: [],
         game: {
           mission: 0,
@@ -72,7 +72,7 @@ describe("game initialization", () => {
         missionHistory: [],
         player: {
           names: ["bob", "alice", "charlie", "david", "edward"],
-          roles: ["agent", "captain", "assasin", "spy", "agent"],
+          roles: ["agent", "captain", "assassin", "spy", "agent"],
           socketIDs: ["1", "0", "2", "3", "4"],
         },
         statusMessage: "Welcome to the Resistance",
@@ -88,7 +88,7 @@ describe("game initialization", () => {
       store.dispatch(
         GameAction.initialize({
           gamemode: {
-            assasin: true,
+            assassin: true,
             captain: true,
             deputy: true,
             imposter: true,
@@ -102,7 +102,7 @@ describe("game initialization", () => {
       );
 
       expect(store.getState()).toEqual({
-        assasinChoice: null,
+        assassinChoice: null,
         chat: [],
         game: {
           mission: 0,
@@ -113,7 +113,7 @@ describe("game initialization", () => {
         missionHistory: [],
         player: {
           names: ["bob", "alice", "charlie", "david", "edward"],
-          roles: ["deputy", "agent", "imposter", "assasin", "captain"],
+          roles: ["deputy", "agent", "imposter", "assassin", "captain"],
           socketIDs: ["1", "0", "2", "3", "4"],
         },
         statusMessage: "Welcome to the Resistance",
@@ -136,7 +136,7 @@ describe("game initialization", () => {
       );
 
       expect(store.getState()).toEqual({
-        assasinChoice: null,
+        assassinChoice: null,
         chat: [],
         game: {
           mission: 0,
@@ -174,7 +174,7 @@ describe("game initialization", () => {
         winner: null,
       });
     });
-    it("should initialize (assasins 8 players)", () => {
+    it("should initialize (assassins 8 players)", () => {
       const store = configureStore({
         reducer: GameReducer,
       });
@@ -188,7 +188,7 @@ describe("game initialization", () => {
       );
 
       expect(store.getState()).toEqual({
-        assasinChoice: null,
+        assassinChoice: null,
         chat: [],
         game: {
           mission: 0,
@@ -233,7 +233,7 @@ describe("game initialization", () => {
       store.dispatch(
         GameAction.initialize({
           gamemode: {
-            assasin: true,
+            assassin: true,
             captain: true,
             deputy: true,
             imposter: true,
@@ -247,7 +247,7 @@ describe("game initialization", () => {
       );
 
       expect(store.getState()).toEqual({
-        assasinChoice: null,
+        assassinChoice: null,
         chat: [],
         game: {
           mission: 0,
@@ -275,7 +275,7 @@ describe("game initialization", () => {
             "imposter",
             "captain",
             "agent",
-            "assasin",
+            "assassin",
           ],
           socketIDs: ["2", "1", "7", "6", "0", "5", "3", "4"],
         },

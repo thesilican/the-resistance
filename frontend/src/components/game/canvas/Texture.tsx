@@ -24,7 +24,7 @@ export const textureMap = {
     captain: [1, 1],
     deputy: [2, 1],
     spy: [3, 1],
-    assasin: [4, 1],
+    assassin: [4, 1],
     imposter: [5, 1],
     mole: [0, 2],
     intern: [1, 2],

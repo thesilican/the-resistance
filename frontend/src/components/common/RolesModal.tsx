@@ -73,7 +73,7 @@ export default function RolesModal(props: RolesModalProps) {
           </ul>
         </div>
 
-        <h3>Assasins Mode</h3>
+        <h3>Assassins Mode</h3>
         <div className={styles.roleBox}>
           <p className={styles.role}>
             <TF>{`{{success:Captain}}`}</TF>
@@ -82,7 +82,7 @@ export default function RolesModal(props: RolesModalProps) {
           <p className={styles.flavorText}>
             <TF>
               {`Although the resistance {{success:Captain}} has access to the spy master list, he must keep ` +
-                `his identity secret, lest he gets assasinated`}
+                `his identity secret, lest he gets assassinated`}
             </TF>
           </p>
           <ul>
@@ -91,20 +91,20 @@ export default function RolesModal(props: RolesModalProps) {
             </li>
             <li>
               <TF>
-                {`However he must keep his identity a secret, otherwise the {{fail:Assasin}}` +
-                  ` may assasinate him at the end of the game`}
+                {`However he must keep his identity a secret, otherwise the {{fail:Assassin}}` +
+                  ` may assassinate him at the end of the game`}
               </TF>
             </li>
           </ul>
         </div>
         <div className={styles.roleBox}>
           <p className={styles.role}>
-            <TF>{`{{fail:Assasin}}`}</TF>
+            <TF>{`{{fail:Assassin}}`}</TF>
           </p>
 
           <p className={styles.flavorText}>
             <TF>
-              {`Sharpening his switch-knife blade, the {{fail:Assasin}} lurks in the shadows, ` +
+              {`Sharpening his switch-knife blade, the {{fail:Assassin}} lurks in the shadows, ` +
                 `waiting for the perfect moment to strike`}
             </TF>
           </p>
@@ -112,7 +112,7 @@ export default function RolesModal(props: RolesModalProps) {
             <li>
               <TF>
                 {`At the end of the game, if the agents win, ` +
-                  `the {{fail:Assasin}} may select one player to assasinate`}
+                  `the {{fail:Assassin}} may select one player to assassinate`}
               </TF>
             </li>
             <li>
@@ -147,7 +147,7 @@ export default function RolesModal(props: RolesModalProps) {
             </li>
             <li>
               <TF>
-                {`The {{fail:Intern}} only appears in games with 7 or more people in assasins mode`}
+                {`The {{fail:Intern}} only appears in games with 7 or more people in assassins mode`}
               </TF>
             </li>
           </ul>

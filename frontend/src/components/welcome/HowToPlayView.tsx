@@ -11,6 +11,9 @@ export default function HowToPlayView() {
   const [rolesShown, setRolesShown] = useState(false);
   return (
     <div className={styles.HowToPlayView}>
+      <a className={styles.backToWelcome} href="/">
+        Return to homepage
+      </a>
       <RolesModal
         show={rolesShown}
         onClose={() => setRolesShown(false)}
@@ -165,7 +168,7 @@ export default function HowToPlayView() {
               height="315"
               src="https://www.youtube.com/embed/DUENzjE9Jwg"
             ></iframe>
-            <h2>Assasins mode</h2>
+            <h2>Assassins mode</h2>
             <div className={styles.centerButton}>
               <Button
                 size="sm"
@@ -176,7 +179,7 @@ export default function HowToPlayView() {
               </Button>
             </div>
             <p>
-              A new gamemode called <Fail>Assasins mode</Fail> was recently
+              A new gamemode called <Fail>Assassins mode</Fail> was recently
               added. Based on the{" "}
               <a
                 rel="noopener noreferrer"
@@ -185,7 +188,7 @@ export default function HowToPlayView() {
               >
                 Avalon
               </a>{" "}
-              variation of The Resistance card game, the Assasins gamemode adds
+              variation of The Resistance card game, the Assassins gamemode adds
               the following new roles and rules:
             </p>
             <ul>
@@ -196,14 +199,14 @@ export default function HowToPlayView() {
               </li>
               <li>
                 However, the <Success>Captain</Success> cannot make himself too
-                obvious, for the spy team has <Fail>Assasin</Fail> who can
+                obvious, for the spy team has <Fail>Assassin</Fail> who can
                 strike him down
               </li>
               <li>
                 At the end of the game, if the agents win, the{" "}
-                <Fail>Assasin</Fail> may choose an agent to assasinate. If that
-                player is the <Success>Captain</Success>, then the spies win
-                instead!
+                <Fail>Assassin</Fail> may choose an agent to assassinate. If
+                that player is the <Success>Captain</Success>, then the spies
+                win instead!
               </li>
               <li>
                 In games with 7 or more people, the spies will have the{" "}
@@ -236,7 +239,7 @@ export default function HowToPlayView() {
               ></Figure.Image>
               <Figure.Caption>
                 The agents have successfully completed 3 missions. Megan the
-                assasin has one chance to assasinate an agent. If she picks
+                assassin has one chance to assassinate an agent. If she picks
                 Black Hat (the Captain), the spies will win instead!
               </Figure.Caption>
             </Figure>

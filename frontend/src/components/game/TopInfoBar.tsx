@@ -28,8 +28,8 @@ export default function TopInfoBar() {
     case "mission-review":
       text = `Mission ${mission}`;
       break;
-    case "finished-assasinate":
-      text = `Assasination`;
+    case "finished-assassinate":
+      text = `Assassination`;
       break;
     case "finished":
       text = `Game Finished`;

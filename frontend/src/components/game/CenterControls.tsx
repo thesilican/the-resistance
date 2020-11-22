@@ -17,7 +17,7 @@ export default function CenterControls() {
   const playerIndex = useSelector(GameSelector.playerIndex);
   const team = useSelector(GameSelector.team);
   const mission = useSelector(GameSelector.mission);
-  const isAssasin = useSelector(GameSelector.playerRole) === "assasin";
+  const isAssassin = useSelector(GameSelector.playerRole) === "assassin";
   const isLeader = playerIndex === team?.leader;
   const voted = team?.votes[playerIndex] !== "none";
   const lastMissionPlayerIndex = mission?.members.indexOf(playerIndex) ?? 0;
@@ -28,7 +28,7 @@ export default function CenterControls() {
     gamePhase === "mission" &&
     mission?.members.includes(playerIndex) &&
     mission?.actions[lastMissionPlayerIndex] === null;
-  const assasinateButtons = isAssasin && gamePhase === "finished-assasinate";
+  const assassinateButtons = isAssassin && gamePhase === "finished-assassinate";
   const leaveGameButtons = gamePhase === "finished";
 
   return (
@@ -36,7 +36,7 @@ export default function CenterControls() {
       {proposeButtons && <ProposeButtons />}
       {voteButtons && <VoteButtons />}
       {missionButtons && <MissionButtons />}
-      {assasinateButtons && <AssasinateButtons />}
+      {assassinateButtons && <AssassinateButtons />}
       {leaveGameButtons && <LeaveGameButtons />}
     </div>
   );
@@ -161,21 +161,21 @@ function ProposeButtons() {
   );
 }
 
-function AssasinateButtons() {
+function AssassinateButtons() {
   const dispatch = useDispatch();
-  const isAssasin = useSelector(GameSelector.playerRole) === "assasin";
-  const assasinChoice = useSelector(GameSelector.assasinChoice);
-  const enabled = isAssasin && assasinChoice !== null;
+  const isAssassin = useSelector(GameSelector.playerRole) === "assassin";
+  const assassinChoice = useSelector(GameSelector.assassinChoice);
+  const enabled = isAssassin && assassinChoice !== null;
 
   const handleClick = () => {
-    if (assasinChoice !== null) {
-      dispatch(GameAction.finishAssasinChoice());
+    if (assassinChoice !== null) {
+      dispatch(GameAction.finishAssassinChoice());
     }
   };
   return (
     <div className={styles.centerButtonBox}>
       <Button onClick={handleClick} disabled={!enabled}>
-        Assasinate
+        Assassinate
       </Button>
     </div>
   );

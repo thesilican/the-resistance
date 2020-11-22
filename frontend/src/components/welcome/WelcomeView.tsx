@@ -36,9 +36,7 @@ function WelcomeViewContents() {
       <div className={styles.linksBox}>
         <a href="/about">About</a>
         {" · "}
-        <a target="_blank" href="/how-to-play">
-          How to play
-        </a>
+        <a href="/how-to-play">How to play</a>
         {" · "}
         <a
           target="_blank"

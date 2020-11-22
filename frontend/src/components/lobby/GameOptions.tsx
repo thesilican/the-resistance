@@ -32,7 +32,7 @@ export default function GameOptions() {
     ? null
     : GameFunc.util.getRoleList(numPlayers, gameOptions);
 
-  const handleToggleGameOption = (gameOption: "captain" | "assasin") => {
+  const handleToggleGameOption = (gameOption: "captain" | "assassin") => {
     dispatch(
       LobbyAction.updateGameOptions({
         options: {
@@ -47,12 +47,12 @@ export default function GameOptions() {
     const options =
       e.target.value === "normal"
         ? "normal"
-        : e.target.value === "assasins"
-        ? "assasins"
+        : e.target.value === "assassins"
+        ? "assassins"
         : {
             captain: true,
             deputy: false,
-            assasin: true,
+            assassin: true,
             imposter: false,
             intern: false,
             mole: false,
@@ -82,7 +82,7 @@ export default function GameOptions() {
             onChange={handleSetGameMode}
           >
             <option value="normal">Normal</option>
-            <option value="assasins">Assasins</option>
+            <option value="assassins">Assassins</option>
             <option value="custom">Custom</option>
           </Form.Control>
         </Form.Group>
@@ -107,8 +107,8 @@ export default function GameOptions() {
                   onChange={() => handleToggleGameOption(x)}
                 />
               ))}
-              {(["assasin", "imposter", "mole", "intern"] as "assasin"[]).map(
-                (x: "assasin", i) => (
+              {(["assassin", "imposter", "mole", "intern"] as "assassin"[]).map(
+                (x: "assassin", i) => (
                   <Form.Check
                     key={x}
                     type="checkbox"

@@ -29,5 +29,8 @@
 - [x] game breaking bug? reproduce:
       go to hammer n3
       reject following mission
-- [ ] "Assassin not assasin"
-- [ ] Make the return to lobby even more prominant
+- [x] "Assassin not assasin"
+- [x] Make the return to lobby even more prominant
+- [x] Put back button on how to play (not blank page)
+- [x] Allow horizontal scrolling for vote log
+- [x] Make chat scroll to bottom only when necessary
