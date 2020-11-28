@@ -45,7 +45,7 @@ export default function RoleInfoBox() {
         onClick={() => setShowHowToPlay(true)}
         size="sm"
       >
-        View Roles List
+        (?) About Roles
       </Button>
     </div>
   );

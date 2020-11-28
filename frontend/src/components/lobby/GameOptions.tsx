@@ -107,7 +107,7 @@ export default function GameOptions() {
                   onChange={() => handleToggleGameOption(x)}
                 />
               ))}
-              {(["assassin", "imposter", "mole", "intern"] as "assassin"[]).map(
+              {(["assassin", "imposter", "intern", "mole"] as "assassin"[]).map(
                 (x: "assassin", i) => (
                   <Form.Check
                     key={x}
@@ -138,7 +138,7 @@ export default function GameOptions() {
           onClick={() => setShowHowToPlay(true)}
           size="sm"
         >
-          View Role List
+          (?) About Roles
         </Button>
       </div>
       <Button
