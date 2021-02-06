@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@reduxjs/toolkit": "^1.4.0",
+    "@reduxjs/toolkit": "^1.5.0",
     "@types/node": "^12.19.3",
     "@types/react": "^16.9.56",
     "@types/react-dom": "^16.9.9",
@@ -49,6 +49,6 @@
   },
   "proxy": "http://localhost:8080",
   "devDependencies": {
-    "source-map-explorer": "^2.5.0"
+    "source-map-explorer": "^2.5.2"
   }
 }
