@@ -34,3 +34,14 @@ app.use(express.static(path.join(__dirname, "../frontend/build")));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
 });
+
+// Handle SIGINT and SIGTERM
+let exited = false;
+const handleExit = () => {
+  if (exited) return;
+  exited = true;
+  httpServer.close();
+  console.log("Gracefully exited");
+};
+process.on("SIGINT", handleExit);
+process.on("SIGTERM", handleExit);
