@@ -104,7 +104,7 @@ $ npm start
 Then you can access the game at `http://localhost:8080`
 
 [my-website]: https://resistance.thesilican.com
-[rules]: http://localhost:8080/how-to-play
+[rules]: http://resistance.thesilican.com/how-to-play
 [resistance-game]: https://en.wikipedia.org/wiki/The_Resistance_(game)
 [resistance-amazon]: https://www.amazon.com/The-Resistance-Dystopian-Universe/dp/B008A2BA8G
 [avalon-amazon]: https://www.amazon.com/Resistance-Avalon-Social-Deduction-Game/dp/B009SAAV0C
