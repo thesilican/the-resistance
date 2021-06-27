@@ -17,13 +17,13 @@ export class Server {
     this.idManager = new RoomCodeManager();
   }
   onConnection(socket: Socket) {
-    console.log("Connect", socket.id);
+    // console.log("Connect", socket.id);
     this.sockets.set(socket.id, null);
     socket.on("disconnect", () => this.onDisconnect(socket));
     socket.on("action", (action: AnyAction) => this.onAction(socket, action));
   }
   onDisconnect(socket: Socket) {
-    console.log("Disconnect", socket.id);
+    // console.log("Disconnect", socket.id);
     const roomID = this.sockets.get(socket.id);
     this.sockets.delete(socket.id);
     if (!roomID) return;
