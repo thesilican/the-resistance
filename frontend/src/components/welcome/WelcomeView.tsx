@@ -45,14 +45,6 @@ function WelcomeViewContents() {
         >
           GitHub
         </a>
-        {" · "}
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://thesilican.com"
-        >
-          More projects
-        </a>
       </div>
     </div>
   );
