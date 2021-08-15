@@ -2,7 +2,7 @@
 
 This is an open source version of the popular party board game [The Resistance][resistance-game], based on original game by Don Eskridge.
 
-**Play it now at [https://resistance.thesilican.com][my-website]**
+**Play it now at [https://thesilican-resistance.herokuapp.com][my-website]**
 
 ![Example Gameplay](./doc/demo.png)
 
@@ -101,8 +101,8 @@ $ node dist/index.js
 
 Then you can access the game at `http://localhost:8080`.
 
-[my-website]: https://resistance.thesilican.com
-[rules]: http://resistance.thesilican.com/how-to-play
+[my-website]: https://thesilican-resistance.herokuapp.com
+[rules]: http://thesilican-resistance.herokuapp.com/how-to-play
 [resistance-game]: https://en.wikipedia.org/wiki/The_Resistance_(game)
 [resistance-amazon]: https://www.amazon.com/The-Resistance-Dystopian-Universe/dp/B008A2BA8G
 [avalon-amazon]: https://www.amazon.com/Resistance-Avalon-Social-Deduction-Game/dp/B009SAAV0C
