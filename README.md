@@ -33,19 +33,17 @@ The Resistance was build with the following technologies
 
 ## Installation
 
-### Docker
-
-The Resistance is available on Docker Hub. Make sure you have [docker][get-docker] installed, then run:
-
-```
-$ docker run -d -p 8080:8080 --name the-resistance thesilican/the-resistance
-```
-
-Then you can access the game at `http://localhost:8080`
-
 ### Building docker container
 
-If you would like to manually build a container from source, first download the repository. Then run docker build and run the container
+The easiest way to build and run this app is to use docker-compose. First download this repository, then run using docker-compose.
+
+```
+$ git clone https://github.com/thesilican/the-resistance.git
+$ cd the-resistance
+$ docker-compose up --build
+```
+
+Alternatively, you may build using docker directly.
 
 ```
 $ git clone https://github.com/thesilican/the-resistance.git
@@ -54,11 +52,11 @@ $ docker build . -t the-resistance
 $ docker run -d -p 8080:8080 --name the-resistance the-resistance
 ```
 
-Then you can access the game at `http://localhost:8080`
+Then you can access the game at `http://localhost:8080`.
 
 ### Node.js/Javascript
 
-If you really want to, you can run the project using [node.js][nodejs] only. It is recommended that you use version `>=12`.
+You can run the project using [node.js][nodejs] only. It is recommended that you use version `>=12`.
 
 This project has the following directory structure:
 
@@ -89,19 +87,19 @@ $ cd ./common
 $ npm install
 $ npm run build
 
-Build frontend code
+Build frontend website
 $ cd ../frontend
 $ npm install
 $ npm run build
 
-Build backend server
+Build & run backend server
 $ cd ..
 $ npm install
 $ npm run build
-$ npm start
+$ node dist/index.js
 ```
 
-Then you can access the game at `http://localhost:8080`
+Then you can access the game at `http://localhost:8080`.
 
 [my-website]: https://resistance.thesilican.com
 [rules]: http://resistance.thesilican.com/how-to-play
