@@ -2,7 +2,7 @@
 
 This is an open source version of the popular party board game [The Resistance][resistance-game], based on original game by Don Eskridge.
 
-**Play it now at [https://thesilican-resistance.herokuapp.com][my-website]**
+**Play it now at [https://thesilican-resistance.herokuapp.com][my-website]** (may take a few seconds to load)
 
 ![Example Gameplay](./doc/demo.png)
 
