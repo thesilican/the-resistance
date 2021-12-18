@@ -1,18 +1,16 @@
 .GameRoomCode {
   margin-top: 1rem;
   margin-right: 1rem;
-
   display: flex;
   align-items: center;
   justify-content: flex-end;
-
   pointer-events: all;
-}
 
-.label {
-  margin-right: 1rem;
-}
-
-.code {
-  width: min-content !important;
+  .label {
+    margin-right: 1rem;
+  }
+  .code {
+    text-align: center;
+    width: 80px;
+  }
 }
