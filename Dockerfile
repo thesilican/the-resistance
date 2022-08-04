@@ -1,42 +1,36 @@
 FROM node:14-alpine as common
-
-# Build common modules first
 WORKDIR /app/common
-COPY ./common/package*.json ./
-RUN npm ci
-COPY ./common ./
+COPY common/package*.json ./
+RUN npm i
+COPY common/ ./
 RUN npm run build
 
-# Copy common from frontend
 FROM node:14-alpine as frontend
 WORKDIR /app
 COPY --from=common /app/common/package*.json ./common/
-COPY --from=common /app/common/dist ./common/dist/
-
-# Build frontend
+COPY --from=common /app/common/dist/ ./common/dist/
 WORKDIR /app/frontend
-COPY ./frontend/package*.json ./
-RUN npm ci
-COPY ./frontend ./
+COPY frontend/package*.json ./
+RUN npm i
+COPY frontend/ ./
 RUN npm run build
 
-# Copy common from backend
 FROM node:14-alpine as backend
 WORKDIR /app
-COPY --from=common /app/common/dist ./common/dist/
 COPY --from=common /app/common/package*.json ./common/
-COPY package*.json ./
-RUN npm ci
-
-# Build backend
-COPY ./src ./src
-COPY tsconfig.json ./
+COPY --from=common /app/common/dist/ ./common/dist/
+WORKDIR /app/backend
+COPY ./backend/package*.json ./
+RUN npm i
+COPY ./backend/ ./
 RUN npm run build
 
-# Copy frontend build
-COPY --from=frontend /app/frontend/build ./frontend/build/
+FROM node:14-alpine
+WORKDIR /app
+COPY --from=common /app/common/ ./common/
+COPY --from=frontend /app/frontend/ ./frontend/
+COPY --from=backend /app/backend/ ./backend
 
-# Config and publish
 EXPOSE 8080
 ENV NODE_ENV production
-CMD [ "node", "dist/index.js" ]
+CMD ["node", "/app/backend/dist/index.js"]

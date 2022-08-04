@@ -2,4 +2,4 @@ build:
   docker:
     web: Dockerfile
 run:
-  web: node /app/dist/index.js
+  web: node /app/backend/dist/index.js

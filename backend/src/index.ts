@@ -20,8 +20,9 @@ httpServer.listen(port, () => {
 app.get("/api/statistics", (req, res) => {
   const players = server.sockets.size;
   const lobbies = server.rooms.size;
-  const games = Array.from(server.rooms.values()).map((x) => x.game !== null)
-    .length;
+  const games = Array.from(server.rooms.values()).map(
+    (x) => x.game !== null
+  ).length;
   return res.json({
     players,
     lobbies,
@@ -29,10 +30,10 @@ app.get("/api/statistics", (req, res) => {
   });
 });
 
-app.use(express.static(path.join(__dirname, "../frontend/build")));
+app.use(express.static(path.join(__dirname, "../../frontend/build")));
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
+  res.sendFile(path.join(__dirname, "../../frontend/build/index.html"));
 });
 
 // Handle SIGINT and SIGTERM
