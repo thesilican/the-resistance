@@ -1,4 +1,4 @@
-import { AnyAction, configureStore, EnhancedStore } from "@reduxjs/toolkit";
+import { AnyAction, configureStore, Store } from "@reduxjs/toolkit";
 import {
   GameAction,
   GameInitOptions,
@@ -13,7 +13,7 @@ import {
 import { Server, Socket } from "socket.io";
 import { actionFromServer } from "./util";
 
-type LobbyStore = EnhancedStore<LobbyState, AnyAction>;
+type LobbyStore = Store<LobbyState>;
 
 export class Lobby {
   store: LobbyStore;
@@ -134,7 +134,7 @@ export class Lobby {
   }
 }
 
-type GameStore = EnhancedStore<GameState, AnyAction>;
+type GameStore = Store<GameState>;
 
 export class Game {
   roomID: string;
