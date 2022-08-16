@@ -8,11 +8,11 @@ import {
   ProposalVote,
   Role,
 } from "common-modules";
-import React, { Fragment, useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { Rect, Text } from "react-konva";
 import { useDispatch, useSelector } from "react-redux";
-import { ColorValues } from "../../../lib/util";
 import { GameSelector } from "../../../store";
+import { ColorValues } from "../../../util";
 import { StageInfo } from "./GameCanvas";
 import Texture from "./Texture";
 
@@ -215,15 +215,10 @@ function PlayerSpriteTexture(props: PlayerSpriteTexturesProps) {
     disconnected,
     text,
   } = props;
-  const {
-    x,
-    y,
-    width,
-    height,
-    flipped,
-    spriteHeight,
-    textHeight,
-  } = useMemo(() => getPosition(index, stageInfo), [index, stageInfo]);
+  const { x, y, width, height, flipped, spriteHeight, textHeight } = useMemo(
+    () => getPosition(index, stageInfo),
+    [index, stageInfo]
+  );
 
   const colorCode = ColorValues[color];
 

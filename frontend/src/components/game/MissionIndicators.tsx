@@ -7,14 +7,13 @@ import {
   MissionPlayerCount,
   range,
 } from "common-modules";
-import React from "react";
 import OverlayTrigger from "react-bootstrap/esm/OverlayTrigger";
 import Tooltip from "react-bootstrap/esm/Tooltip";
 import { useSelector } from "react-redux";
-import { plural } from "../../lib/util";
 import { GameSelector } from "../../store";
-import styles from "../../styles/game/MissionIndicators.module.scss";
-import TF from "../common/TextTransformer";
+import { plural } from "../../util";
+import TF from "../common/TextFormat";
+import s from "./MissionIndicators.module.scss";
 
 export default function MissionIndicators() {
   const missionNum = useSelector(GameSelector.missionNum);
@@ -26,8 +25,8 @@ export default function MissionIndicators() {
   const isHammer = proposalsRemaining === 1;
 
   return (
-    <div className={styles.MissionIndicators}>
-      <span className={styles.title}>
+    <div className={s.MissionIndicators}>
+      <span className={s.title}>
         Mission
         <br />
         Progress
@@ -35,9 +34,9 @@ export default function MissionIndicators() {
       {range(5).map((_, i) => (
         <MissionIndicator key={i} index={i} />
       ))}
-      <div className={cn(styles.proposals, { [styles.hammer]: isHammer })}>
-        <span className={styles.label1}>{proposalsRemaining}/5</span>
-        <span className={styles.label2}>
+      <div className={cn(s.proposals, { [s.hammer]: isHammer })}>
+        <span className={s.label1}>{proposalsRemaining}/5</span>
+        <span className={s.label2}>
           proposals
           <br />
           remaining
@@ -88,10 +87,10 @@ function MissionIndicator(props: MissionIndicatorProps) {
 
   const popover = (
     <Tooltip id="mission-indicator-tooltip">
-      <div className={styles.tooltip}>
+      <div className={s.tooltip}>
         {fail || success ? (
           <>
-            <span className={styles.title}>
+            <span className={s.title}>
               <TF>{`{{${fail ? "fail" : "success"}:Mission ${index + 1} ${
                 fail ? "Failed" : "Success"
               }}}`}</TF>
@@ -107,7 +106,7 @@ function MissionIndicator(props: MissionIndicatorProps) {
           </>
         ) : (
           <>
-            <span className={styles.title}>
+            <span className={s.title}>
               <TF>{`Mission ${index + 1}`}</TF>
             </span>
             {active && (
@@ -135,15 +134,15 @@ function MissionIndicator(props: MissionIndicatorProps) {
       overlay={popover}
     >
       <div
-        className={cn(styles.indicator, {
-          [styles.fail]: fail,
-          [styles.success]: success,
-          [styles.active]: active,
-          [styles.double]: double,
+        className={cn(s.indicator, {
+          [s.fail]: fail,
+          [s.success]: success,
+          [s.active]: active,
+          [s.double]: double,
         })}
       >
-        <span className={styles.label1}>{playersRequired}</span>
-        <span className={styles.label2}>players</span>
+        <span className={s.label1}>{playersRequired}</span>
+        <span className={s.label2}>players</span>
       </div>
     </OverlayTrigger>
   );

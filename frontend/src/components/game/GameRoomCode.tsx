@@ -1,16 +1,15 @@
 import cn from "classnames";
-import React from "react";
 import { useSelector } from "react-redux";
 import { LobbySelector } from "../../store";
-import styles from "../../styles/game/GameRoomCode.module.scss";
+import s from "./GameRoomCode.module.scss";
 
 export default function GameRoomCode() {
   const gameCode = useSelector(LobbySelector.lobbyID);
   return (
-    <div className={styles.GameRoomCode}>
-      <span className={styles.label}>Room Code: </span>
+    <div className={s.GameRoomCode}>
+      <span className={s.label}>Room Code: </span>
       <input
-        className={cn("form-control", styles.code)}
+        className={cn("form-control", s.code)}
         size={3}
         value={gameCode}
         readOnly

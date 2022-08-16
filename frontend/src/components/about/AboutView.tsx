@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Col from "react-bootstrap/esm/Col";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
-import styles from "../../styles/welcome/AboutView.module.scss";
+import { Link } from "react-router-dom";
+import s from "./AboutView.module.scss";
 
 type ConnectedStatistics = {
   players: number;
@@ -22,20 +23,20 @@ export default function AboutView() {
         .catch(console.error);
     };
     fetch();
-    const interval = setInterval(fetch, 1000);
+    const interval = setInterval(fetch, 5000);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className={styles.AboutView}>
-      <a className={styles.backToWelcome} href="/">
-        Return to homepage
-      </a>
+    <div className={s.AboutView}>
+      <Link className={s.back} to="/">
+        Back to homepage
+      </Link>
       <Container>
         <Row>
           <Col xs={0} lg={1} />
-          <Col xs={12} lg={10} className={styles.body}>
-            <h1>The Resistance</h1>
+          <Col xs={12} lg={10}>
+            <h1 className={s.title}>The Resistance</h1>
             <p>
               This website is an open-source implementation of the classic board
               game{" "}
@@ -56,7 +57,7 @@ export default function AboutView() {
             </p>
             <img
               alt="An example of a resistance game in progress"
-              className={styles.img}
+              className={s.img}
               src={`${process.env.PUBLIC_URL}/doc/demo.png`}
             />
             <p>
@@ -115,14 +116,14 @@ export default function AboutView() {
               </a>
               .
             </p>
-            <p className={styles.light}>
-              {stats && (
+            {stats && (
+              <p className={s.light}>
                 <span>
                   Users Connected: {stats.players} | Lobbies: {stats.lobbies} |
                   Games: {stats.games}
                 </span>
-              )}
-            </p>
+              </p>
+            )}
           </Col>
           <Col xs={0} lg={1} />
         </Row>

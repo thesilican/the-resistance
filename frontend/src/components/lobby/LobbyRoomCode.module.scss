@@ -1,0 +1,11 @@
+@import "../../common";
+
+.LobbyRoomCode {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+// To increase selector specificity
+.code.code.code {
+  width: 450px;
+}

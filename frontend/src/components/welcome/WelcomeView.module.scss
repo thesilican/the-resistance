@@ -1,4 +1,4 @@
-@import "../common";
+@import "../../common";
 
 .WelcomeView {
   padding-top: 2rem;
@@ -12,9 +12,9 @@
   text-align: center;
   font-size: 1.25rem;
   a {
-    color: $gray-400;
-    @include hover() {
-      color: darken($gray-400, 15%);
+    color: $gray-500;
+    &:hover {
+      color: shift-color($gray-500, $link-shade-percentage);
     }
   }
 }

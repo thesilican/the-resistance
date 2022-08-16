@@ -5,8 +5,8 @@ import Form from "react-bootstrap/esm/Form";
 import FormControl from "react-bootstrap/esm/FormControl";
 import { useDispatch, useSelector } from "react-redux";
 import { GameSelector } from "../../store";
-import styles from "../../styles/game/ChatBox.module.scss";
-import TextTransformer from "../common/TextTransformer";
+import TextTransformer from "../common/TextFormat";
+import s from "./ChatBox.module.scss";
 
 export default function ChatBox() {
   const dispatch = useDispatch();
@@ -62,16 +62,17 @@ export default function ChatBox() {
   }, []);
 
   return (
-    <div className={styles.ChatBox}>
-      <div className={styles.chatWrapper} ref={chatDivRef}>
-        <div className={styles.chat}>
+    <div className={s.ChatBox}>
+      <div className={s.chatWrapper} ref={chatDivRef}>
+        <div className={s.chat}>
           <ChatMessageList messages={messages} />
         </div>
       </div>
-      <Form inline className={styles.form} onSubmit={handleSendMessage}>
+      {/* <Form inline className={s.form} onSubmit={handleSendMessage}> */}
+      <Form className={s.form} onSubmit={handleSendMessage}>
         <FormControl
           ref={chatInputRef}
-          className={styles.input}
+          className={s.input}
           value={typingMessage}
           onChange={handleTypeCharacter}
           onFocus={() => setHasFocus(true)}
@@ -110,7 +111,7 @@ type UserChatMessageProps = {
 
 function UserChatMessage({ player, text }: UserChatMessageProps) {
   return (
-    <p className={cn(styles.chatMessage, styles.user)}>
+    <p className={cn(s.chatMessage, s.user)}>
       <TextTransformer>{`{{name:${player}}}: ${text}`}</TextTransformer>
     </p>
   );
@@ -122,7 +123,7 @@ type SystemChatMessageProps = {
 
 function SystemChatMessage({ text }: SystemChatMessageProps) {
   return (
-    <p className={cn(styles.chatMessage, styles.system)}>
+    <p className={cn(s.chatMessage, s.system)}>
       <TextTransformer>{`${text}`}</TextTransformer>
     </p>
   );

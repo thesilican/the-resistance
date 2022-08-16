@@ -1,13 +1,12 @@
 import { GameAgentRoles, GameFunc } from "common-modules";
-import React, { useState } from "react";
+import { useState } from "react";
 import Button from "react-bootstrap/esm/Button";
 import { useSelector } from "react-redux";
-import { capital } from "../../lib/util";
 import { GameSelector } from "../../store";
-import styles from "../../styles/game/RoleInfoBox.module.scss";
-import RolesIncludedList from "../common/RolesIncludedList";
+import { capital } from "../../util";
 import RolesModal from "../common/RolesModal";
-import TextTransformer from "../common/TextTransformer";
+import TextTransformer from "../common/TextFormat";
+import s from "./RoleInfoBox.module.scss";
 
 export default function RoleInfoBox() {
   const index = useSelector(GameSelector.playerIndex);
@@ -17,7 +16,7 @@ export default function RoleInfoBox() {
   const knownRoles = Array.from(knownRolesMap.entries());
 
   return (
-    <div className={styles.RoleInfoBox}>
+    <div className={s.RoleInfoBox}>
       <RolesModal
         show={showHowToPlay}
         onClose={() => setShowHowToPlay(false)}
@@ -36,11 +35,11 @@ export default function RoleInfoBox() {
           </TextTransformer>
         </span>
       ))}
-      <span className={styles.small}>
-        <RolesIncludedList rolesList={roleList} />
+      <span className={s.small}>
+        {/* <RolesIncludedList rolesList={roleList} /> */}
       </span>
       <Button
-        className={styles.howToPlayButton}
+        className={s.howToPlayButton}
         variant={"secondary"}
         onClick={() => setShowHowToPlay(true)}
         size="sm"

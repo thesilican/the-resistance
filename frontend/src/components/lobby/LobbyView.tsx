@@ -1,21 +1,20 @@
-import React from "react";
 import Col from "react-bootstrap/esm/Col";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import { useSelector } from "react-redux";
+import { Link, NavLink } from "react-router-dom";
 import { LobbySelector } from "../../store";
-import styles from "../../styles/lobby/LobbyView.module.scss";
 import GameOptions from "./GameOptions";
 import InGameList from "./InGameList";
 import LobbyRoomCode from "./LobbyRoomCode";
+import s from "./LobbyView.module.scss";
 import MembersList from "./MembersList";
 
 export default function LobbyView() {
   const inGame = useSelector(LobbySelector.lobbyInGame);
   return (
-    <div className={styles.LobbyView}>
-      <h1>The Resistance</h1>
-      <LobbyRoomCode />
+    <div className={s.LobbyView}>
+      <h1 className={s.header}>The Resistance</h1>
       <Container>
         <Row>
           <Col xs={0} md={2}></Col>
@@ -28,6 +27,16 @@ export default function LobbyView() {
           <Col xs={0} md={2}></Col>
         </Row>
       </Container>
+      <LobbyRoomCode />
+      <Link
+        className={s.back}
+        to="/"
+        onClick={() => {
+          // TODO: implement
+        }}
+      >
+        Leave Lobby
+      </Link>
     </div>
   );
 }

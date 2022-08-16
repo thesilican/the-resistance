@@ -1,14 +1,14 @@
 import cn from "classnames";
 import { GameFunc, last } from "common-modules";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { Vec2 } from "../../lib/util";
 import { GameSelector } from "../../store";
-import styles from "../../styles/game/GameView.module.scss";
+import { Vec2 } from "../../util";
 import GameCanvas from "./canvas/GameCanvas";
 import CenterControls from "./CenterControls";
 import ChatHistoryTabs from "./ChatHistoryTabs";
 import GameRoomCode from "./GameRoomCode";
+import s from "./GameView.module.scss";
 import MissionIndicators from "./MissionIndicators";
 import RoleInfoBox from "./RoleInfoBox";
 import StatusMessage from "./StatusMessage";
@@ -44,23 +44,23 @@ export default function GameView() {
 
   return (
     <div
-      className={cn(styles.GameView, {
-        [styles.dark]: dark,
-        [styles.fail]: flashFail,
+      className={cn(s.GameView, {
+        [s.dark]: dark,
+        [s.fail]: flashFail,
       })}
     >
-      <div className={styles.grid} ref={gameGridDivRef}>
-        <div className={styles.col1}>
+      <div className={s.grid} ref={gameGridDivRef}>
+        <div className={s.col1}>
           <RoleInfoBox />
           <div />
           <ChatHistoryTabs />
         </div>
-        <div className={styles.col2}>
+        <div className={s.col2}>
           <TopInfoBar />
           <CenterControls />
           <StatusMessage />
         </div>
-        <div className={styles.col3}>
+        <div className={s.col3}>
           <GameRoomCode />
           <MissionIndicators />
           <div />
@@ -68,7 +68,7 @@ export default function GameView() {
       </div>
       <GameCanvas dim={gridDim} />
       <div
-        className={cn(styles.background)}
+        className={cn(s.background)}
         style={{
           // width: gridDim[0],
           height: gridDim[1],

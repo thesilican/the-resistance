@@ -1,18 +1,18 @@
-@import "../common";
+@import "../../common";
 
 .HowToPlayView {
   padding-top: 2rem;
   padding-bottom: 2rem;
 }
 
-.backToWelcome {
+.back {
   position: fixed;
   z-index: 10;
   top: 1rem;
   left: 1rem;
   color: $gray-500;
-  @include hover() {
-    color: darken($gray-500, 15%);
+  &:hover {
+    color: shift-color($gray-500, $link-shade-percentage);
   }
 }
 
@@ -38,16 +38,10 @@
   }
   a {
     color: $cyan;
-    @include hover() {
+    &:hover {
       color: darken($cyan, 15%);
     }
   }
-}
-.success {
-  color: $green;
-}
-.fail {
-  color: $red;
 }
 .bold {
   font-weight: bold;

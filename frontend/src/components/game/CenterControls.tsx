@@ -5,12 +5,12 @@ import {
   LobbyAction,
   MissionPlayerCount,
 } from "common-modules";
-import React, { Fragment, useState } from "react";
+import { Fragment, useState } from "react";
 import Button from "react-bootstrap/esm/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { GameSelector } from "../../store";
-import styles from "../../styles/game/CenterControls.module.scss";
-import TF from "../common/TextTransformer";
+import TF from "../common/TextFormat";
+import s from "./CenterControls.module.scss";
 
 export default function CenterControls() {
   const gamePhase = useSelector(GameSelector.gamePhase);
@@ -32,7 +32,7 @@ export default function CenterControls() {
   const leaveGameButtons = gamePhase === "finished";
 
   return (
-    <div className={styles.CenterControls}>
+    <div className={s.CenterControls}>
       {proposeButtons && <ProposeButtons />}
       {voteButtons && <VoteButtons />}
       {missionButtons && <MissionButtons />}
@@ -66,24 +66,24 @@ function MissionButtons() {
   return selected ? (
     <Fragment />
   ) : (
-    <div className={styles.missionButtonBox}>
-      <span className={styles.title}>Mission {missionNum}</span>
+    <div className={s.missionButtonBox}>
+      <span className={s.title}>Mission {missionNum}</span>
       <button
-        className={cn(styles.missionButton, styles.success)}
+        className={cn(s.missionButton, s.success)}
         onClick={() => onMissionSelected(true)}
       >
         Success
       </button>
       <button
-        className={cn(styles.missionButton, styles.fail, {
-          [styles.disabled]: failDisabled,
+        className={cn(s.missionButton, s.fail, {
+          [s.disabled]: failDisabled,
         })}
         disabled={failDisabled}
         onClick={() => onMissionSelected(false)}
       >
         Fail
       </button>
-      <div className={styles.background} />
+      <div className={s.background} />
     </div>
   );
 }
@@ -109,13 +109,13 @@ function VoteButtons() {
   };
 
   return (
-    <div className={styles.voteButtonBox}>
-      <span className={styles.title}>Mission 1 Proposal</span>
+    <div className={s.voteButtonBox}>
+      <span className={s.title}>Mission 1 Proposal</span>
       <Button
         variant="success"
         role="button"
         onClick={handleAccept}
-        className={cn(styles.voteButton, styles.accept)}
+        className={cn(s.voteButton, s.accept)}
       >
         Accept
       </Button>
@@ -123,7 +123,7 @@ function VoteButtons() {
         variant="danger"
         role="button"
         onClick={handleReject}
-        className={cn(styles.voteButton, styles.reject)}
+        className={cn(s.voteButton, s.reject)}
       >
         Reject
       </Button>
@@ -150,7 +150,7 @@ function ProposeButtons() {
   };
 
   return (
-    <div className={styles.centerButtonBox}>
+    <div className={s.centerButtonBox}>
       <Button disabled={!enabled} onClick={handlePropose}>
         Propose
       </Button>
@@ -173,7 +173,7 @@ function AssassinateButtons() {
     }
   };
   return (
-    <div className={styles.centerButtonBox}>
+    <div className={s.centerButtonBox}>
       <Button onClick={handleClick} disabled={!enabled}>
         Assassinate
       </Button>
@@ -188,7 +188,7 @@ function LeaveGameButtons() {
     dispatch(LobbyAction.clientLeaveGame());
   };
   return (
-    <div className={styles.centerButtonBox}>
+    <div className={s.centerButtonBox}>
       {winner && (
         <h3 className={"font-weight-bold"}>
           <TF>

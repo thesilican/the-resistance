@@ -1,10 +1,10 @@
 import cn from "classnames";
 import { GameFunc } from "common-modules";
-import React, { Fragment, useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { GameSelector } from "../../store";
-import styles from "../../styles/game/VoteHistoryBox.module.scss";
-import TextTransformer from "../common/TextTransformer";
+import TextTransformer from "../common/TextFormat";
+import s from "./VoteHistoryBox.module.scss";
 
 const iconURL = `${process.env.PUBLIC_URL}/assets/iconsheet.png`;
 
@@ -28,26 +28,26 @@ export default function VoteHistoryBox() {
   }, []);
 
   return (
-    <div className={styles.VoteHistoryBox}>
+    <div className={s.VoteHistoryBox}>
       <div
         ref={scrollDivRef}
-        className={styles.grid}
+        className={s.grid}
         style={{
           gridTemplateRows: `repeat(${numPlayers + 1}, min-content)`,
           gridTemplateColumns: `repeat(${teamHistory.length + 1}, min-content)`,
         }}
       >
         {/* Header */}
-        <div className={cn(styles.cell, styles.empty)}>
+        <div className={cn(s.cell, s.empty)}>
           <span>Mission</span>
         </div>
         {teamHistory.map((t, i) => (
           <div
             key={i}
-            className={cn(styles.cell, styles.mission, {
-              [styles.accepted]:
+            className={cn(s.cell, s.mission, {
+              [s.accepted]:
                 GameFunc.util.getProposalVoteResult(t.votes) === "accept",
-              [styles.rejected]:
+              [s.rejected]:
                 GameFunc.util.getProposalVoteResult(t.votes) === "reject",
             })}
           >
@@ -57,7 +57,7 @@ export default function VoteHistoryBox() {
         {/* People */}
         {Array.from(Array(numPlayers)).map((_, p) => (
           <Fragment key={p}>
-            <div className={cn(styles.cell, styles.name)}>
+            <div className={cn(s.cell, s.name)}>
               <span>
                 <TextTransformer>{`{{name:${p}}}`}</TextTransformer>
               </span>
@@ -65,10 +65,10 @@ export default function VoteHistoryBox() {
             {teamHistory.map((t, i) => (
               <div
                 key={i}
-                className={cn(styles.cell, styles.vote, {
-                  [styles.leader]: t.leader === p,
-                  [styles.team]: t.members.includes(p),
-                  [styles.reject]: t.votes[p] === "reject",
+                className={cn(s.cell, s.vote, {
+                  [s.leader]: t.leader === p,
+                  [s.team]: t.members.includes(p),
+                  [s.reject]: t.votes[p] === "reject",
                 })}
                 style={{
                   backgroundImage:

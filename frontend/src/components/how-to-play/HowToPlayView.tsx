@@ -4,16 +4,18 @@ import Col from "react-bootstrap/esm/Col";
 import Container from "react-bootstrap/esm/Container";
 import Figure from "react-bootstrap/esm/Figure";
 import Row from "react-bootstrap/esm/Row";
-import styles from "../../styles/welcome/HowToPlayView.module.scss";
+import { Link } from "react-router-dom";
 import RolesModal from "../common/RolesModal";
+import { TFail, TSuccess } from "../common/TextFormat";
+import s from "./HowToPlayView.module.scss";
 
 export default function HowToPlayView() {
   const [rolesShown, setRolesShown] = useState(false);
   return (
-    <div className={styles.HowToPlayView}>
-      <a className={styles.backToWelcome} href="/">
+    <div className={s.HowToPlayView}>
+      <Link className={s.back} to="/">
         Return to homepage
-      </a>
+      </Link>
       <RolesModal
         show={rolesShown}
         onClose={() => setRolesShown(false)}
@@ -22,23 +24,23 @@ export default function HowToPlayView() {
       <Container>
         <Row>
           <Col xs={0} lg={1} />
-          <Col xs={12} lg={10} className={styles.body}>
+          <Col xs={12} lg={10} className={s.body}>
             <h1>How to Play</h1>
             <p>
               In the Resistance, players are in one of two opposing teams - the{" "}
-              <Success>Agents</Success> or the <Fail>Spies</Fail>.
+              <TSuccess>Agents</TSuccess> or the <TFail>Spies</TFail>.
             </p>
             <ul>
               <li>
-                The <Fail>Spies</Fail> know the roles of all the other spies,
-                but the <Success>Agents</Success> only know their own role
+                The <TFail>Spies</TFail> know the roles of all the other spies,
+                but the <TSuccess>Agents</TSuccess> only know their own role
               </li>
               <li>
-                The goal of all <Success>Agents</Success> is to complete{" "}
+                The goal of all <TSuccess>Agents</TSuccess> is to complete{" "}
                 <Italics>3 successful missions</Italics>
               </li>
               <li>
-                The goal of all <Fail>Spies</Fail> is to{" "}
+                The goal of all <TFail>Spies</TFail> is to{" "}
                 <Italics>fail 3 missions</Italics>
               </li>
             </ul>
@@ -76,17 +78,17 @@ export default function HowToPlayView() {
             <ul>
               <li>
                 If a majority of players vote to accept the proposed team, then
-                the team is <Success>accepted</Success> and the players on the
+                the team is <TSuccess>accepted</TSuccess> and the players on the
                 team go on a mission
               </li>
               <li>
-                Otherwise, the team is <Fail>rejected</Fail>. The player to the
-                left of the Team Leader becomes the new leader and picks another
-                team
+                Otherwise, the team is <TFail>rejected</TFail>. The player to
+                the left of the Team Leader becomes the new leader and picks
+                another team
               </li>
               <li>
-                If 5 consecutive team proposals are <Fail>rejected</Fail>, the
-                the <Fail>Spies</Fail> automatically win (see the number of
+                If 5 consecutive team proposals are <TFail>rejected</TFail>, the
+                the <TFail>Spies</TFail> automatically win (see the number of
                 proposals remaining in the bottom right)
               </li>
             </ul>
@@ -104,23 +106,23 @@ export default function HowToPlayView() {
             <h2>Mission</h2>
             <p>
               During this phase, the players selected on the team will go on a
-              mission. A mission can either be <Success>successful</Success> or{" "}
-              <Fail>failed</Fail>.
+              mission. A mission can either be <TSuccess>successful</TSuccess>{" "}
+              or <TFail>failed</TFail>.
             </p>
             <ul>
               <li>
-                Agents may only <Success>succeed</Success> a mission, while
-                spies may choose to <Success>succeed</Success> or{" "}
-                <Fail>fail</Fail> a mission
+                Agents may only <TSuccess>succeed</TSuccess> a mission, while
+                spies may choose to <TSuccess>succeed</TSuccess> or{" "}
+                <TFail>fail</TFail> a mission
               </li>
               <li>
                 If <Italics>at least one player</Italics> on the mission fails
-                the mission, then the mission is <Fail>failed</Fail>. Otherwise,
-                the mission is <Success>successful</Success>
+                the mission, then the mission is <TFail>failed</TFail>.
+                Otherwise, the mission is <TSuccess>successful</TSuccess>
                 <ul>
                   <li>
                     For games with more than 6 people, some missions may require{" "}
-                    <Fail>2 fails</Fail> for the mission to be failed. These
+                    <TFail>2 fails</TFail> for the mission to be failed. These
                     missions have a square-shaped icon in the misisons indicator
                     on the right of the screen
                   </li>
@@ -140,10 +142,11 @@ export default function HowToPlayView() {
             </Figure>
             <h2>Game Ending</h2>
             <p>
-              The game ends once there are 3 <Success>successful</Success>{" "}
-              missions or 3 <Fail>failed</Fail> missions. The{" "}
-              <Success>Agents</Success> win if there are 3 successful missions,
-              and the <Fail>Spies</Fail> win if there are 3 failed missions.
+              The game ends once there are 3 <TSuccess>successful</TSuccess>{" "}
+              missions or 3 <TFail>failed</TFail> missions. The{" "}
+              <TSuccess>Agents</TSuccess> win if there are 3 successful
+              missions, and the <TFail>Spies</TFail> win if there are 3 failed
+              missions.
             </p>
             <Figure>
               <Figure.Image
@@ -163,13 +166,13 @@ export default function HowToPlayView() {
             </p>
             <iframe
               title="Explaination video"
-              className={styles.video}
+              className={s.video}
               width="560"
               height="315"
               src="https://www.youtube.com/embed/DUENzjE9Jwg"
             ></iframe>
             <h2>Assassins mode</h2>
-            <div className={styles.centerButton}>
+            <div className={s.centerButton}>
               <Button
                 size="sm"
                 variant="info"
@@ -179,7 +182,7 @@ export default function HowToPlayView() {
               </Button>
             </div>
             <p>
-              A new gamemode called <Fail>Assassins mode</Fail> was recently
+              A new gamemode called <TFail>Assassins mode</TFail> was recently
               added. Based on the{" "}
               <a
                 rel="noopener noreferrer"
@@ -193,31 +196,32 @@ export default function HowToPlayView() {
             </p>
             <ul>
               <li>
-                There is a <Success>Captain</Success> on the agent team, who
+                There is a <TSuccess>Captain</TSuccess> on the agent team, who
                 knows who all the spies are. With his powerful knowedge, he can
                 help lead the agent team to victory
               </li>
               <li>
-                However, the <Success>Captain</Success> cannot make himself too
-                obvious, for the spy team has <Fail>Assassin</Fail> who can
-                strike him down
+                However, the <TSuccess>Captain</TSuccess> cannot make himself
+                too obvious, for the spy team has <TFail>Assassin</TFail> who
+                can strike him down
               </li>
               <li>
                 At the end of the game, if the agents win, the{" "}
-                <Fail>Assassin</Fail> may choose an agent to assassinate. If
-                that player is the <Success>Captain</Success>, then the spies
+                <TFail>Assassin</TFail> may choose an agent to assassinate. If
+                that player is the <TSuccess>Captain</TSuccess>, then the spies
                 win instead!
               </li>
               <li>
                 In games with 7 or more people, the spies will have the{" "}
-                <Fail>Intern</Fail> on the team. New to the spy collective, the
-                identity of the <Fail>Intern</Fail> is not known to other spies,
-                nor does the <Fail>Intern</Fail> know who the other spies are.
-                However knowledgeable <Success>Captain</Success> still knows
-                that the <Fail>Intern</Fail> is part of the spy team.
+                <TFail>Intern</TFail> on the team. New to the spy collective,
+                the identity of the <TFail>Intern</TFail> is not known to other
+                spies, nor does the <TFail>Intern</TFail> know who the other
+                spies are. However knowledgeable <TSuccess>Captain</TSuccess>{" "}
+                still knows that the <TFail>Intern</TFail> is part of the spy
+                team.
                 <br />
-                As an <Fail>Intern</Fail>, work hard to fail as many missions as
-                possible without stepping on the toes of fellow spies.
+                As an <TFail>Intern</TFail>, work hard to fail as many missions
+                as possible without stepping on the toes of fellow spies.
               </li>
             </ul>
             <Figure>
@@ -251,14 +255,6 @@ export default function HowToPlayView() {
   );
 }
 
-const Success = ({ children }: { children: React.ReactNode }) => (
-  <span className={styles.success}>{children}</span>
-);
-
-const Fail = ({ children }: { children: React.ReactNode }) => (
-  <span className={styles.fail}>{children}</span>
-);
-
 const Italics = ({ children }: { children: React.ReactNode }) => (
-  <span className={styles.italics}>{children}</span>
+  <span className={s.italics}>{children}</span>
 );
