@@ -1,35 +1,31 @@
-FROM node:14-alpine as common
+FROM node:16-alpine as common
 WORKDIR /app/common
 COPY common/package*.json ./
-RUN npm i
+RUN npm ci
 COPY common/ ./
 RUN npm run build
 
-FROM node:14-alpine as frontend
-WORKDIR /app
-COPY --from=common /app/common/package*.json ./common/
-COPY --from=common /app/common/dist/ ./common/dist/
+FROM node:16-alpine as frontend
+COPY --from=common /app/common/ /app/common
 WORKDIR /app/frontend
 COPY frontend/package*.json ./
-RUN npm i
+RUN npm ci
 COPY frontend/ ./
 RUN npm run build
 
-FROM node:14-alpine as backend
-WORKDIR /app
-COPY --from=common /app/common/package*.json ./common/
-COPY --from=common /app/common/dist/ ./common/dist/
+FROM node:16-alpine as backend
+COPY --from=common /app/common/ /app/common
 WORKDIR /app/backend
 COPY ./backend/package*.json ./
-RUN npm i
+RUN npm ci
 COPY ./backend/ ./
 RUN npm run build
 
-FROM node:14-alpine
+FROM node:16-alpine
 WORKDIR /app
 COPY --from=common /app/common/ ./common/
-COPY --from=frontend /app/frontend/ ./frontend/
-COPY --from=backend /app/backend/ ./backend
+COPY --from=frontend /app/frontend/build/ ./frontend/build/
+COPY --from=backend /app/backend/ ./backend/
 
 EXPOSE 8080
 ENV NODE_ENV production

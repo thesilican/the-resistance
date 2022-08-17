@@ -21,14 +21,14 @@ export default function LobbyView() {
       <h1 className={s.header}>The Resistance</h1>
       <Container>
         <Row className="mb-3">
-          <Col xs={0} md={2} />
-          <Col xs={6} md={4}>
+          <Col xs={0} md={2} lg={3} />
+          <Col xs={6} md={4} lg={3}>
             <MembersList />
           </Col>
-          <Col xs={6} md={4}>
+          <Col xs={6} md={4} lg={3}>
             {inGame ? <InGameList /> : <GameOptions />}
           </Col>
-          <Col xs={0} md={2} />
+          <Col xs={0} md={2} lg={3} />
         </Row>
         <Row>
           <Col xs={0} md={2} lg={3} />
@@ -48,7 +48,7 @@ export default function LobbyView() {
             dispatch(LobbyAction.clientLeaveLobby());
           }}
         >
-          Leave Lobby
+          Leave Room
         </ButtonLink>
       </div>
     </div>

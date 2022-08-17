@@ -9,7 +9,7 @@ export default function MembersList() {
   return (
     <div className={s.MembersList}>
       <span className={s.title}>
-        Lobby Members ({plural(names.length, "player")})
+        Room Members ({plural(names.length, "player")})
       </span>
       <div className={s.list}>
         {names.map((n, i) => (
