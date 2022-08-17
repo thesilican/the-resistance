@@ -37,9 +37,9 @@ export class Server {
     }
   }
   onAction(socket: Socket, action: AnyAction) {
-    // console.log(action);
     const clientCreateLobby = LobbyAction.clientCreateLobby.type;
     const clientJoinLobby = LobbyAction.clientJoinLobby.type;
+    const clientLeaveLobby = LobbyAction.clientLeaveLobby.type;
     if (action.type === clientCreateLobby) {
       // Protect against double create
       if (this.sockets.get(socket.id)) {
@@ -66,6 +66,20 @@ export class Server {
       }
       this.sockets.set(socket.id, room.id);
       room.onJoin(action.payload.name, socket, this.io);
+    } else if (action.type === clientLeaveLobby) {
+      const roomID = this.sockets.get(socket.id);
+      if (!roomID) return;
+      const room = this.rooms.get(roomID);
+      if (!room) return;
+
+      this.sockets.set(socket.id, null);
+      room.onLeave(socket, this.io);
+      socket.emit("action", actionFromServer(LobbyAction.reset()));
+      if (room.store.getState().memberIDs.length === 0) {
+        console.log("Lobby closed:", roomID);
+        this.rooms.delete(roomID);
+        this.idManager.releaseCode(roomID);
+      }
     } else {
       const roomID = this.sockets.get(socket.id);
       if (!roomID) return;

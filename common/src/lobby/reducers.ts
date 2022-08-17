@@ -5,6 +5,7 @@ import {
   initialize,
   memberJoin,
   memberLeave,
+  reset,
   updateGameOptions,
   updateGameState,
 } from "./actions";
@@ -30,6 +31,9 @@ export const LobbyReducer = createReducer(initialState, (builder) => {
         names: [],
         gameInitOptions: "normal",
       };
+    })
+    .addCase(reset, (state, action) => {
+      return initialState;
     })
     .addCase(memberJoin, (state, action) => {
       state.memberIDs.push(action.payload.memberID);
