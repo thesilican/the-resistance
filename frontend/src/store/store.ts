@@ -42,7 +42,7 @@ const socketIOMiddleware: Middleware = (store) => (next) => {
 };
 
 // For development purposes
-const SHOULD_MOCK_STATE = true;
+const SHOULD_MOCK_STATE = false;
 const MOCK_STATE: { lobby: LobbyState; game: GameState; client: ClientState } =
   {
     client: {

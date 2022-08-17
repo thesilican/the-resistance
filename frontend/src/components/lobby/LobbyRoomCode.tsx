@@ -7,20 +7,9 @@ import s from "./LobbyRoomCode.module.scss";
 
 export default function LobbyRoomCode() {
   const roomCode = useSelector(LobbySelector.lobbyID);
-  // const url = new URL(window.location.href);
-  const url = new URL("https://thesilican-resistance.herokuapp.com");
-  url.searchParams.append("join", roomCode);
+  const url = new URL(window.location.href);
+  url.searchParams.set("join", roomCode);
   return (
-    // <div className={s.LobbyRoomCode}>
-    //   <span className={s.label}>Room&nbsp;code: </span>
-    //   <input
-    //     className={cn("form-control", s.code)}
-    //     size={3}
-    //     onClick={(e) => (e.target as HTMLInputElement).select()}
-    //     value={roomCode}
-    //     onChange={() => {}}
-    //   />
-    // </div>
     <div className={s.LobbyRoomCode}>
       <InputGroup size="sm">
         <Form.Control

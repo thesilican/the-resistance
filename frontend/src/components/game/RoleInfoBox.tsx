@@ -71,7 +71,7 @@ function RolesList(props: RolesListProps) {
       </span>
       <Link
         className={s.aboutRoles}
-        to="/"
+        to="."
         onClick={() => setRolesModalOpen(true)}
       >
         About Roles

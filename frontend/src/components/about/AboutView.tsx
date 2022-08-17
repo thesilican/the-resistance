@@ -29,7 +29,7 @@ export default function AboutView() {
 
   return (
     <div className={s.AboutView}>
-      <Link className={s.back} to="/">
+      <Link className={s.back} to="..">
         Back to homepage
       </Link>
       <Container>

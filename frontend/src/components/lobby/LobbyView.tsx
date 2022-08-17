@@ -30,7 +30,7 @@ export default function LobbyView() {
       <LobbyRoomCode />
       <Link
         className={s.back}
-        to="/"
+        to="."
         onClick={() => {
           // TODO: implement
         }}

@@ -13,7 +13,7 @@ export default function HowToPlayView() {
   const [rolesShown, setRolesShown] = useState(false);
   return (
     <div className={s.HowToPlayView}>
-      <Link className={s.back} to="/">
+      <Link className={s.back} to="..">
         Return to homepage
       </Link>
       <RolesModal

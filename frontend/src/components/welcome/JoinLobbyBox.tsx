@@ -9,7 +9,7 @@ import s from "./JoinLobbyBox.module.scss";
 const MAX_NAME_LEN = 15;
 
 type JoinLobbyBoxProps = {
-  initialRoomCode?: string;
+  initialRoomCode: string | null;
 };
 
 export default function JoinLobbyBox(props: JoinLobbyBoxProps) {
@@ -21,12 +21,12 @@ export default function JoinLobbyBox(props: JoinLobbyBoxProps) {
   const userNameInputRef = useRef(null as HTMLInputElement | null);
 
   useEffect(() => {
-    if (isJoin) {
+    if (isJoin && !props.initialRoomCode) {
       roomCodeInputRef.current?.focus();
     } else {
       userNameInputRef.current?.focus();
     }
-  }, [isJoin]);
+  }, [isJoin, props.initialRoomCode]);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
