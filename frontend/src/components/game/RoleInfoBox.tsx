@@ -1,7 +1,7 @@
 import { GameFunc } from "common-modules";
 import { Fragment } from "react";
 import { useSelector } from "react-redux";
-import { GameSelector, LobbySelector } from "../../store";
+import { GameSelector } from "../../store";
 import { TName, TRole } from "../common/TextFormat";
 import s from "./RoleInfoBox.module.scss";
 

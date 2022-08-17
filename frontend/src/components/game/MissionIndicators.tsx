@@ -8,8 +8,8 @@ import {
   range,
 } from "common-modules";
 import { Fragment } from "react";
+import { Popover } from "react-bootstrap";
 import OverlayTrigger from "react-bootstrap/esm/OverlayTrigger";
-import Tooltip from "react-bootstrap/esm/Tooltip";
 import { useSelector } from "react-redux";
 import { GameSelector } from "../../store";
 import { plural } from "../../util";
@@ -80,8 +80,8 @@ function MissionIndicator(props: MissionIndicatorProps) {
   }
 
   const popover = (props: any) => (
-    <Tooltip id="mission-indicator-tooltip" {...props}>
-      <div className={s.tooltip}>
+    <Popover className={s.popover} id="mission-indicator-popver" {...props}>
+      <Popover.Body className={s.body}>
         {fail || success ? (
           <>
             <span className={s.header}>
@@ -107,11 +107,12 @@ function MissionIndicator(props: MissionIndicatorProps) {
           <>
             <span className={s.title}>Mission {index + 1}</span>
             {active && <span>Current Mission</span>}
+            <span>{playersRequired} players required</span>
             {double && <span>2 fails required</span>}
           </>
         )}
-      </div>
-    </Tooltip>
+      </Popover.Body>
+    </Popover>
   );
 
   return (
@@ -126,7 +127,6 @@ function MissionIndicator(props: MissionIndicatorProps) {
           })}
         >
           <span className={s.label1}>{playersRequired}</span>
-          <span className={s.label2}>players</span>
         </div>
       </div>
     </OverlayTrigger>

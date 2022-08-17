@@ -51,9 +51,9 @@ export default function GameOptions() {
         : e.target.value === "assassins"
         ? "assassins"
         : {
-            captain: true,
+            captain: false,
             deputy: false,
-            assassin: true,
+            assassin: false,
             imposter: false,
             intern: false,
             mole: false,

@@ -12,9 +12,9 @@
   padding-right: 2rem;
 
   pointer-events: auto;
+  text-align: center;
 }
 .title {
-  text-align: center;
   font-size: 1.25rem;
 }
 
@@ -53,7 +53,7 @@
     transform: scale(1.05);
   }
   &.double {
-    border-radius: 5%;
+    border-radius: 0.375rem;
   }
   &.active {
     color: $dark;
@@ -61,26 +61,22 @@
     @include shadow($white);
   }
   &.success {
-    background-color: $green;
-    @include shadow($green, 20px);
+    background-color: $success;
+    @include shadow($success, 20px);
   }
   &.fail {
     color: $dark;
-    background-color: $red;
-    @include shadow($red);
+    background-color: $fail;
+    @include shadow($fail);
   }
   .label1 {
     font-size: 2rem;
-    line-height: 0.75;
-  }
-  .label2 {
-    font-size: 0.5rem;
   }
 }
 
 @keyframes pulseRed {
   0% {
-    color: $red;
+    color: $fail;
   }
   100% {
   }
@@ -93,6 +89,7 @@
   .label1 {
     font-size: 2rem;
     line-height: 0.75;
+    margin-top: 0.5rem;
     margin-bottom: 0.25rem;
   }
   .label2 {
@@ -103,9 +100,12 @@
   }
 }
 
-.tooltip {
-  display: flex;
-  flex-direction: column;
+.popover.popover {
+  .body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   .header {
     font-size: 1.25rem;
   }

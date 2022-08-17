@@ -158,12 +158,12 @@ export const GameFunc = {
       // Chat
       const leader = state.team!.leader;
       const members = state.team!.members;
-      state.statusMessage = `{{name:${leader}}} has proposed ${members
+      state.statusMessage = `${nameStr(leader)} has proposed ${members
         .map(nameStr)
         .join(", ")}`;
       state.chat.push({
         type: "system",
-        content: `{{name:${leader}}} has proposed ${members
+        content: `${nameStr(leader)} has proposed ${members
           .map(nameStr)
           .join(", ")}`,
       });
@@ -282,7 +282,7 @@ export const GameFunc = {
         const wasCaptain = state.player.roles[choice] === "captain";
         msg += `${nameStr(choice)} was ${
           wasCaptain ? "" : "not "
-        }the {{success:Captain}}. `;
+        }the {{role:captain}}. `;
       }
       const winners = state.player.roles
         .map((x, i) => i)
@@ -312,9 +312,9 @@ export const GameFunc = {
       // Status
       const leader = team.leader;
       if (members.length === 0) {
-        state.statusMessage = `{{name:${leader}}} is proposing a team`;
+        state.statusMessage = `${nameStr(leader)} is proposing a team`;
       } else {
-        state.statusMessage = `{{name:${leader}}} is proposing ${members
+        state.statusMessage = `${nameStr(leader)} is proposing ${members
           .map(nameStr)
           .join(", ")}`;
       }

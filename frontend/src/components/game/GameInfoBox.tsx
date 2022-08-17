@@ -1,6 +1,6 @@
 import { GameAgentRoles, GameRolesOrder, Role } from "common-modules";
 import { Fragment, useState } from "react";
-import { InputGroup, Form, Button } from "react-bootstrap";
+import { Button, Form, InputGroup } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { GameSelector, LobbySelector } from "../../store";

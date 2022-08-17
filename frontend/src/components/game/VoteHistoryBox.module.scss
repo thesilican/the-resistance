@@ -86,10 +86,10 @@
     justify-content: center;
     font-size: 1.5rem;
     &.accepted {
-      color: $green;
+      color: $success;
     }
     &.rejected {
-      color: $red;
+      color: $fail;
     }
   }
   &.vote {

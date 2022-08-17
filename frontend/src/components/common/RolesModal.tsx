@@ -34,12 +34,6 @@ export default function RolesModal(props: RolesModalProps) {
           Knows other <TFail>spies</TFail>
         </span>
         <span>
-          <TRole role="deputy" />
-        </span>
-        <span>
-          Knows the <TRole role="captain" />
-        </span>
-        <span>
           <TRole role="assassin" />
         </span>
         <span>
@@ -47,18 +41,24 @@ export default function RolesModal(props: RolesModalProps) {
           <TSuccess>agents</TSuccess> would win
         </span>
         <span>
-          <TRole role="imposter" />
-        </span>
-        <span>
-          Appears as <TRole role="captain" /> to the <TRole role="deputy" />
-        </span>
-        <h1 className={s.header}>Custom Mode</h1>
-        <span>
           <TRole role="intern" />
         </span>
         <span>
           Role is unknown to other <TFail>spies</TFail>, does not know other{" "}
           <TFail>spies</TFail>
+        </span>
+        <h1 className={s.header}>Custom Mode</h1>
+        <span>
+          <TRole role="deputy" />
+        </span>
+        <span>
+          Knows the <TRole role="captain" />
+        </span>
+        <span>
+          <TRole role="imposter" />
+        </span>
+        <span>
+          Appears as <TRole role="captain" /> to the <TRole role="deputy" />
         </span>
         <span>
           <TRole role="mole" />

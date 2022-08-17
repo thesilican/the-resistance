@@ -18,17 +18,20 @@
   pointer-events: all;
   padding: 1rem;
 
-  border-radius: 1rem;
+  border-radius: $border-radius;
   background-color: $dark;
 
   row-gap: 1rem;
   column-gap: 1rem;
-  border: 2px solid $light;
+  border: 1px solid $light;
 }
 
 .voteButton {
   border-radius: 0.5rem;
   height: 4rem;
+  &.accept {
+    color: white;
+  }
 }
 
 .missionButtonBox {
@@ -37,7 +40,7 @@
   pointer-events: all;
   padding: 1rem;
 
-  border-radius: 1rem;
+  border-radius: $border-radius;
 
   row-gap: 1rem;
   column-gap: 2rem;
@@ -79,21 +82,21 @@
 
   &.success {
     color: $light;
-    background-color: $green;
+    background-color: $success;
     &:hover {
       transform: scale(1.05);
-      box-shadow: 0px 1px 10px -1px $green;
+      box-shadow: 0px 1px 10px -1px $success;
     }
   }
   &.fail {
     color: $dark;
-    background-color: $red;
+    background-color: $fail;
     &.disabled {
-      background-color: scale-color($red, $lightness: -50%);
+      background-color: scale-color($fail, $lightness: -50%);
     }
     &:hover:not(.disabled) {
       transform: scale(1.05);
-      box-shadow: 0px 1px 10px -1px $red;
+      box-shadow: 0px 1px 10px -1px $fail;
     }
   }
 }

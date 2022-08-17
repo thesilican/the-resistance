@@ -23,12 +23,8 @@ $green: #198754;
 $teal: #20c997;
 $cyan: #0dcaf0;
 
-$primary: $blue;
-$secondary: $gray-600;
 $success: $green;
-$info: $cyan;
-$warning: $yellow;
-$danger: $red;
+$fail: $red;
 $light: $gray-100;
 $dark: $gray-900;
 
@@ -43,7 +39,11 @@ $input-placeholder-color: $gray-500;
 $input-color: $light;
 $nav-tabs-link-active-color: $light;
 $nav-tabs-link-active-bg: $dark;
-$tooltip-bg: $gray-800;
+$popover-bg: $gray-800;
+$popover-border-color: $gray-700;
+$popover-border-radius: 0.375rem;
+$popover-body-padding-x: 0.5rem;
+$popover-body-padding-y: 0.5rem;
 $modal-content-color: $dark;
 $custom-select-disabled-color: $dark;
 $link-color: $cyan;

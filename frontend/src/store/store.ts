@@ -82,7 +82,7 @@ const MOCK_STATE: { lobby: LobbyState; game: GameState; client: ClientState } =
       assassinChoice: 0,
       winner: null,
       game: {
-        phase: "team-building",
+        phase: "voting",
         mission: 3,
         phaseCountdown: 5,
       },
@@ -178,7 +178,11 @@ const MOCK_STATE: { lobby: LobbyState; game: GameState; client: ClientState } =
           ],
         },
       ],
-      mission: null,
+      mission: {
+        members: [1, 4],
+        actions: [null, null],
+        mission: 3,
+      },
       missionHistory: [
         {
           actions: ["success", "success"],
