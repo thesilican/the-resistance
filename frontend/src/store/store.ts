@@ -79,7 +79,7 @@ const MOCK_STATE: { lobby: LobbyState; game: GameState; client: ClientState } =
       assassinChoice: 0,
       winner: null,
       game: {
-        phase: "finished-assassinate",
+        phase: "team-building",
         mission: 3,
         phaseCountdown: 5,
       },

@@ -49,7 +49,7 @@ export default function ChatBox() {
     const handler = (e: KeyboardEvent) => {
       // Ignore keyboard shortcuts
       if (e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) return;
-      if (e.key === "t") {
+      if (e.key === "t" && document.activeElement !== chatInputRef.current) {
         chatInputRef.current?.focus();
         e.preventDefault();
       }
@@ -122,6 +122,7 @@ type SystemChatMessageProps = {
 };
 
 function SystemChatMessage({ text }: SystemChatMessageProps) {
+  console.log(text);
   return (
     <p className={cn(s.chatMessage, s.system)}>
       <TF>{text}</TF>

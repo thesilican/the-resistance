@@ -74,14 +74,3 @@
   grid-template-rows: auto 1fr;
   transition: filter 1s ease;
 }
-
-.leaveGame {
-  justify-self: end;
-  pointer-events: all;
-  margin-top: 1rem;
-  margin-right: 2rem;
-  color: $gray-500;
-  &:hover {
-    color: shift-color($gray-500, $link-shade-percentage);
-  }
-}

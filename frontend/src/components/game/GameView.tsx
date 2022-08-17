@@ -2,11 +2,11 @@ import cn from "classnames";
 import { GameFunc, last } from "common-modules";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { GameSelector } from "../../store";
 import { Vec2 } from "../../util";
 import GameCanvas from "./canvas/GameCanvas";
 import CenterControls from "./CenterControls";
+import CornerBox from "./CornerBox";
 import s from "./GameView.module.scss";
 import MissionIndicators from "./MissionIndicators";
 import RoleInfoBox from "./RoleInfoBox";
@@ -60,15 +60,7 @@ export default function GameView() {
           <StatusMessage />
         </div>
         <div className={s.col3}>
-          <Link
-            className={s.leaveGame}
-            to="/"
-            onClick={() => {
-              // TODO: implement
-            }}
-          >
-            Leave Game
-          </Link>
+          <CornerBox />
           <MissionIndicators />
         </div>
       </div>

@@ -1,0 +1,19 @@
+@import "../../common";
+
+.CornerBox {
+  padding-right: 1rem;
+  padding-top: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.leaveGame {
+  justify-self: end;
+  pointer-events: all;
+  color: $gray-500;
+  &:hover {
+    color: shift-color($gray-500, $link-shade-percentage);
+  }
+}

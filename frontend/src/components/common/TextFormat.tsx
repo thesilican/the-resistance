@@ -29,7 +29,7 @@ export default function TF(props: TFProps) {
     if (!match) throw new Error("expected match");
     if (match[1] === "success") {
       results.push(<TSuccess key={i}>{match[2]}</TSuccess>);
-    } else if (match[2] === "fail") {
+    } else if (match[1] === "fail") {
       results.push(<TFail key={i}>{match[2]}</TFail>);
     } else if (match[1] === "name") {
       const idx = parseInt(match[2], 10);
