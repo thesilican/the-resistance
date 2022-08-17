@@ -15,13 +15,13 @@ export const ColorOrderDefault: Color[] = [
 
 export const GamePhaseLengths: { [p in GamePhase]: number } = {
   "role-reveal": 10,
-  "team-building": 120,
+  "team-building": 180,
   "team-building-review": 3,
-  voting: 60,
+  voting: 120,
   "voting-review": 5,
   mission: 20,
   "mission-review": 5,
-  "finished-assassinate": 60,
+  "finished-assassinate": 120,
   finished: 1,
 };
 
