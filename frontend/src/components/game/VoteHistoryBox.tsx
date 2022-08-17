@@ -3,7 +3,7 @@ import { GameFunc } from "common-modules";
 import { Fragment, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { GameSelector } from "../../store";
-import TextTransformer from "../common/TextFormat";
+import TF from "../common/TextFormat";
 import s from "./VoteHistoryBox.module.scss";
 
 const iconURL = `${process.env.PUBLIC_URL}/assets/iconsheet.png`;
@@ -29,55 +29,81 @@ export default function VoteHistoryBox() {
 
   return (
     <div className={s.VoteHistoryBox}>
-      <div
-        ref={scrollDivRef}
-        className={s.grid}
-        style={{
-          gridTemplateRows: `repeat(${numPlayers + 1}, min-content)`,
-          gridTemplateColumns: `repeat(${teamHistory.length + 1}, min-content)`,
-        }}
-      >
-        {/* Header */}
-        <div className={cn(s.cell, s.empty)}>
-          <span>Mission</span>
+      <div className={s.helpText}>
+        <div className={s.item}>
+          <div className={cn(s.box, s.leader)} /> Team Leader
         </div>
-        {teamHistory.map((t, i) => (
+        <div className={s.item}>
+          <div className={cn(s.box, s.member)} /> Team Member
+        </div>
+        <div className={s.item}>
           <div
-            key={i}
-            className={cn(s.cell, s.mission, {
-              [s.accepted]:
-                GameFunc.util.getProposalVoteResult(t.votes) === "accept",
-              [s.rejected]:
-                GameFunc.util.getProposalVoteResult(t.votes) === "reject",
-            })}
-          >
-            <span>{t.mission}</span>
+            className={cn(s.box, s.approve)}
+            style={{ backgroundImage: `url(${iconURL})` }}
+          />{" "}
+          Approve Vote
+        </div>
+        <div className={s.item}>
+          <div
+            className={cn(s.box, s.reject)}
+            style={{ backgroundImage: `url(${iconURL})` }}
+          />{" "}
+          Reject Vote
+        </div>
+      </div>
+      <div className={s.wrapper}>
+        <div
+          ref={scrollDivRef}
+          className={s.grid}
+          style={{
+            gridTemplateRows: `repeat(${numPlayers + 1}, min-content)`,
+            gridTemplateColumns: `repeat(${
+              teamHistory.length + 1
+            }, min-content)`,
+          }}
+        >
+          {/* Header */}
+          <div className={cn(s.cell, s.empty)}>
+            <span>Mission</span>
           </div>
-        ))}
-        {/* People */}
-        {Array.from(Array(numPlayers)).map((_, p) => (
-          <Fragment key={p}>
-            <div className={cn(s.cell, s.name)}>
-              <span>
-                <TextTransformer>{`{{name:${p}}}`}</TextTransformer>
-              </span>
+          {teamHistory.map((t, i) => (
+            <div
+              key={i}
+              className={cn(s.cell, s.mission, {
+                [s.accepted]:
+                  GameFunc.util.getProposalVoteResult(t.votes) === "accept",
+                [s.rejected]:
+                  GameFunc.util.getProposalVoteResult(t.votes) === "reject",
+              })}
+            >
+              <span>{t.mission}</span>
             </div>
-            {teamHistory.map((t, i) => (
-              <div
-                key={i}
-                className={cn(s.cell, s.vote, {
-                  [s.leader]: t.leader === p,
-                  [s.team]: t.members.includes(p),
-                  [s.reject]: t.votes[p] === "reject",
-                })}
-                style={{
-                  backgroundImage:
-                    t.votes[p] === "none" ? undefined : `url("${iconURL}")`,
-                }}
-              />
-            ))}
-          </Fragment>
-        ))}
+          ))}
+          {/* People */}
+          {Array.from(Array(numPlayers)).map((_, p) => (
+            <Fragment key={p}>
+              <div className={cn(s.cell, s.name)}>
+                <span>
+                  <TF>{`{{name:${p}}}`}</TF>
+                </span>
+              </div>
+              {teamHistory.map((t, i) => (
+                <div
+                  key={i}
+                  className={cn(s.cell, s.vote, {
+                    [s.leader]: t.leader === p,
+                    [s.team]: t.members.includes(p),
+                    [s.reject]: t.votes[p] === "reject",
+                  })}
+                  style={{
+                    backgroundImage:
+                      t.votes[p] === "none" ? undefined : `url("${iconURL}")`,
+                  }}
+                />
+              ))}
+            </Fragment>
+          ))}
+        </div>
       </div>
     </div>
   );

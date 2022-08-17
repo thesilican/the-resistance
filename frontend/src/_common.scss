@@ -43,13 +43,14 @@ $input-placeholder-color: $gray-500;
 $input-color: $light;
 $nav-tabs-link-active-color: $light;
 $nav-tabs-link-active-bg: $dark;
-$tooltip-bg: $gray-900;
+$tooltip-bg: $gray-800;
 $modal-content-color: $dark;
 $custom-select-disabled-color: $dark;
 $link-color: $cyan;
 $link-decoration: none;
 $link-hover-decoration: underline;
 $form-check-input-bg: $white;
+$progress-height: 0.5rem;
 
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/mixins";

@@ -2,16 +2,16 @@ import cn from "classnames";
 import { GameFunc, last } from "common-modules";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { GameSelector } from "../../store";
 import { Vec2 } from "../../util";
 import GameCanvas from "./canvas/GameCanvas";
 import CenterControls from "./CenterControls";
-import ChatHistoryTabs from "./ChatHistoryTabs";
-import GameRoomCode from "./GameRoomCode";
 import s from "./GameView.module.scss";
 import MissionIndicators from "./MissionIndicators";
 import RoleInfoBox from "./RoleInfoBox";
 import StatusMessage from "./StatusMessage";
+import TabsBox from "./TabsBox";
 import TopInfoBar from "./TopInfoBar";
 
 function getWindowDim(div: HTMLDivElement | null): Vec2 {
@@ -52,8 +52,7 @@ export default function GameView() {
       <div className={s.grid} ref={gameGridDivRef}>
         <div className={s.col1}>
           <RoleInfoBox />
-          <div />
-          <ChatHistoryTabs />
+          <TabsBox />
         </div>
         <div className={s.col2}>
           <TopInfoBar />
@@ -61,9 +60,16 @@ export default function GameView() {
           <StatusMessage />
         </div>
         <div className={s.col3}>
-          <GameRoomCode />
+          <Link
+            className={s.leaveGame}
+            to="/"
+            onClick={() => {
+              // TODO: implement
+            }}
+          >
+            Leave Game
+          </Link>
           <MissionIndicators />
-          <div />
         </div>
       </div>
       <GameCanvas dim={gridDim} />

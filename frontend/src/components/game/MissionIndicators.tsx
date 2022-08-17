@@ -7,12 +7,13 @@ import {
   MissionPlayerCount,
   range,
 } from "common-modules";
+import { Fragment } from "react";
 import OverlayTrigger from "react-bootstrap/esm/OverlayTrigger";
 import Tooltip from "react-bootstrap/esm/Tooltip";
 import { useSelector } from "react-redux";
 import { GameSelector } from "../../store";
 import { plural } from "../../util";
-import TF from "../common/TextFormat";
+import { TFail, TName, TSuccess } from "../common/TextFormat";
 import s from "./MissionIndicators.module.scss";
 
 export default function MissionIndicators() {
@@ -52,13 +53,6 @@ type MissionIndicatorProps = {
 
 function MissionIndicator(props: MissionIndicatorProps) {
   const { index } = props;
-  // const teams = useSelector(GameSelector.teams);
-  // const numPlayers = useSelector(GameSelector.socketIDs).length;
-  // const lastTeam = useSelector(GameSelector.lastTeam);
-  // const mission = useSelector(GameSelector.missions);
-  // const curMission = mission[index] as MissionHistory | undefined;
-  // const lastTeamMission = lastTeam?.mission;
-  // const gamePhase = useSelector(GameSelector.gamePhase);
   const teamHistory = useSelector(GameSelector.teamHistory);
   const numPlayers = useSelector(GameSelector.numPlayers);
   const missionHistory = useSelector(GameSelector.missionHistory);
@@ -85,41 +79,35 @@ function MissionIndicator(props: MissionIndicatorProps) {
     }
   }
 
-  const popover = (
-    <Tooltip id="mission-indicator-tooltip">
+  const popover = (props: any) => (
+    <Tooltip id="mission-indicator-tooltip" {...props}>
       <div className={s.tooltip}>
         {fail || success ? (
           <>
-            <span className={s.title}>
-              <TF>{`{{${fail ? "fail" : "success"}:Mission ${index + 1} ${
-                fail ? "Failed" : "Success"
-              }}}`}</TF>
+            <span className={s.header}>
+              {fail ? (
+                <TFail>Mission {index + 1} Failed</TFail>
+              ) : (
+                <TSuccess>Mission {index + 1} Success</TSuccess>
+              )}
             </span>
+            <span>{plural(numFails ?? 0, "fail")} detected</span>
             <span>
-              <TF>{plural(numFails ?? 0, "fail") + " detected"}</TF>
-            </span>
-            <span>
-              <TF>{`${teamMembers
-                .map((x) => `{{name:${x}}}`)
-                .join(", ")} by {{name:${teamLeader}}}`}</TF>
+              {teamMembers.map((x, i) => (
+                <Fragment key={i}>
+                  {i !== 0 && ", "}
+                  <TName idx={x} />
+                </Fragment>
+              ))}
+              {" by "}
+              <TName idx={teamLeader} />
             </span>
           </>
         ) : (
           <>
-            <span className={s.title}>
-              <TF>{`Mission ${index + 1}`}</TF>
-            </span>
-            {active && (
-              <span>
-                <TF>{`Current mission`}</TF>
-              </span>
-            )}
-            {double && (
-              <span>
-                {/* For N4 double only */}
-                <TF>{`2 fails required`}</TF>
-              </span>
-            )}
+            <span className={s.title}>Mission {index + 1}</span>
+            {active && <span>Current Mission</span>}
+            {double && <span>2 fails required</span>}
           </>
         )}
       </div>
@@ -127,22 +115,19 @@ function MissionIndicator(props: MissionIndicatorProps) {
   );
 
   return (
-    <OverlayTrigger
-      trigger={["hover", "focus"]}
-      delay={400}
-      placement="left"
-      overlay={popover}
-    >
-      <div
-        className={cn(s.indicator, {
-          [s.fail]: fail,
-          [s.success]: success,
-          [s.active]: active,
-          [s.double]: double,
-        })}
-      >
-        <span className={s.label1}>{playersRequired}</span>
-        <span className={s.label2}>players</span>
+    <OverlayTrigger delay={0} placement="left" overlay={popover}>
+      <div className={s.wrapper}>
+        <div
+          className={cn(s.indicator, {
+            [s.fail]: fail,
+            [s.success]: success,
+            [s.active]: active,
+            [s.double]: double,
+          })}
+        >
+          <span className={s.label1}>{playersRequired}</span>
+          <span className={s.label2}>players</span>
+        </div>
       </div>
     </OverlayTrigger>
   );

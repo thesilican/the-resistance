@@ -5,7 +5,7 @@ import Form from "react-bootstrap/esm/Form";
 import FormControl from "react-bootstrap/esm/FormControl";
 import { useDispatch, useSelector } from "react-redux";
 import { GameSelector } from "../../store";
-import TextTransformer from "../common/TextFormat";
+import TF, { TName } from "../common/TextFormat";
 import s from "./ChatBox.module.scss";
 
 export default function ChatBox() {
@@ -49,7 +49,7 @@ export default function ChatBox() {
     const handler = (e: KeyboardEvent) => {
       // Ignore keyboard shortcuts
       if (e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) return;
-      if (e.key === "Tab") {
+      if (e.key === "t") {
         chatInputRef.current?.focus();
         e.preventDefault();
       }
@@ -77,7 +77,7 @@ export default function ChatBox() {
           onChange={handleTypeCharacter}
           onFocus={() => setHasFocus(true)}
           onBlur={() => setHasFocus(false)}
-          placeholder={hasFocus ? "Send a message" : "Press Tab to focus"}
+          placeholder={hasFocus ? "Send a message" : "Press T to chat"}
         />
       </Form>
     </div>
@@ -112,7 +112,7 @@ type UserChatMessageProps = {
 function UserChatMessage({ player, text }: UserChatMessageProps) {
   return (
     <p className={cn(s.chatMessage, s.user)}>
-      <TextTransformer>{`{{name:${player}}}: ${text}`}</TextTransformer>
+      [<TName idx={player} />] {text}
     </p>
   );
 }
@@ -124,7 +124,7 @@ type SystemChatMessageProps = {
 function SystemChatMessage({ text }: SystemChatMessageProps) {
   return (
     <p className={cn(s.chatMessage, s.system)}>
-      <TextTransformer>{`${text}`}</TextTransformer>
+      <TF>{text}</TF>
     </p>
   );
 }

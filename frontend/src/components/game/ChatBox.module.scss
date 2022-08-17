@@ -11,7 +11,6 @@
   position: relative;
   overflow-x: hidden;
   overflow-y: scroll;
-  background-color: $nav-tabs-link-active-bg;
   border-left: $nav-tabs-border-width solid $nav-tabs-border-color;
   border-right: $nav-tabs-border-width solid $nav-tabs-border-color;
 }
@@ -31,10 +30,8 @@
   padding-bottom: 0.25rem;
   word-wrap: break-word;
   &.system {
-    opacity: 0.8;
     font-size: smaller;
     text-align: center;
-    font-family: "Raleway", $font-family-sans-serif;
   }
 }
 
@@ -42,7 +39,9 @@
   justify-content: stretch;
 }
 
-.input {
+.input.input {
   flex-grow: 1;
-  width: 100% !important;
+  width: 100%;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }

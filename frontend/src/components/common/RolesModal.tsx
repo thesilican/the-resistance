@@ -12,7 +12,7 @@ export default function RolesModal(props: RolesModalProps) {
   return (
     <Modal show={props.show} onHide={props.onClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Roles</Modal.Title>
+        <Modal.Title>The Resistance Roles</Modal.Title>
       </Modal.Header>
       <Modal.Body className={s.body}>
         <h1 className={s.header}>Classic</h1>

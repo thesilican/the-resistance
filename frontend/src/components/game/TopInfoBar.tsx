@@ -17,11 +17,11 @@ export default function TopInfoBar() {
       break;
     case "team-building":
     case "team-building-review":
-      text = `Mission ${mission} - Team Building`;
+      text = `Mission ${mission} – Team Building`;
       break;
     case "voting":
     case "voting-review":
-      text = `Mission ${mission} - Voting`;
+      text = `Mission ${mission} – Voting`;
       break;
     case "mission":
     case "mission-review":

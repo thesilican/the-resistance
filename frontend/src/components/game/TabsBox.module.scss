@@ -1,12 +1,12 @@
 @import "../../common";
 
-.ChatHistoryTabs {
+.TabsBox {
   pointer-events: all;
   display: grid;
   grid-template-rows: auto 1fr;
 
   margin-left: 1rem;
-  margin-right: 2rem;
+  margin-right: 1rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
 }

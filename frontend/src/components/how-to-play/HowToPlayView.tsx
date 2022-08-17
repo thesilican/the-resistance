@@ -27,7 +27,7 @@ export default function HowToPlayView() {
           <Col xs={12} lg={10} className={s.body}>
             <h1>How to Play</h1>
             <p>
-              In the Resistance, players are in one of two opposing teams - the{" "}
+              In the Resistance, players are in one of two opposing teams – the{" "}
               <TSuccess>Agents</TSuccess> or the <TFail>Spies</TFail>.
             </p>
             <ul>

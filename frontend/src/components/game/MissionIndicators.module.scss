@@ -7,19 +7,26 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 1rem;
 
   padding-right: 2rem;
 
   pointer-events: auto;
-  > .title {
-    text-align: center;
-    font-size: 1.25rem;
-    padding-bottom: 1rem;
-  }
+}
+.title {
+  text-align: center;
+  font-size: 1.25rem;
 }
 
 @mixin shadow($color, $size: 10px) {
   box-shadow: 0px 1px $size -1px $color;
+}
+
+.wrapper {
+  width: 4.2rem;
+  height: 4rem;
+  display: flex;
+  justify-content: center;
 }
 
 .indicator {
@@ -36,7 +43,6 @@
   height: 4rem;
 
   border-radius: 50%;
-  margin-bottom: 1rem;
   background-color: $gray-600;
   @include shadow($gray-700);
   color: $light;
@@ -55,12 +61,12 @@
     @include shadow($white);
   }
   &.success {
-    background-color: scale-color($green, $lightness: -20%);
+    background-color: $green;
     @include shadow($green, 20px);
   }
   &.fail {
     color: $dark;
-    background-color: scale-color($red, $lightness: -20%);
+    background-color: $red;
     @include shadow($red);
   }
   .label1 {
@@ -100,7 +106,7 @@
 .tooltip {
   display: flex;
   flex-direction: column;
-  .title {
+  .header {
     font-size: 1.25rem;
   }
 }

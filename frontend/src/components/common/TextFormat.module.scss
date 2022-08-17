@@ -10,8 +10,8 @@ $c-blue: #70aaff;
 $c-indigo: #a899ff;
 $c-purple: #c45cff;
 $c-pink: #e617a0;
-$c-fail: adjust-color($red, $lightness: 10%, $saturation: 10%);
 $c-success: adjust-color($green, $lightness: 10%, $saturation: 10%);
+$c-fail: adjust-color($red, $lightness: 10%, $saturation: 10%);
 
 $c-colors: (
   "red": $c-red,

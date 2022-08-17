@@ -2,14 +2,54 @@
 
 .VoteHistoryBox {
   height: 100%;
-
-  position: relative;
-
   background-color: $nav-tabs-link-active-bg;
-
   border-left: $nav-tabs-border-width solid $nav-tabs-border-color;
   border-right: $nav-tabs-border-width solid $nav-tabs-border-color;
   border-bottom: $nav-tabs-border-width solid $nav-tabs-border-color;
+
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.helpText {
+  padding-top: 0.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  color: $gray-500;
+  font-size: $font-size-sm;
+  display: grid;
+  grid-template-columns: auto auto;
+  .item {
+    margin-right: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+.box {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  &.leader {
+    border: 2px solid white;
+  }
+  &.member {
+    background-color: $gray-600;
+  }
+  &.approve {
+    background-size: 200%;
+    background-position-x: left;
+    background-position-y: top;
+  }
+  &.reject {
+    background-size: 200%;
+    background-position-x: right;
+    background-position-y: top;
+  }
+}
+
+.wrapper {
+  position: relative;
 }
 
 .grid {
