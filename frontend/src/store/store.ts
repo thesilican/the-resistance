@@ -10,7 +10,10 @@ import { ClientAction, ClientReducer, ClientState } from "./client";
 
 const production = process.env.NODE_ENV === "production";
 const socketIOMiddleware: Middleware = (store) => (next) => {
-  const socket = io({ reconnection: false });
+  const socket = io(production ? "" : ":8080", {
+    transports: ["websocket", "polling"],
+    reconnection: false,
+  });
   socket.on("connect", () => {
     if (!production) console.log("Connection", socket.id);
     store.dispatch(ClientAction.setSocketID(socket.id));

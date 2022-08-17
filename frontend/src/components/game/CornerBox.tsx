@@ -1,18 +1,15 @@
-import { Link } from "react-router-dom";
+import { LobbyAction } from "common-modules";
+import { useDispatch } from "react-redux";
+import { ButtonLink } from "../common/ButtonLink";
 import s from "./CornerBox.module.scss";
 
 export default function CornerBox() {
+  const dispatch = useDispatch();
   return (
     <div className={s.CornerBox}>
-      <Link
-        className={s.leaveGame}
-        to="."
-        onClick={() => {
-          // TODO: implement
-        }}
-      >
+      <ButtonLink onClick={() => dispatch(LobbyAction.clientLeaveGame())}>
         Leave Game
-      </Link>
+      </ButtonLink>
     </div>
   );
 }

@@ -15,8 +15,4 @@
   z-index: 10;
   top: 1rem;
   right: 1rem;
-  color: $gray-500;
-  &:hover {
-    color: shift-color($gray-500, $link-shade-percentage);
-  }
 }

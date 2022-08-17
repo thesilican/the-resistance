@@ -398,6 +398,9 @@ export const GameFunc = {
       return GameFunc.begin.finished(state);
     },
     newChatMessage(state: GameState, message: ChatMessage): GameState {
+      if (message.type === "player" && message.content.length > 200) {
+        return state;
+      }
       state.chat.push(message);
       return state;
     },
