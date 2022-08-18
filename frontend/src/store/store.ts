@@ -11,7 +11,6 @@ import { ClientAction, ClientReducer, ClientState } from "./client";
 const production = process.env.NODE_ENV === "production";
 const socketIOMiddleware: Middleware = (store) => (next) => {
   const socket = io(production ? "" : ":8080", {
-    transports: ["websocket", "polling"],
     reconnection: false,
     path: production
       ? new URL("./socket.io/", window.location.href).pathname
