@@ -1,52 +1,33 @@
-import { GameAgentRoles, GameFunc } from "common-modules";
-import React, { useState } from "react";
-import Button from "react-bootstrap/esm/Button";
+import { GameFunc } from "common-modules";
+import { Fragment } from "react";
 import { useSelector } from "react-redux";
-import { capital } from "../../lib/util";
 import { GameSelector } from "../../store";
-import styles from "../../styles/game/RoleInfoBox.module.scss";
-import RolesIncludedList from "../common/RolesIncludedList";
-import RolesModal from "../common/RolesModal";
-import TextTransformer from "../common/TextTransformer";
+import { TName, TRole } from "../common/TextFormat";
+import s from "./RoleInfoBox.module.scss";
 
 export default function RoleInfoBox() {
   const index = useSelector(GameSelector.playerIndex);
   const roleList = useSelector(GameSelector.roles);
-  const [showHowToPlay, setShowHowToPlay] = useState(false);
-  const knownRolesMap = GameFunc.util.getKnownRoles(index, roleList);
-  const knownRoles = Array.from(knownRolesMap.entries());
+  const playerIndex = useSelector(GameSelector.playerIndex);
+  const knownRoles = Array.from(
+    GameFunc.util.getKnownRoles(index, roleList).entries()
+  );
 
   return (
-    <div className={styles.RoleInfoBox}>
-      <RolesModal
-        show={showHowToPlay}
-        onClose={() => setShowHowToPlay(false)}
-      />
-      {knownRoles.map((x, i) => (
-        <span key={i}>
-          <TextTransformer>
-            {`{{name:${x[0]}}} - ` +
-              x[1]
-                .map((r) =>
-                  GameAgentRoles.includes(r)
-                    ? `{{success:${capital(r)}}}`
-                    : `{{fail:${capital(r)}}}`
-                )
-                .join("/")}
-          </TextTransformer>
-        </span>
-      ))}
-      <span className={styles.small}>
-        <RolesIncludedList rolesList={roleList} />
-      </span>
-      <Button
-        className={styles.howToPlayButton}
-        variant={"secondary"}
-        onClick={() => setShowHowToPlay(true)}
-        size="sm"
-      >
-        (?) About Roles
-      </Button>
+    <div className={s.RoleInfoBox}>
+      <div className={s.knownRoles}>
+        {knownRoles.map((x, i) => (
+          <span key={i}>
+            <TName idx={x[0]} /> {playerIndex === x[0] && "(you)"} &ndash;{" "}
+            {x[1].map((r, i) => (
+              <Fragment key={i}>
+                {i !== 0 && " / "}
+                <TRole key={i} role={r} />
+              </Fragment>
+            ))}
+          </span>
+        ))}
+      </div>
     </div>
   );
 }

@@ -1,24 +1,21 @@
-import React from "react";
+import { plural } from "common-modules";
 import { useSelector } from "react-redux";
-import { plural } from "../../lib/util";
 import { LobbySelector } from "../../store";
-import styles from "../../styles/lobby/MembersList.module.scss";
+import s from "./MembersList.module.scss";
 
 export default function MembersList() {
-  const lobbyIndex = useSelector(LobbySelector.lobbyIndex);
   const names = useSelector(LobbySelector.lobbyNames);
 
   return (
-    <div className={styles.MembersList}>
-      <span className={styles.title}>
+    <div className={s.MembersList}>
+      <span className={s.title}>
         Room Members ({plural(names.length, "player")})
       </span>
-      <div className={styles.list}>
+      <div className={s.list}>
         {names.map((n, i) => (
-          <span key={i} className={styles.name}>
+          <span key={i} className={s.name}>
             {n}
             {i === 0 ? " (Host)" : ""}
-            {i === lobbyIndex ? " (You)" : ""}
           </span>
         ))}
       </div>

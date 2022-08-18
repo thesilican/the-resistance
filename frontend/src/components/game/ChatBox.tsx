@@ -5,8 +5,8 @@ import Form from "react-bootstrap/esm/Form";
 import FormControl from "react-bootstrap/esm/FormControl";
 import { useDispatch, useSelector } from "react-redux";
 import { GameSelector } from "../../store";
-import styles from "../../styles/game/ChatBox.module.scss";
-import TextTransformer from "../common/TextTransformer";
+import TF, { TName } from "../common/TextFormat";
+import s from "./ChatBox.module.scss";
 
 export default function ChatBox() {
   const dispatch = useDispatch();
@@ -49,7 +49,7 @@ export default function ChatBox() {
     const handler = (e: KeyboardEvent) => {
       // Ignore keyboard shortcuts
       if (e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) return;
-      if (e.key === "Tab") {
+      if (e.key === "t" && document.activeElement !== chatInputRef.current) {
         chatInputRef.current?.focus();
         e.preventDefault();
       }
@@ -62,21 +62,22 @@ export default function ChatBox() {
   }, []);
 
   return (
-    <div className={styles.ChatBox}>
-      <div className={styles.chatWrapper} ref={chatDivRef}>
-        <div className={styles.chat}>
+    <div className={s.ChatBox}>
+      <div className={s.chatWrapper} ref={chatDivRef}>
+        <div className={s.chat}>
           <ChatMessageList messages={messages} />
         </div>
       </div>
-      <Form inline className={styles.form} onSubmit={handleSendMessage}>
+      {/* <Form inline className={s.form} onSubmit={handleSendMessage}> */}
+      <Form className={s.form} onSubmit={handleSendMessage}>
         <FormControl
           ref={chatInputRef}
-          className={styles.input}
+          className={s.input}
           value={typingMessage}
           onChange={handleTypeCharacter}
           onFocus={() => setHasFocus(true)}
           onBlur={() => setHasFocus(false)}
-          placeholder={hasFocus ? "Send a message" : "Press Tab to focus"}
+          placeholder={hasFocus ? "Send a message" : "Press T to chat"}
         />
       </Form>
     </div>
@@ -110,8 +111,8 @@ type UserChatMessageProps = {
 
 function UserChatMessage({ player, text }: UserChatMessageProps) {
   return (
-    <p className={cn(styles.chatMessage, styles.user)}>
-      <TextTransformer>{`{{name:${player}}}: ${text}`}</TextTransformer>
+    <p className={cn(s.chatMessage, s.user)}>
+      [<TName idx={player} />] {text}
     </p>
   );
 }
@@ -121,9 +122,10 @@ type SystemChatMessageProps = {
 };
 
 function SystemChatMessage({ text }: SystemChatMessageProps) {
+  console.log(text);
   return (
-    <p className={cn(styles.chatMessage, styles.system)}>
-      <TextTransformer>{`${text}`}</TextTransformer>
+    <p className={cn(s.chatMessage, s.system)}>
+      <TF>{text}</TF>
     </p>
   );
 }

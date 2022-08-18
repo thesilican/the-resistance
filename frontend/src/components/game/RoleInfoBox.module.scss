@@ -1,0 +1,17 @@
+@import "../../common";
+
+.RoleInfoBox {
+  padding-top: 1rem;
+  padding-left: 1rem;
+  pointer-events: auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.knownRoles {
+  font-size: 1.25rem;
+  display: flex;
+  flex-direction: column;
+}

@@ -1,0 +1,13 @@
+@import "../../common";
+
+.ButtonLink {
+  background: none;
+  border: none;
+  padding: 0;
+  color: $gray-500;
+  cursor: pointer;
+  &:hover {
+    color: shift-color($gray-500, $link-shade-percentage);
+    text-decoration: underline;
+  }
+}

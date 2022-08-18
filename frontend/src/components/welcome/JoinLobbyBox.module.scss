@@ -1,0 +1,18 @@
+@import "../../common";
+
+.JoinLobbyBox {
+  border: 1px solid $light;
+  border-radius: $border-radius;
+  padding: 1rem;
+  gap: 1rem;
+  width: 20rem;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.nameLabel {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

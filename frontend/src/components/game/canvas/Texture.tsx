@@ -1,5 +1,5 @@
 import { Color, ProposalVote, Role } from "common-modules";
-import React, { Fragment, useMemo } from "react";
+import { Fragment, useMemo } from "react";
 import { Image } from "react-konva";
 import useImage from "use-image";
 

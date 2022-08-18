@@ -7,14 +7,14 @@ import {
   MissionPlayerCount,
   range,
 } from "common-modules";
-import React from "react";
+import { Fragment } from "react";
+import { Popover } from "react-bootstrap";
 import OverlayTrigger from "react-bootstrap/esm/OverlayTrigger";
-import Tooltip from "react-bootstrap/esm/Tooltip";
 import { useSelector } from "react-redux";
-import { plural } from "../../lib/util";
 import { GameSelector } from "../../store";
-import styles from "../../styles/game/MissionIndicators.module.scss";
-import TF from "../common/TextTransformer";
+import { plural } from "../../util";
+import { TFail, TName, TSuccess } from "../common/TextFormat";
+import s from "./MissionIndicators.module.scss";
 
 export default function MissionIndicators() {
   const missionNum = useSelector(GameSelector.missionNum);
@@ -26,8 +26,8 @@ export default function MissionIndicators() {
   const isHammer = proposalsRemaining === 1;
 
   return (
-    <div className={styles.MissionIndicators}>
-      <span className={styles.title}>
+    <div className={s.MissionIndicators}>
+      <span className={s.title}>
         Mission
         <br />
         Progress
@@ -35,9 +35,9 @@ export default function MissionIndicators() {
       {range(5).map((_, i) => (
         <MissionIndicator key={i} index={i} />
       ))}
-      <div className={cn(styles.proposals, { [styles.hammer]: isHammer })}>
-        <span className={styles.label1}>{proposalsRemaining}/5</span>
-        <span className={styles.label2}>
+      <div className={cn(s.proposals, { [s.hammer]: isHammer })}>
+        <span className={s.label1}>{proposalsRemaining}/5</span>
+        <span className={s.label2}>
           proposals
           <br />
           remaining
@@ -53,13 +53,6 @@ type MissionIndicatorProps = {
 
 function MissionIndicator(props: MissionIndicatorProps) {
   const { index } = props;
-  // const teams = useSelector(GameSelector.teams);
-  // const numPlayers = useSelector(GameSelector.socketIDs).length;
-  // const lastTeam = useSelector(GameSelector.lastTeam);
-  // const mission = useSelector(GameSelector.missions);
-  // const curMission = mission[index] as MissionHistory | undefined;
-  // const lastTeamMission = lastTeam?.mission;
-  // const gamePhase = useSelector(GameSelector.gamePhase);
   const teamHistory = useSelector(GameSelector.teamHistory);
   const numPlayers = useSelector(GameSelector.numPlayers);
   const missionHistory = useSelector(GameSelector.missionHistory);
@@ -86,64 +79,55 @@ function MissionIndicator(props: MissionIndicatorProps) {
     }
   }
 
-  const popover = (
-    <Tooltip id="mission-indicator-tooltip">
-      <div className={styles.tooltip}>
+  const popover = (props: any) => (
+    <Popover className={s.popover} id="mission-indicator-popver" {...props}>
+      <Popover.Body className={s.body}>
         {fail || success ? (
           <>
-            <span className={styles.title}>
-              <TF>{`{{${fail ? "fail" : "success"}:Mission ${index + 1} ${
-                fail ? "Failed" : "Success"
-              }}}`}</TF>
+            <span className={s.header}>
+              {fail ? (
+                <TFail>Mission {index + 1} Failed</TFail>
+              ) : (
+                <TSuccess>Mission {index + 1} Success</TSuccess>
+              )}
             </span>
+            <span>{plural(numFails ?? 0, "fail")} detected</span>
             <span>
-              <TF>{plural(numFails ?? 0, "fail") + " detected"}</TF>
-            </span>
-            <span>
-              <TF>{`${teamMembers
-                .map((x) => `{{name:${x}}}`)
-                .join(", ")} by {{name:${teamLeader}}}`}</TF>
+              {teamMembers.map((x, i) => (
+                <Fragment key={i}>
+                  {i !== 0 && ", "}
+                  <TName idx={x} />
+                </Fragment>
+              ))}
+              {" by "}
+              <TName idx={teamLeader} />
             </span>
           </>
         ) : (
           <>
-            <span className={styles.title}>
-              <TF>{`Mission ${index + 1}`}</TF>
-            </span>
-            {active && (
-              <span>
-                <TF>{`Current mission`}</TF>
-              </span>
-            )}
-            {double && (
-              <span>
-                {/* For N4 double only */}
-                <TF>{`2 fails required`}</TF>
-              </span>
-            )}
+            <span className={s.title}>Mission {index + 1}</span>
+            {active && <span>Current Mission</span>}
+            <span>{playersRequired} players required</span>
+            {double && <span>2 fails required</span>}
           </>
         )}
-      </div>
-    </Tooltip>
+      </Popover.Body>
+    </Popover>
   );
 
   return (
-    <OverlayTrigger
-      trigger={["hover", "focus"]}
-      delay={400}
-      placement="left"
-      overlay={popover}
-    >
-      <div
-        className={cn(styles.indicator, {
-          [styles.fail]: fail,
-          [styles.success]: success,
-          [styles.active]: active,
-          [styles.double]: double,
-        })}
-      >
-        <span className={styles.label1}>{playersRequired}</span>
-        <span className={styles.label2}>players</span>
+    <OverlayTrigger delay={0} placement="left" overlay={popover}>
+      <div className={s.wrapper}>
+        <div
+          className={cn(s.indicator, {
+            [s.fail]: fail,
+            [s.success]: success,
+            [s.active]: active,
+            [s.double]: double,
+          })}
+        >
+          <span className={s.label1}>{playersRequired}</span>
+        </div>
       </div>
     </OverlayTrigger>
   );

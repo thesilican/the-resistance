@@ -1,0 +1,76 @@
+@import "../../common";
+
+@keyframes flash-success {
+  0% {
+  }
+  50% {
+    background-color: mix($green, $dark, $weight: 20%);
+  }
+  100% {
+  }
+}
+@keyframes flash-fail {
+  0% {
+  }
+  10% {
+    background-color: scale-color($fail, $lightness: -20%);
+  }
+  100% {
+  }
+}
+
+.GameView {
+  position: relative;
+  &.dark {
+    .background {
+      background-color: $black;
+    }
+    .col1,
+    .col3 {
+      filter: opacity(0.25);
+    }
+  }
+  &.fail {
+    .background {
+      animation: flash-fail 2s ease;
+    }
+  }
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  transition: background-color 1s ease;
+}
+
+.grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  min-height: 100vh;
+
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  pointer-events: none;
+}
+
+.col1 {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  transition: filter 1s ease;
+}
+
+.col2 {
+  display: grid;
+  grid-template-rows: 1fr 6fr 1fr;
+}
+
+.col3 {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  transition: filter 1s ease;
+}

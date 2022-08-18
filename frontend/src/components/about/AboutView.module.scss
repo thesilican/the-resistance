@@ -1,0 +1,26 @@
+@import "../../common";
+
+.AboutView {
+  padding-top: 2rem;
+  figure {
+    border: 2px solid $gray-500;
+  }
+}
+.title {
+  text-align: center;
+}
+
+.back {
+  position: fixed;
+  z-index: 10;
+  top: 1rem;
+  right: 1rem;
+  color: $gray-500;
+  &:hover {
+    color: shift-color($gray-500, $link-shade-percentage);
+  }
+}
+
+.light {
+  color: $gray-500;
+}

@@ -1,0 +1,47 @@
+@import "../../common";
+
+.ChatBox {
+  height: 100%;
+
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+.chatWrapper {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  border-left: $nav-tabs-border-width solid $nav-tabs-border-color;
+  border-right: $nav-tabs-border-width solid $nav-tabs-border-color;
+}
+
+.chat {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  padding: 0.5rem;
+}
+
+.chatMessage {
+  margin: 0;
+  padding-bottom: 0.25rem;
+  word-wrap: break-word;
+  &.system {
+    font-size: smaller;
+    text-align: center;
+  }
+}
+
+.form {
+  justify-content: stretch;
+}
+
+.input.input {
+  flex-grow: 1;
+  width: 100%;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}

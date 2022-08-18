@@ -1,9 +1,9 @@
 import { LobbyAction } from "common-modules";
-import React, { Fragment } from "react";
+import { Fragment } from "react";
 import Button from "react-bootstrap/esm/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { GameSelector } from "../../store";
-import styles from "../../styles/lobby/InGameList.module.scss";
+import s from "./InGameList.module.scss";
 
 export default function InGameList() {
   const dispatch = useDispatch();
@@ -18,17 +18,17 @@ export default function InGameList() {
   };
 
   return (
-    <div className={styles.InGameList}>
-      <span className={styles.title}>In Game ({numPlayers} players)</span>
-      <div className={styles.list}>
+    <div className={s.InGameList}>
+      <span className={s.title}>In Game ({numPlayers} players)</span>
+      <div className={s.list}>
         {gameNames.map((name, i) => {
           const connected = gameConnected[i];
           return (
             <Fragment key={i}>
-              <span className={styles.name}>
+              <span className={s.name}>
                 {name}{" "}
                 {!connected && (
-                  <span className={styles.disconnected}>(disconnected)</span>
+                  <span className={s.disconnected}>(disconnected)</span>
                 )}
               </span>
               {connected ? (

@@ -1,10 +1,9 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { Layer, Stage } from "react-konva";
 import { Provider, useSelector } from "react-redux";
-import "../../../lib/util";
-import { equalSpaceEllipse, Vec2 } from "../../../lib/util";
 import { GameSelector, store } from "../../../store";
-import styles from "../../../styles/game/GameCanvas.module.scss";
+import { equalSpaceEllipse, Vec2 } from "../../../util";
+import s from "./GameCanvas.module.scss";
 import { PlayerSprite } from "./PlayerSprite";
 
 export type StageInfo = {
@@ -38,16 +37,16 @@ type GameCanvasProps = {
 export default function GameCanvas({ dim }: GameCanvasProps) {
   const numPlayers = useSelector(GameSelector.socketIDs).length;
 
-  const stageInfo = useMemo(() => getStageDim(numPlayers, dim), [
-    numPlayers,
-    dim,
-  ]);
+  const stageInfo = useMemo(
+    () => getStageDim(numPlayers, dim),
+    [numPlayers, dim]
+  );
 
   return (
     <Stage
       width={dim[0]}
       height={dim[1]}
-      className={styles.canvasWrapper}
+      className={s.canvasWrapper}
       style={{ height: dim[1] }}
     >
       <Layer>

@@ -4,25 +4,29 @@ import Button from "react-bootstrap/esm/Button";
 import ButtonGroup from "react-bootstrap/esm/ButtonGroup";
 import Form from "react-bootstrap/esm/Form";
 import { useDispatch } from "react-redux";
-import styles from "../../styles/welcome/JoinLobbyBox.module.scss";
+import s from "./JoinLobbyBox.module.scss";
 
 const MAX_NAME_LEN = 15;
 
-export default function JoinLobbyBox() {
+type JoinLobbyBoxProps = {
+  initialRoomCode: string | null;
+};
+
+export default function JoinLobbyBox(props: JoinLobbyBoxProps) {
   const dispatch = useDispatch();
-  const [roomCode, setRoomCode] = useState("");
+  const [roomCode, setRoomCode] = useState(props.initialRoomCode ?? "");
   const [name, setName] = useState("");
   const [isJoin, setisJoin] = useState(true);
   const roomCodeInputRef = useRef(null as HTMLInputElement | null);
   const userNameInputRef = useRef(null as HTMLInputElement | null);
 
   useEffect(() => {
-    if (isJoin) {
+    if (isJoin && !props.initialRoomCode) {
       roomCodeInputRef.current?.focus();
     } else {
       userNameInputRef.current?.focus();
     }
-  }, [isJoin]);
+  }, [isJoin, props.initialRoomCode]);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
@@ -48,25 +52,23 @@ export default function JoinLobbyBox() {
   };
 
   return (
-    <Form className={styles.JoinLobbyBox} onSubmit={handleSubmit}>
-      <Form.Group>
-        <ButtonGroup className={styles.createJoinBox}>
-          <Button
-            onClick={() => setisJoin(true)}
-            variant={isJoin ? "light" : "outline-light"}
-          >
-            Join Game
-          </Button>
-          <Button
-            onClick={() => setisJoin(false)}
-            variant={isJoin ? "outline-light" : "light"}
-          >
-            Create Game
-          </Button>
-        </ButtonGroup>
-      </Form.Group>
+    <Form className={s.JoinLobbyBox} onSubmit={handleSubmit}>
+      <ButtonGroup className={s.formGroup}>
+        <Button
+          onClick={() => setisJoin(true)}
+          variant={isJoin ? "light" : "outline-light"}
+        >
+          Join Game
+        </Button>
+        <Button
+          onClick={() => setisJoin(false)}
+          variant={isJoin ? "outline-light" : "light"}
+        >
+          Create Game
+        </Button>
+      </ButtonGroup>
       {isJoin && (
-        <Form.Group controlId="welcome-room-code">
+        <Form.Group className={s.formGroup} controlId="welcome-room-code">
           <Form.Label>Room Code</Form.Label>
           <Form.Control
             required
@@ -77,8 +79,8 @@ export default function JoinLobbyBox() {
           />
         </Form.Group>
       )}
-      <Form.Group controlId="welcome-username">
-        <Form.Label className={styles.nameLabel}>
+      <Form.Group className={s.formGroup} controlId="welcome-username">
+        <Form.Label className={s.nameLabel}>
           <span>Name</span> <span>{MAX_NAME_LEN - name.length}</span>
         </Form.Label>
         <Form.Control
