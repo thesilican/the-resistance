@@ -2,6 +2,9 @@
 
 .AboutView {
   padding-top: 2rem;
+  figure {
+    border: 2px solid $gray-500;
+  }
 }
 .title {
   text-align: center;
@@ -16,16 +19,6 @@
   &:hover {
     color: shift-color($gray-500, $link-shade-percentage);
   }
-}
-
-.img {
-  display: block;
-  border: 4px solid white;
-  border-radius: 4px;
-  max-width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 1rem;
 }
 
 .light {

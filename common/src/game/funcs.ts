@@ -65,7 +65,7 @@ export const GameFunc = {
       team: null,
       teamHistory: [],
       chat: [],
-      statusMessage: "Welcome to the Resistance",
+      statusMessage: "Welcome to The Resistance",
       assassinChoice: null,
     };
   },
