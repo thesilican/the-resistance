@@ -1,8 +1,8 @@
 # The Resistance
 
-This is an open source version of the popular party board game [The Resistance][resistance-game], based on original game by Don Eskridge.
+This is an open source version of the popular party board game [The Resistance][resistance-game] / [Avalon][avalon-game], based on original game by Don Eskridge.
 
-**Play it now at [https://thesilican-resistance.herokuapp.com][my-website]** (may take a few seconds to load)
+**Play it now at [https://thesilican.com/resistance][my-website]**
 
 ![Example Gameplay](./doc/demo.png)
 
@@ -19,7 +19,7 @@ Similar to party games like Mafia and Werewolf, The Resistance challenges player
 
 ## Attributions
 
-The original game concept and rules belong to Don Eskridge, the creator of the game. You can buy the original [board game][resistance-amazon] here, and even check out other variations of the game like [avalon][avalon-amazon].
+The original game concept and rules belong to Don Eskridge, creator of The Resistance / Avalon.
 
 Much of the inspiration for the user interface came from a free-to-play steam game called [MINDNIGHT][mindnight]. You should check it out! It has better graphics, cool music, and you can even save your progress.
 
@@ -56,7 +56,7 @@ Then you can access the game at `http://localhost:8080`.
 
 ### Node.js/Javascript
 
-You can run the project using [node.js][nodejs] only. It is recommended that you use version `>=12`.
+You can run the project using [node.js][nodejs] only. It is recommended that you use version `>=16`.
 
 This project has the following directory structure:
 
@@ -64,13 +64,14 @@ This project has the following directory structure:
 the-resistance
 ├─ common
 │  └─ src (Redux reducers shared among frontend & backend)
-└─ frontend
+├─ frontend
 │  ├─ assets (GIMP image asset files)
 │  ├─ public (index.html and generated spritesheets)
 │  └─ src (Frontend code)
 │     ├─ components (React Components)
 │     └─ store (Redux store/selectors)
-└─ src (Backend code)
+└─ backend
+   └─src (Backend code)
 ```
 
 The project is split into 3 main portions - frontend, the React.js website; backend, a node.js server; and common, which contains code and types shared between frontend and backend.
@@ -93,7 +94,7 @@ $ npm install
 $ npm run build
 
 Build & run backend server
-$ cd ..
+$ cd ../backend
 $ npm install
 $ npm run build
 $ node dist/index.js
@@ -101,9 +102,10 @@ $ node dist/index.js
 
 Then you can access the game at `http://localhost:8080`.
 
-[my-website]: https://thesilican-resistance.herokuapp.com
-[rules]: http://thesilican-resistance.herokuapp.com/how-to-play
+[my-website]: https://thesilican.com/resistance/
+[rules]: http://thesilican.com/resistance/how-to-play
 [resistance-game]: https://en.wikipedia.org/wiki/The_Resistance_(game)
+[avalon-game]: https://en.wikipedia.org/wiki/The_Resistance_(game)#Avalon_variant
 [resistance-amazon]: https://www.amazon.com/The-Resistance-Dystopian-Universe/dp/B008A2BA8G
 [avalon-amazon]: https://www.amazon.com/Resistance-Avalon-Social-Deduction-Game/dp/B009SAAV0C
 [mindnight]: http://www.mindnightgame.com/
