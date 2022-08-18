@@ -1,6 +1,12 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { GameSelector, LobbySelector } from "../store";
 import AboutView from "./about/AboutView";
 import GameView from "./game/GameView";
@@ -10,16 +16,22 @@ import WelcomeView from "./welcome/WelcomeView";
 
 export default function App() {
   const lobbyID = useSelector(LobbySelector.lobbyID);
+  const location = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
-    const location = new URL(window.location.href);
-    if (lobbyID) {
-      location.searchParams.set("join", lobbyID);
-    } else {
-      location.searchParams.delete("join");
+    const searchParams = new URLSearchParams(location.search);
+    const currentID = searchParams.get("join") ?? "";
+    if (lobbyID !== currentID) {
+      if (lobbyID) {
+        searchParams.set("join", lobbyID);
+      } else {
+        searchParams.delete("join");
+      }
+      navigate({
+        search: "?" + searchParams.toString(),
+      });
     }
-    navigate(location);
-  }, [lobbyID, navigate]);
+  }, [lobbyID, navigate, location]);
 
   return (
     <Routes>
