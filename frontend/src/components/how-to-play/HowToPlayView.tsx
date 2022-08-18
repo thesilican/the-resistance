@@ -12,7 +12,7 @@ export default function HowToPlayView() {
   return (
     <div className={s.HowToPlayView}>
       <Link className={s.back} to="..">
-        Return to homepage
+        Back to homepage
       </Link>
       <RolesModal
         show={rolesShown}

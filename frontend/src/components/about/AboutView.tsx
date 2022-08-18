@@ -36,7 +36,7 @@ export default function AboutView() {
       <Container>
         <Row>
           <Col xs={0} lg={1} />
-          <Col xs={12} lg={10}>
+          <Col xs={12} lg={10} className={s.container}>
             <h1 className={s.title}>The Resistance</h1>
             <p>
               This website is an open-source implementation of the classic board
@@ -64,10 +64,11 @@ export default function AboutView() {
               deduction to determine who to trust. Anywhere between 5 to 10
               players can play the Resistance.
             </p>
-            <Figure>
+            <Figure className={s.image}>
               <Figure.Image
                 src={`${process.env.PUBLIC_URL}/doc/demo.png`}
                 alt="Demo"
+                width={600}
               ></Figure.Image>
             </Figure>
             {stats && (

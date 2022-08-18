@@ -6,6 +6,7 @@ COPY common/ ./
 RUN npm run build
 
 FROM node:16-alpine as frontend
+ARG PUBLIC_URL
 COPY --from=common /app/common/ /app/common
 WORKDIR /app/frontend
 COPY frontend/package*.json ./

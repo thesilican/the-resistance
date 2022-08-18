@@ -2,12 +2,17 @@
 
 .AboutView {
   padding-top: 2rem;
-  figure {
-    border: 2px solid $gray-500;
-  }
+}
+.container {
+  display: flex;
+  flex-direction: column;
 }
 .title {
   text-align: center;
+}
+.image {
+  border: 2px solid $gray-500;
+  align-self: center;
 }
 
 .back {
