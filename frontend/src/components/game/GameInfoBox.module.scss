@@ -20,12 +20,6 @@
     text-align: center;
   }
 }
-.aboutRoles {
-  color: $gray-500;
-  &:hover {
-    color: shift-color($gray-500, $link-shade-percentage);
-  }
-}
 
 .howToPlayButton {
   margin-top: 0.5rem;

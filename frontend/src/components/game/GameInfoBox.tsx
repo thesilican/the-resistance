@@ -2,8 +2,8 @@ import { GameAgentRoles, GameRolesOrder, Role } from "common-modules";
 import { Fragment, useState } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { GameSelector, LobbySelector } from "../../store";
+import { ButtonLink } from "../common/ButtonLink";
 import RolesModal from "../common/RolesModal";
 import { TRole } from "../common/TextFormat";
 import s from "./GameInfoBox.module.scss";
@@ -61,13 +61,9 @@ function RolesList(props: RolesListProps) {
           </Fragment>
         ))}
       </span>
-      <Link
-        className={s.aboutRoles}
-        to="."
-        onClick={() => setRolesModalOpen(true)}
-      >
+      <ButtonLink onClick={() => setRolesModalOpen(true)}>
         About Roles
-      </Link>
+      </ButtonLink>
       <RolesModal
         show={rolesModalOpen}
         onClose={() => setRolesModalOpen(false)}

@@ -20,9 +20,9 @@ export default function WelcomeView() {
       <JoinLobbyBox initialRoomCode={initialRoomCode} />
       {/* Links */}
       <div className={s.linksBox}>
-        <Link to="/about">About</Link>
+        <Link to="./about">About</Link>
         {" · "}
-        <Link to="/how-to-play">How to play</Link>
+        <Link to="./how-to-play">How to play</Link>
         {" · "}
         <a
           target="_blank"

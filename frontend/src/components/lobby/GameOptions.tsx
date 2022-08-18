@@ -12,8 +12,8 @@ import React, { Fragment, useState } from "react";
 import Button from "react-bootstrap/esm/Button";
 import Form from "react-bootstrap/esm/Form";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { LobbySelector } from "../../store";
+import { ButtonLink } from "../common/ButtonLink";
 import RolesModal from "../common/RolesModal";
 import { TRole } from "../common/TextFormat";
 import s from "./GameOptions.module.scss";
@@ -140,13 +140,9 @@ function RolesList(props: RolesListProps) {
         </Fragment>
       ))}
       <br />
-      <Link
-        className={s.aboutRoles}
-        to="."
-        onClick={() => setRolesModalOpen(true)}
-      >
+      <ButtonLink onClick={() => setRolesModalOpen(true)}>
         About Roles
-      </Link>
+      </ButtonLink>
       <RolesModal
         show={rolesModalOpen}
         onClose={() => setRolesModalOpen(false)}
