@@ -68,7 +68,7 @@ export default function AboutView() {
               <Figure.Image
                 src={`${process.env.PUBLIC_URL}/doc/demo.png`}
                 alt="Demo"
-                width={600}
+                width={800}
               ></Figure.Image>
             </Figure>
             {stats && (
