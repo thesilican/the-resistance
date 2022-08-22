@@ -16,6 +16,9 @@ const port = process.env.PORT ?? 8080;
 httpServer.listen(port, () => {
   console.log("Starting HTTP server on port " + port);
 });
+httpServer.addListener("close", () => {
+  console.log("HTTP server closed");
+});
 
 app.get("/api/statistics", (req, res) => {
   const players = server.sockets.size;
@@ -37,12 +40,5 @@ app.get("*", (req, res) => {
 });
 
 // Handle SIGINT and SIGTERM
-let exited = false;
-const handleExit = () => {
-  if (exited) return;
-  exited = true;
-  httpServer.close();
-  console.log("Gracefully exited");
-};
-process.on("SIGINT", handleExit);
-process.on("SIGTERM", handleExit);
+process.on("SIGINT", () => httpServer.close());
+process.on("SIGTERM", () => httpServer.close());
