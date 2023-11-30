@@ -12,13 +12,16 @@ type ConnectedStatistics = {
   games: number;
 };
 
+const URL_BASE = new URL(process.env.PUBLIC_URL ?? "/", window.location.href);
+const STATS_URL = new URL("api/statistics", URL_BASE);
+
 export default function AboutView() {
   const [stats, setStats] = useState<ConnectedStatistics | null>(null);
 
   useEffect(() => {
     const fetch = () => {
       window
-        .fetch("/api/statistics")
+        .fetch(STATS_URL)
         .then((res) => res.json())
         .then((val: ConnectedStatistics) => setStats(val))
         .catch(console.error);

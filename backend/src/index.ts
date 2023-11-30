@@ -40,5 +40,9 @@ app.get("*", (req, res) => {
 });
 
 // Handle SIGINT and SIGTERM
-process.on("SIGINT", () => httpServer.close());
-process.on("SIGTERM", () => httpServer.close());
+const handler = () => {
+  httpServer.close();
+  io.close();
+};
+process.on("SIGINT", handler);
+process.on("SIGTERM", handler);
