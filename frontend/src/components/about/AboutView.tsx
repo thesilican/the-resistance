@@ -12,8 +12,13 @@ type ConnectedStatistics = {
   games: number;
 };
 
-const URL_BASE = new URL(process.env.PUBLIC_URL ?? "/", window.location.href);
-const STATS_URL = new URL("api/statistics", URL_BASE);
+const URL_BASE = new URL(
+  process.env.PUBLIC_URL.endsWith("/")
+    ? process.env.PUBLIC_URL
+    : process.env.PUBLIC_URL + "/",
+  window.location.href
+);
+const STATS_URL = new URL("./api/statistics", URL_BASE);
 
 export default function AboutView() {
   const [stats, setStats] = useState<ConnectedStatistics | null>(null);
